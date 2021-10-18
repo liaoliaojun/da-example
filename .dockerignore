@@ -1,0 +1,7 @@
+*
+!Dockerfile
+!docker
+!.nuxt
+!client/static
+!dist
+!nginx.conf

@@ -1,0 +1,6 @@
+[submodule "externals/ej-ui"]
+	path = externals/ej-ui
+	url = git@gitlab.jinxin.dev:ej-dr/infrastructure/infra_front/ej-ui.git
+[submodule "externals/ej-tailwind-config"]
+	path = externals/ej-tailwind-config
+	url = git@gitlab.jinxin.dev:ej-dr/infrastructure/infra_front/ej-tailwind-config.git
