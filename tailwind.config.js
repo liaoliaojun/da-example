@@ -6,6 +6,8 @@ const selfConfig = {
   purge: [
     './src/*.{js,jsx,ts,tsx,vue}',
     './src/**/*.{js,jsx,ts,tsx,vue}',
+    './externals/ej-ui/src/!(stories)/*.{js,jsx,ts,tsx,vue}',
+    './externals/ej-ui/src/**/!(stories)/*.{js,jsx,ts,tsx,vue}',
   ],
   // purge: {
   //   // enabled: process.env.NODE_ENV === 'production',
