@@ -1,4 +1,5 @@
-FROM openresty/openresty:alpine
-ADD nginx.conf /etc/nginx/conf.d/default.conf
-ADD dist /usr/local/openresty/nginx/html
-RUN chmod 777 -R /usr/local/openresty/nginx 
+FROM nginx:alpine
+COPY dist/ /usr/share/nginx/html/
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+RUN chmod 777 -R /usr/share/nginx/html/
+EXPOSE 80
