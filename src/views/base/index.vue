@@ -46,14 +46,33 @@
           </ej-search>
         </div>
       </el-collapse-transition>
-      <ej-search-bar
-        v-model:models="state"
-        v-model:search-com-visible="searchComVisible"
-        :advanced="advanced"
-        :cm-props="{searchId: 'daWebapp'}"
-      />
+      <div class="flex flex-row-reverse">
+        <el-button class="hidden">222</el-button>
+        <el-button size="small" class="mx-4">
+          <ej-icon style="width: 14px; height: 14px;" icon="checkin" class="inline-block" />
+          <span>停用</span>
+        </el-button>
+        <el-button size="small">
+          <ej-icon style="width: 14px; height: 14px;" icon="checkin" class="inline-block" />
+          <span>启用</span>
+        </el-button>
+        <el-button size="small">
+          <ej-icon style="width: 14px; height: 14px;" icon="checkin" class="inline-block" />
+          <span>删除</span>
+        </el-button>
+        <el-button size="small">
+          <ej-icon style="width: 14px; height: 14px;" icon="checkin" class="inline-block" />
+          <span>挂载</span>
+        </el-button>
+        <ej-search-bar
+          v-model:models="state"
+          v-model:search-com-visible="searchComVisible"
+          :advanced="advanced"
+          :cm-props="{searchId: 'daWebapp'}"
+        />
+      </div>
       
-      <el-table :data="tableData">
+      <el-table border stripe highlight-current-row :data="tableData">
         <el-table-column prop="date" label="Date" width="180" />
         <el-table-column prop="name" label="Name" width="180" />
         <el-table-column prop="address" label="Address" />
@@ -64,8 +83,9 @@
 
 <script setup lang="ts">
   import {ref} from 'vue'
-  import {ElTable, ElTableColumn, ElCollapseTransition} from 'element-plus'
+  import {ElButton, ElTable, ElTableColumn, ElCollapseTransition} from 'element-plus'
   import {
+    EjIcon,
     EjLayer, EjTexts,
     EjSelect, EjCascader,
     EjSearchBar, EjSearch,
