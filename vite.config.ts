@@ -7,6 +7,24 @@ import graphql from '@rollup/plugin-graphql'
 import Components from 'unplugin-vue-components/vite'
 import {ElementPlusResolver} from 'unplugin-vue-components/resolvers'
 
+const EJUI_COMPONENTS = [
+  'EjTree',
+  'EjLayer',
+  'EjTexts',
+  'EjSelect',
+  'EjCascader',
+  'EjIcon',
+  'EjInput',
+  'EjSplit',
+  'EjSearch',
+  'EjPopoverSet',
+  'EjSearchInput',
+  'EjSearchBar',
+  'EjHighlight',
+  'EjSteps',
+  'EjStepsItem',
+]
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -20,6 +38,14 @@ export default defineConfig({
         ElementPlusResolver({
           importStyle: 'sass',
         }),
+        // https://www.npmjs.com/package/unplugin-vue-components
+        // example of importing Vant
+        (name) => {
+          // where `name` is always CapitalCase
+          if (EJUI_COMPONENTS.includes(name)) {
+            return {importName: name, path: '@ej/ui'}
+          }
+        },
       ],
     }),
   ],

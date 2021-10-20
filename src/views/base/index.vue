@@ -82,13 +82,6 @@
 
 <script setup lang="ts">
   import {ref} from 'vue'
-  import {
-    EjIcon,
-    EjLayer, EjTexts,
-    EjSelect, EjCascader,
-    EjSearchBar, EjSearch,
-    EjTree, EjSearchInput,
-  } from '@ej/ui'
 
   const mockData = [
     {
