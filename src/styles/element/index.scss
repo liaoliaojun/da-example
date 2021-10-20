@@ -1,0 +1,59 @@
+$--colors: (
+  "primary": (
+    "base": #0C64EB,
+  ),
+  "success": (
+    "base": #00800B,
+  ),
+  "warning": (
+    "base": #E38700,
+  ),
+  "danger": (
+    "base": #C7000B,
+  ),
+  "error": (
+    "base": #db2828,
+  ),
+  "info": (
+    "base": #42b8dd,
+  ),
+);
+$--button-padding-horizontal: (
+  'default': 8px,
+  'medium': 8px,
+  'small': 8px,
+  'mini': 8px,
+);
+$--font-size: (
+  'medium': 14px,
+  'small': 14px,
+);
+$--text-color: (
+  'primary': #262626,
+  'regular': #262626,
+  'secondary': #525252,
+  'placeholder': #A2A9B0,
+);
+$--border-color: (
+  'base': #C1C7CD,
+);
+/* "$--button-small-font-size":"14px","$--button-small-padding-vertical":"8px" */
+
+// You should use them in scss, because we calculate it by sass.
+// comment next lines to use default color
+@forward "element-plus/theme-chalk/src/common/var.scss" with
+  (
+    // do not use same name, it will override.
+    $colors: $--colors,
+    // $button-padding-horizontal: ("default": 50px),
+    $button-padding-horizontal: $--button-padding-horizontal,
+    $font-size: $--font-size,
+    $text-color: $--text-color,
+    $border-color: $--border-color,
+  );
+
+// if you want to import all
+// @use "element-plus/theme-chalk/src/index.scss" as *;
+
+// You can comment it to hide debug info.
+// @debug $--colors;

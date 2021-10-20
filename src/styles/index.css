@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  .theme-text {
+    @apply text-blue-500 red:text-red-500 green:text-green-500 orange:text-orange-500 purple:text-purple-500 darkblue:text-darkblue-500;
+  }
+  .theme-text-300 {
+    @apply text-blue-300 red:text-red-300 green:text-green-300 orange:text-orange-300 purple:text-purple-300 darkblue:text-darkblue-300;
+  }
+  .theme-border {
+    @apply border-blue-500 red:border-red-500 green:border-green-500 orange:border-orange-500 purple:border-purple-500 darkblue:border-darkblue-500;
+  }
+  .theme-border-300 {
+    @apply border-blue-300 red:border-red-300 green:border-green-300 orange:border-orange-300 purple:border-purple-300 darkblue:border-darkblue-300;
+  }
+  .theme-border-700 {
+    @apply border-blue-700 red:border-red-700 green:border-green-700 orange:border-orange-700 purple:border-purple-700 darkblue:border-darkblue-700;
+  }
+  .theme-bg {
+    @apply bg-blue-500 red:bg-red-500 green:bg-green-500 orange:bg-orange-500 purple:bg-purple-500 darkblue:bg-darkblue-500;
+  }
+  .theme-bg-300 {
+    @apply bg-blue-300 red:bg-red-300 green:bg-green-300 orange:bg-orange-300 purple:bg-purple-300 darkblue:bg-darkblue-300;
+  }
+  .theme-bg-50 {
+    @apply bg-blue-50 red:bg-red-50 green:bg-green-50 orange:bg-orange-50 purple:bg-purple-50 darkblue:bg-darkblue-50;
+  }
+}
+
+@layer components {  
+  .whitespace-no-wrap {
+    white-space: nowrap;
+  }
+  .whitespace-nowrap {
+    white-space: nowrap;
+  }
+  .title-block {
+    @apply relative pl-3 flex items-center theme-text;
+  }
+
+  .title-block::before {
+    @apply block absolute left-0;
+    content: '';
+    width: 4px;
+    height: 1em;
+    background-color: currentColor;
+  }
+}
+
+html, body {
+  font-family: 'PingFang SC',arial,verdana,helvetica,'HanHei SC',STHeitiSC-Light,Microsoft Yahei,sans-serif;
+  -webkit-font-smoothing: subpixel-antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100%;
+}
+
+svg {
+  @apply fill-current outline-none;
+}
+
+svg.circular {
+  display: inline-block;
+}
+
+.inset-0 {
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+}
+
+button {
+  outline: none !important;
+}

@@ -47,8 +47,7 @@
         </div>
       </el-collapse-transition>
       <div class="flex flex-row-reverse">
-        <el-button class="hidden">222</el-button>
-        <el-button size="small" class="mx-4">
+        <el-button size="small" style="margin-left: 10px;">
           <ej-icon style="width: 14px; height: 14px;" icon="checkin" class="inline-block" />
           <span>停用</span>
         </el-button>
@@ -83,7 +82,6 @@
 
 <script setup lang="ts">
   import {ref} from 'vue'
-  import {ElButton, ElTable, ElTableColumn, ElCollapseTransition} from 'element-plus'
   import {
     EjIcon,
     EjLayer, EjTexts,
