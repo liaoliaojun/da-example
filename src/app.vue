@@ -1,5 +1,5 @@
 <template>
-  <ul class="flex ml-5 mt-3">
+  <ul class="flex ml-5 mt-3 theme-text">
     <router-link to="/" tag="li" class="mr-4">首页</router-link>
     <router-link to="/base" tag="li" class="mr-4">基础资产</router-link>
     <router-link to="/test" tag="li" class="mr-4">指标资产</router-link>

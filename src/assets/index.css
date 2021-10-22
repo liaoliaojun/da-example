@@ -49,6 +49,8 @@
   }
 }
 
+@import reset-element-ui.postcss;
+
 html, body {
   font-family: 'PingFang SC',arial,verdana,helvetica,'HanHei SC',STHeitiSC-Light,Microsoft Yahei,sans-serif;
   -webkit-font-smoothing: subpixel-antialiased;
