@@ -10,6 +10,7 @@ declare module 'vue' {
     EjSearch: typeof import('@ej/ui')['EjSearch']
     EjSearchInput: typeof import('@ej/ui')['EjSearchInput']
     EjSelect: typeof import('@ej/ui')['EjSelect']
+    EjSplit: typeof import('@ej/ui')['EjSplit']
     EjTexts: typeof import('@ej/ui')['EjTexts']
     EjTree: typeof import('@ej/ui')['EjTree']
     ElButton: typeof import('element-plus/es')['ElButton']

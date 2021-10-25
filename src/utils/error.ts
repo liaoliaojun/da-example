@@ -29,7 +29,7 @@ export const handle401 = () => {
 
   // 跳转到自带的url地址
   if (loginUrl) {
-    location.href = `${loginUrl}/?redirect_url=${encodeURIComponent(location.href)}`
+    // location.href = `${loginUrl}/?redirect_url=${encodeURIComponent(location.href)}`
     return
   }
   console.error('未找到登陆失败的跳转地址')

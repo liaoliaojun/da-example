@@ -15,8 +15,6 @@
 <script setup lang="ts">
   import {useRoute} from 'vue-router'
 
-  // console.log(EjSplit)
-
   const route = useRoute()
   console.log(route.name)
 </script>
