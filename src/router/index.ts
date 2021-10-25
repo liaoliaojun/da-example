@@ -20,7 +20,22 @@ const routes = [
     name: 'test',
     component: () => import('~/views/test.vue'),
   },
-]
+  {
+    path: '/report',
+    name: 'report',
+    redirect: '/report/list',
+    component: () => import('~/views/report/index.vue'),
+    children: [{
+      path: 'list',
+      name: 'list',
+      component: () => import('~/views/report/list.vue'),
+    },{
+      path: 'mount',
+      name: 'mount',
+      component: () => import('~/views/report/mount.vue'),
+    }]
+  },
+];
 
 export default createRouter({
   history: createWebHistory(),
