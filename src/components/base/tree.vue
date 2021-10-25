@@ -27,55 +27,55 @@
   import {ref} from 'vue'
   import useApolloClient from '~/utils/apollo-client'
   import QUERY_MENU from '~/graphql/query_menu.gql'
-  import {DaQueryMenuListQuery, MenuManagementInput} from '~~/codegen/'
+  import {DaQueryMenuListQuery} from '~~/codegen/'
 
-  const mockData = [
-    {
-      id: '0',
-      label: '北京市',
-      subLabel: '首都',
-      icon: 'folder',
-      children: [
-        {
-          id: '00001',
-          label: '北京市',
-          subLabel: '直辖市',
-          icon: 'folder',
-          children: [
-            {id: '000010001', label: '朝阳区', subLabel: '主城区', icon: 'file'},
-            {id: '000010002', label: '海淀区', disabled: true, icon: 'file'},
-            {id: '000010003', label: '东城区', icon: 'file'},
-          ],
-        },
-      ],
-    },
-    {
-      id: '1',
-      label: '天津市',
-      type: 'c-government',
-      icon: 'folder',
-      children: [
-        {
-          id: '000002',
-          label: '天津市-二级',
-          subLabel: '直辖市',
-          icon: 'folder',
-          children: [
-            {id: '0000200001', label: '河东区', subLabel: '主城区', icon: 'file'},
-            {id: '0000200002', label: '河西区', disabled: true, icon: 'file'},
-          ],
-        },
-      ],
-    },
-    {
-      id: '2',
-      label: '这是一条很长很长很长的数据，这是一条很长很长很长的数据，这是一条很长很长很长的数据，这是一条很长很长很长的数据',
-      icon: 'folder',
-      children: [
-        {id: '2000100001', label: '这是一条很长很长很长的数据，这是一条很长很长很长的数据，这是一条很长很长很长的数据，这是一条很长很长很长的数据', icon: 'file'},
-      ],
-    },
-  ]
+  // const mockData = [
+  //   {
+  //     id: '0',
+  //     label: '北京市',
+  //     subLabel: '首都',
+  //     icon: 'folder',
+  //     children: [
+  //       {
+  //         id: '00001',
+  //         label: '北京市',
+  //         subLabel: '直辖市',
+  //         icon: 'folder',
+  //         children: [
+  //           {id: '000010001', label: '朝阳区', subLabel: '主城区', icon: 'file'},
+  //           {id: '000010002', label: '海淀区', disabled: true, icon: 'file'},
+  //           {id: '000010003', label: '东城区', icon: 'file'},
+  //         ],
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     id: '1',
+  //     label: '天津市',
+  //     type: 'c-government',
+  //     icon: 'folder',
+  //     children: [
+  //       {
+  //         id: '000002',
+  //         label: '天津市-二级',
+  //         subLabel: '直辖市',
+  //         icon: 'folder',
+  //         children: [
+  //           {id: '0000200001', label: '河东区', subLabel: '主城区', icon: 'file'},
+  //           {id: '0000200002', label: '河西区', disabled: true, icon: 'file'},
+  //         ],
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     id: '2',
+  //     label: '这是一条很长很长很长的数据，这是一条很长很长很长的数据，这是一条很长很长很长的数据，这是一条很长很长很长的数据',
+  //     icon: 'folder',
+  //     children: [
+  //       {id: '2000100001', label: '这是一条很长很长很长的数据，这是一条很长很长很长的数据，这是一条很长很长很长的数据，这是一条很长很长很长的数据', icon: 'file'},
+  //     ],
+  //   },
+  // ]
 
   const keyword = ref('')
   const contextMenu = ref([
@@ -95,21 +95,21 @@
     console.log(`${data.label}的当前操作是： ${commands}`)
   }
 
-  const findTreeChildren = (tree: any, id: string | number) => {
-    let findNodes = []
-    let queue = [...tree]
-    // 广度遍历
-    while (queue.length && !findNodes.length) {
-      const node = queue.shift()
-      if (Array.isArray(node.children) && node.children.length) {
-        if (node.id === id) {
-          findNodes = node.children
-        }
-        queue.push(...node.children)
-      }
-    }
-    return findNodes
-  }
+  // const findTreeChildren = (tree: any, id: string | number) => {
+  //   let findNodes = []
+  //   let queue = [...tree]
+  //   // 广度遍历
+  //   while (queue.length && !findNodes.length) {
+  //     const node = queue.shift()
+  //     if (Array.isArray(node.children) && node.children.length) {
+  //       if (node.id === id) {
+  //         findNodes = node.children
+  //       }
+  //       queue.push(...node.children)
+  //     }
+  //   }
+  //   return findNodes
+  // }
 
   const loadNode = async (node: any, resolve: any) => {
     if (node.level === 0) {

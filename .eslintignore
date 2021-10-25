@@ -1,0 +1,12 @@
+externals/
+externals/**
+codegen/
+node_modules/
+.nuxt
+dist
+storybook-static/
+shims-tsx.d.ts
+shims-vue.d.ts
+vue-shim.d.ts
+*.gql
+tailwind.config.js
