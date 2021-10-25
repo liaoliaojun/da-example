@@ -6,8 +6,6 @@
     <div class="flex-auto ml-5">
       <ej-search 
         v-model:models="state"
-        v-model:keyword="keyword2"
-        :keyword-props="{placeholder: '请输入内容', width: 300}"
         :immediate-search="true"
         :cm-props="{
           searchId: 'searchDemo',
@@ -18,6 +16,10 @@
         :advanced="advanced"
         @search="handlerSearch"
       >
+        <template #input>
+          <ej-search-input v-model="keyword2" clearable width="300" placeholder="请输入内容2" maxlength="128" class="mr-1" @search="inputSearch()" />
+          <el-button size="small" type="primary">重置</el-button>
+        </template>
         <ej-texts v-model="state.name" :options="options.name" prop="name" label="机构名称" />
         <ej-layer label="过滤分类" :related="[options.format, options.share, options.status]">
           <ej-select v-model="state.format" :options="options.format" prop="format" label="格式" />
@@ -48,10 +50,14 @@
 
       <div>
         <el-table border stripe checkbox highlight-current-row :data="tableData">
-          <el-table-column type="selection" width="55" />
-          <el-table-column prop="date" label="Date" width="180" />
-          <el-table-column prop="name" label="Name" width="180" />
-          <el-table-column prop="address" label="Address" />
+          <el-table-column type="selection" align="center" />
+          <el-table-column prop="date" label="所属系统" />
+          <el-table-column prop="name" label="数据库" />
+          <el-table-column prop="address" label="英文名" />
+          <el-table-column prop="name" label="中文名" />
+          <el-table-column prop="name" label="数据类型" />
+          <el-table-column prop="name" label="使用状态" />
+          <el-table-column prop="name" label="操作" />
         </el-table>
       </div>
     </div>
@@ -258,5 +264,8 @@
 
   const handlerSearch = (params: any, type: any) => {
     console.log(params, type)
+  }
+  const inputSearch = () => {
+    handlerSearch({}, 'btn')
   }
 </script>
