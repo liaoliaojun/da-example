@@ -67,17 +67,6 @@
 <script setup lang="ts">
   import {ref} from 'vue'
   import BaseTree from '~/components/base/tree.vue'
-  import useApolloClient from '~/utils/apollo-client'
-  import QUERY_MENU from '~/graphql/query_menu.gql'
-
-  useApolloClient('da').query({
-    query: QUERY_MENU,
-    variables: {
-      menuType: 'BASE',
-    },
-  }).then((res: any) => {
-    console.log(res)
-  })
 
   const tableData = [
     {

@@ -25,6 +25,8 @@
 
 <script setup lang="ts">
   import {ref} from 'vue'
+  import useApolloClient from '~/utils/apollo-client'
+  import QUERY_MENU from '~/graphql/query_menu.gql'
 
   const mockData = [
     {
@@ -79,9 +81,7 @@
     {command: 'check', label: '查看'},
     {command: 'remove', label: '删除', disabled: true},
   ])
-  const defaultExpandedIds = ref(['000010001'])
-
-  
+  const defaultExpandedIds = ref([-1])
 
   const onNodeClick = ({data, _node}: any) => {
     console.log(`当前点击的节点为${data.label}`)
@@ -110,30 +110,58 @@
     return findNodes
   }
 
-  const loadNode = (node: any, resolve: any) => {
+  const loadNode = async (node: any, resolve: any) => {
     if (node.level === 0) {
-      return resolve(mockData.map((item: any) => {
-        const obj: any = {}
-        // 只加载第一级别
-        Object.keys(item).forEach(key => {
-          if (key !== 'children') {
-            obj[key] = item[key]
-          }
-        })
-        return obj
-      }))
-    } else if (node.data.id) {
-      setTimeout(() => {
-        const nodes = findTreeChildren(mockData, node.data.id).map((item: any) => {
-          return {
-            ...item,
-            leaf: !Boolean(item.children && item.children.length),
-          }
-        })
-        resolve(nodes)
-      }, 1000)
+      return resolve([
+        {
+          id: -1,
+          label: '基础资产',
+          icon: 'folder',
+          children: [],
+        },
+      ])
     } else {
-      resolve([])
+      const data = await queryRootTree()
+      return resolve(data)
     }
+
+    // if (node.level === 0) {
+    //   // await queryRootTree()
+    //   const data = await queryRootTree()
+    //   console.log(data)
+    //   resolve(data)
+    // } else if (node.data.id) {
+    //   setTimeout(() => {
+    //     const nodes = findTreeChildren(mockData, node.data.id).map((item: any) => {
+    //       return {
+    //         ...item,
+    //         leaf: !Boolean(item.children && item.children.length),
+    //       }
+    //     })
+    //     resolve(nodes)
+    //   }, 1000)
+    // } else {
+    //   resolve([])
+    // }
+  }
+
+  const queryRootTree = () => {
+    return useApolloClient('da').query({
+      query: QUERY_MENU,
+      variables: {
+        menuType: 'BASE',
+      },
+    }).then((res: any) => {
+      const result = res?.data?.result ?? []
+
+      return result.map((item: any) => {
+        return {
+          id: item.id,
+          label: item.menuName,
+          icon: 'folder',
+          children: [],
+        }
+      })
+    })
   }
 </script>
