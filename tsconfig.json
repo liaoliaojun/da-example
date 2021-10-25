@@ -20,7 +20,7 @@
     ]
   },
   "include": [
-    "src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue",
+    "src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "components.d.ts",
     "externals/ej-ui/src/**/*.ts", "externals/ej-ui/src/**/*.d.ts", "externals/ej-ui/src/**/*.tsx", "externals/ej-ui/src/**/*.vue"
   ],
   "exclude": [

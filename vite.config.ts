@@ -34,6 +34,7 @@ export default defineConfig({
     vue(),
     graphql(),
     Components({
+      dts: true,
       resolvers: [
         ElementPlusResolver({
           importStyle: 'sass',

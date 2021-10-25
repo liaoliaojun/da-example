@@ -27,26 +27,27 @@
         <ej-texts v-model="state.multipleName" :options="options.name" prop="multipleName" label="名称多选" />
         <ej-cascader v-model="state.base" :options="options.base" prop="base" label="级联基础" />
       </ej-search>
-      <div class="flex flex-row-reverse">
+      <div class="flex flex-row-reverse mb-4">
         <el-button size="small" style="margin-left: 10px;">
           <ej-icon style="width: 14px; height: 14px;" icon="checkin" class="inline-block" />
-          <span>停用</span>
+          <span class="ml-1">停用</span>
         </el-button>
         <el-button size="small">
           <ej-icon style="width: 14px; height: 14px;" icon="checkin" class="inline-block" />
-          <span>启用</span>
+          <span class="ml-1">启用</span>
         </el-button>
         <el-button size="small">
           <ej-icon style="width: 14px; height: 14px;" icon="checkin" class="inline-block" />
-          <span>删除</span>
+          <span class="ml-1">删除</span>
         </el-button>
         <el-button size="small">
           <ej-icon style="width: 14px; height: 14px;" icon="checkin" class="inline-block" />
-          <span>挂载</span>
+          <span class="ml-1">挂载</span>
         </el-button>
       </div>
 
-      <el-table border stripe highlight-current-row :data="tableData">
+      <el-table border stripe checkbox highlight-current-row :data="tableData">
+        <el-table-column type="selection" width="55" />
         <el-table-column prop="date" label="Date" width="180" />
         <el-table-column prop="name" label="Name" width="180" />
         <el-table-column prop="address" label="Address" />

@@ -14,7 +14,6 @@
 
 <script setup lang="ts">
   import {useRoute} from 'vue-router'
-  import {EjSplit} from '@ej/ui'
 
   // console.log(EjSplit)
 
