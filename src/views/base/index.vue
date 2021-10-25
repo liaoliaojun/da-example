@@ -7,7 +7,7 @@
       <ej-search 
         v-model:models="state"
         v-model:keyword="keyword2"
-        :keyword-props="{placeholder: '请输入内容'}"
+        :keyword-props="{placeholder: '请输入内容', width: 300}"
         :immediate-search="true"
         :cm-props="{
           searchId: 'searchDemo',
@@ -46,12 +46,14 @@
         </el-button>
       </div>
 
-      <el-table border stripe checkbox highlight-current-row :data="tableData">
-        <el-table-column type="selection" width="55" />
-        <el-table-column prop="date" label="Date" width="180" />
-        <el-table-column prop="name" label="Name" width="180" />
-        <el-table-column prop="address" label="Address" />
-      </el-table>
+      <div>
+        <el-table border stripe checkbox highlight-current-row :data="tableData">
+          <el-table-column type="selection" width="55" />
+          <el-table-column prop="date" label="Date" width="180" />
+          <el-table-column prop="name" label="Name" width="180" />
+          <el-table-column prop="address" label="Address" />
+        </el-table>
+      </div>
     </div>
   </div>
 </template>

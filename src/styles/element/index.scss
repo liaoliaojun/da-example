@@ -24,6 +24,12 @@ $--button-padding-horizontal: (
   'small': 8px,
   'mini': 8px,
 );
+$--button-padding-vertical: (
+  'default': 12px,
+  'medium': 10px,
+  'small': 8px,
+  'mini': 7px,
+);
 $--font-size: (
   'medium': 14px,
   'small': 14px,
@@ -46,6 +52,7 @@ $--border-color: (
     // do not use same name, it will override.
     $colors: $--colors,
     // $button-padding-horizontal: ("default": 50px),
+    $button-padding-vertical: $--button-padding-vertical,
     $button-padding-horizontal: $--button-padding-horizontal,
     $font-size: $--font-size,
     $text-color: $--text-color,
