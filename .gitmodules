@@ -4,3 +4,6 @@
 [submodule "externals/ej-tailwind-config"]
 	path = externals/ej-tailwind-config
 	url = git@gitlab.jinxin.dev:ej-dr/infrastructure/infra_front/ej-tailwind-config.git
+[submodule "externals/ej-eslint-config"]
+	path = externals/ej-eslint-config
+	url = git@gitlab.jinxin.dev:ej-dr/infrastructure/infra_front/ej-eslint-config.git
