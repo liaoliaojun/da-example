@@ -4,33 +4,29 @@
       <base-tree />
     </div>
     <div class="flex-auto ml-5">
-      <el-collapse-transition>
-        <div v-show="advanced && searchComVisible">
-          <ej-search 
-            v-model:models="state"
-            v-model:keyword="keyword2"
-            :keyword-props="{placeholder: '请输入内容'}"
-            :immediate-search="true"
-            :cm-props="{
-              searchId: 'searchDemo',
-            }"
-            :hide-com-list="true"
-            :hide-expand-button="true"
-            :show-com-pop="true"
-            :advanced="advanced"
-            @search="handlerSearch"
-          >
-            <ej-texts v-model="state.name" :options="options.name" prop="name" label="机构名称" />
-            <ej-layer label="过滤分类" :related="[options.format, options.share, options.status]">
-              <ej-select v-model="state.format" :options="options.format" prop="format" label="格式" />
-              <ej-select v-model="state.share" :options="options.share" prop="share" label="共享条件" multiple placeholder="提示信息-多选" />
-              <ej-select v-model="state.status" :options="options.status" prop="status" label="状态" placeholder="提示信息-可清空" clearable />
-            </ej-layer>
-            <ej-texts v-model="state.multipleName" :options="options.name" prop="multipleName" label="名称多选" />
-            <ej-cascader v-model="state.base" :options="options.base" prop="base" label="级联基础" />
-          </ej-search>
-        </div>
-      </el-collapse-transition>
+      <ej-search 
+        v-model:models="state"
+        v-model:keyword="keyword2"
+        :keyword-props="{placeholder: '请输入内容'}"
+        :immediate-search="true"
+        :cm-props="{
+          searchId: 'searchDemo',
+        }"
+        :hide-com-list="true"
+        :hide-expand-button="true"
+        :show-com-pop="true"
+        :advanced="advanced"
+        @search="handlerSearch"
+      >
+        <ej-texts v-model="state.name" :options="options.name" prop="name" label="机构名称" />
+        <ej-layer label="过滤分类" :related="[options.format, options.share, options.status]">
+          <ej-select v-model="state.format" :options="options.format" prop="format" label="格式" />
+          <ej-select v-model="state.share" :options="options.share" prop="share" label="共享条件" multiple placeholder="提示信息-多选" />
+          <ej-select v-model="state.status" :options="options.status" prop="status" label="状态" placeholder="提示信息-可清空" clearable />
+        </ej-layer>
+        <ej-texts v-model="state.multipleName" :options="options.name" prop="multipleName" label="名称多选" />
+        <ej-cascader v-model="state.base" :options="options.base" prop="base" label="级联基础" />
+      </ej-search>
       <div class="flex flex-row-reverse">
         <el-button size="small" style="margin-left: 10px;">
           <ej-icon style="width: 14px; height: 14px;" icon="checkin" class="inline-block" />
@@ -48,12 +44,6 @@
           <ej-icon style="width: 14px; height: 14px;" icon="checkin" class="inline-block" />
           <span>挂载</span>
         </el-button>
-        <ej-search-bar
-          v-model:models="state"
-          v-model:search-com-visible="searchComVisible"
-          :advanced="advanced"
-          :cm-props="{searchId: 'daWebapp'}"
-        />
       </div>
 
       <el-table border stripe highlight-current-row :data="tableData">
@@ -68,6 +58,17 @@
 <script setup lang="ts">
   import {ref} from 'vue'
   import BaseTree from '~/components/base/tree.vue'
+  import useApolloClient from '~/utils/apollo-client'
+  import QUERY_MENU from '~/graphql/query_menu.gql'
+
+  useApolloClient('da').query({
+    query: QUERY_MENU,
+    variables: {
+      menuType: 'BASE',
+    },
+  }).then((res: any) => {
+    console.log(res)
+  })
 
   const tableData = [
     {
@@ -250,7 +251,6 @@
     ],
   }
 
-  const searchComVisible = ref(false)
   const advanced = ref(true)
 
   const handlerSearch = (params: any, type: any) => {

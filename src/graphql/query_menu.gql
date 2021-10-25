@@ -1,0 +1,8 @@
+query daQueryMenuList ($menuType: MenuManagementEnum!) {
+  result: daQueryMenuList (menuType: $menuType) {
+    id
+    menuName
+    parentId
+    menuType
+  }
+}
