@@ -7,6 +7,7 @@ type ApolloClients = {
 
 const apolloClients: ApolloClients = {}
 
+// eslint-disable-next-line
 export default function useApolloClient (arg?: string | object) {
   if (!arg) {
     return apolloClients

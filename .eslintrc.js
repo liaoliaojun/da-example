@@ -9,5 +9,7 @@ module.exports = {
     '@ej/eslint-config',
   ],
   // add your custom rules here
-  rules: {},
+  rules: {
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+  },
 }

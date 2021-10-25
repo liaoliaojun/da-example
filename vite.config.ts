@@ -53,6 +53,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
+        // eslint-disable-next-line
         additionalData: `@use "~/styles/element/index.scss" as *;`,
       },
     },

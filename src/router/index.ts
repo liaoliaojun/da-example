@@ -20,7 +20,7 @@ const routes = [
     name: 'test',
     component: () => import('~/views/test.vue'),
   },
-];
+]
 
 export default createRouter({
   history: createWebHistory(),
