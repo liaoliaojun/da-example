@@ -27,6 +27,7 @@
   import {ref} from 'vue'
   import useApolloClient from '~/utils/apollo-client'
   import QUERY_MENU from '~/graphql/query_menu.gql'
+  import {DaQueryMenuListQuery, MenuManagementInput} from '~~/codegen/'
 
   const mockData = [
     {
@@ -151,17 +152,18 @@
       variables: {
         menuType: 'BASE',
       },
-    }).then((res: any) => {
+    }).then((res: {data: DaQueryMenuListQuery}) => {
       const result = res?.data?.result ?? []
 
-      return result.map((item: any) => {
+      return result.map((item) => {
         return {
-          id: item.id,
-          label: item.menuName,
+          id: item?.id ?? '',
+          pid: item?.parentId ?? '',
+          label: item?.menuName ?? '',
           icon: 'folder',
           children: [],
         }
-      })
+      }).filter((item) => Boolean(item.id))
     })
   }
 </script>
