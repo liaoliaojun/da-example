@@ -27,6 +27,9 @@ const EJUI_COMPONENTS = [
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  server: {
+    host: 'dev.jinxin.cloud',
+  },
   plugins: [
     legacy({
       targets: ['defaults', 'not IE 11'],
