@@ -46,7 +46,7 @@
       <el-table-column prop="name" label="使用状态" />
       <el-table-column prop="name" label="最后下载时间" />
       <el-table-column prop="manager" label="操作">
-        <template #default="{row}">
+        <template #default="{}">
           <div class="flex flex-nowrap">
             <el-button type="text" size="small">详情</el-button>
             <el-button type="text" size="small">删除</el-button>
@@ -84,21 +84,21 @@
     },
   ]
   const state = ref({
-    useStatus: null,
-    checkStatus: null,
+    useStatus: '',
+    checkStatus: '',
   })
   const keyword2 = ref('keyword')
 
   const options = {
     useStatus: [
-      {value: true, label: '启用'},
-      {value: false, label: '停用'},
+      {value: '1', label: '启用'},
+      {value: '2', label: '停用'},
     ],
     checkStatus: [
-      {value: 1, label: '草稿'},
-      {value: 2, label: '审核中'},
-      {value: 3, label: '未通过'},
-      {value: 4, label: '通过'},
+      {value: '1', label: '草稿'},
+      {value: '2', label: '审核中'},
+      {value: '3', label: '未通过'},
+      {value: '4', label: '通过'},
     ],
   }
 
