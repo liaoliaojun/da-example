@@ -1,66 +1,72 @@
 <template>
-  <div class="flex flex-1">
-    <div class="w-1/6">
-      <base-tree />
-    </div>
-    <div class="flex-auto ml-5">
-      <ej-search 
-        v-model:models="state"
-        :immediate-search="true"
-        :cm-props="{
-          searchId: 'searchDemo',
-        }"
-        :hide-com-list="true"
-        :hide-expand-button="true"
-        :show-com-pop="true"
-        :advanced="advanced"
-        @search="handlerSearch"
-      >
-        <template #input>
-          <ej-search-input v-model="keyword2" clearable width="300" placeholder="请输入内容2" maxlength="128" class="mr-1" @search="inputSearch()" />
-          <el-button size="small" type="primary">重置</el-button>
-        </template>
-        <ej-texts v-model="state.name" :options="options.name" prop="name" label="机构名称" />
-        <ej-layer label="过滤分类" :related="[options.format, options.share, options.status]">
-          <ej-select v-model="state.format" :options="options.format" prop="format" label="格式" />
-          <ej-select v-model="state.share" :options="options.share" prop="share" label="共享条件" multiple placeholder="提示信息-多选" />
-          <ej-select v-model="state.status" :options="options.status" prop="status" label="状态" placeholder="提示信息-可清空" clearable />
-        </ej-layer>
-        <ej-texts v-model="state.multipleName" :options="options.name" prop="multipleName" label="名称多选" />
-        <ej-cascader v-model="state.base" :options="options.base" prop="base" label="级联基础" />
-      </ej-search>
-      <div class="flex flex-row-reverse mb-4">
-        <el-button size="small" style="margin-left: 10px;">
-          <ej-icon style="width: 14px; height: 14px;" icon="checkin" class="inline-block" />
-          <span class="ml-1">停用</span>
-        </el-button>
-        <el-button size="small">
-          <ej-icon style="width: 14px; height: 14px;" icon="checkin" class="inline-block" />
-          <span class="ml-1">启用</span>
-        </el-button>
-        <el-button size="small">
-          <ej-icon style="width: 14px; height: 14px;" icon="checkin" class="inline-block" />
-          <span class="ml-1">删除</span>
-        </el-button>
-        <el-button size="small">
-          <ej-icon style="width: 14px; height: 14px;" icon="checkin" class="inline-block" />
-          <span class="ml-1">挂载</span>
-        </el-button>
-      </div>
+  <div class="da-base-view flex flex-1">
+     <ej-split split="250px" :min="180" mode="horizonta" class="w-full">
+      <template #left>
+        <div class="pr-2">
+          <base-tree />
+        </div>
+      </template>
+      <template #right class="flex-auto">
+        <div class="flex-auto ml-5">
+          <ej-search 
+            v-model:models="state"
+            :immediate-search="true"
+            :cm-props="{
+              searchId: 'searchDemo',
+            }"
+            :hide-com-list="true"
+            :hide-expand-button="true"
+            :show-com-pop="true"
+            :advanced="advanced"
+            @search="handlerSearch"
+          >
+            <template #input>
+              <ej-search-input v-model="keyword2" clearable width="300" placeholder="请输入内容2" maxlength="128" class="mr-1" @search="inputSearch()" />
+              <el-button size="small" type="primary">重置</el-button>
+            </template>
+            <ej-texts v-model="state.name" :options="options.name" prop="name" label="机构名称" />
+            <ej-layer label="过滤分类" :related="[options.format, options.share, options.status]">
+              <ej-select v-model="state.format" :options="options.format" prop="format" label="格式" />
+              <ej-select v-model="state.share" :options="options.share" prop="share" label="共享条件" multiple placeholder="提示信息-多选" />
+              <ej-select v-model="state.status" :options="options.status" prop="status" label="状态" placeholder="提示信息-可清空" clearable />
+            </ej-layer>
+            <ej-texts v-model="state.multipleName" :options="options.name" prop="multipleName" label="名称多选" />
+            <ej-cascader v-model="state.base" :options="options.base" prop="base" label="级联基础" />
+          </ej-search>
+          <div class="flex flex-row-reverse mb-4">
+            <el-button size="small" style="margin-left: 10px;">
+              <ej-icon style="width: 14px; height: 14px;" icon="checkin" class="inline-block" />
+              <span class="ml-1">停用</span>
+            </el-button>
+            <el-button size="small">
+              <ej-icon style="width: 14px; height: 14px;" icon="checkin" class="inline-block" />
+              <span class="ml-1">启用</span>
+            </el-button>
+            <el-button size="small">
+              <ej-icon style="width: 14px; height: 14px;" icon="checkin" class="inline-block" />
+              <span class="ml-1">删除</span>
+            </el-button>
+            <el-button size="small">
+              <ej-icon style="width: 14px; height: 14px;" icon="checkin" class="inline-block" />
+              <span class="ml-1">挂载</span>
+            </el-button>
+          </div>
 
-      <div>
-        <el-table border stripe checkbox highlight-current-row :data="tableData">
-          <el-table-column type="selection" align="center" />
-          <el-table-column prop="date" label="所属系统" />
-          <el-table-column prop="name" label="数据库" />
-          <el-table-column prop="address" label="英文名" />
-          <el-table-column prop="name" label="中文名" />
-          <el-table-column prop="name" label="数据类型" />
-          <el-table-column prop="name" label="使用状态" />
-          <el-table-column prop="name" label="操作" />
-        </el-table>
-      </div>
-    </div>
+          <div>
+            <el-table border stripe checkbox highlight-current-row :data="tableData">
+              <el-table-column type="selection" align="center" />
+              <el-table-column prop="date" label="所属系统" />
+              <el-table-column prop="name" label="数据库" />
+              <el-table-column prop="address" label="英文名" />
+              <el-table-column prop="name" label="中文名" />
+              <el-table-column prop="name" label="数据类型" />
+              <el-table-column prop="name" label="使用状态" />
+              <el-table-column prop="name" label="操作" />
+            </el-table>
+          </div>
+        </div>
+      </template>
+    </ej-split>
   </div>
 </template>
 
@@ -258,3 +264,10 @@
     handlerSearch({}, 'btn')
   }
 </script>
+
+<style lang="postcss">
+  /* .da-base-view {
+    .ej-split-right {
+    }
+  } */
+</style>
