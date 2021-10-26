@@ -24,75 +24,107 @@
 </script>
 
 <script setup lang="ts">
-  import {ref} from 'vue'
+  import {ref, PropType} from 'vue'
+  import {ElMessage, ElMessageBox} from 'element-plus'
+  import 'element-plus/theme-chalk/src/overlay.scss'
+  import 'element-plus/theme-chalk/src/message-box.scss'
   import useApolloClient from '~/utils/apollo-client'
   import QUERY_MENU from '~/graphql/query_menu.gql'
-  import {DaQueryMenuListQuery} from '~~/codegen/'
-
-  // const mockData = [
-  //   {
-  //     id: '0',
-  //     label: '北京市',
-  //     subLabel: '首都',
-  //     icon: 'folder',
-  //     children: [
-  //       {
-  //         id: '00001',
-  //         label: '北京市',
-  //         subLabel: '直辖市',
-  //         icon: 'folder',
-  //         children: [
-  //           {id: '000010001', label: '朝阳区', subLabel: '主城区', icon: 'file'},
-  //           {id: '000010002', label: '海淀区', disabled: true, icon: 'file'},
-  //           {id: '000010003', label: '东城区', icon: 'file'},
-  //         ],
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     id: '1',
-  //     label: '天津市',
-  //     type: 'c-government',
-  //     icon: 'folder',
-  //     children: [
-  //       {
-  //         id: '000002',
-  //         label: '天津市-二级',
-  //         subLabel: '直辖市',
-  //         icon: 'folder',
-  //         children: [
-  //           {id: '0000200001', label: '河东区', subLabel: '主城区', icon: 'file'},
-  //           {id: '0000200002', label: '河西区', disabled: true, icon: 'file'},
-  //         ],
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     id: '2',
-  //     label: '这是一条很长很长很长的数据，这是一条很长很长很长的数据，这是一条很长很长很长的数据，这是一条很长很长很长的数据',
-  //     icon: 'folder',
-  //     children: [
-  //       {id: '2000100001', label: '这是一条很长很长很长的数据，这是一条很长很长很长的数据，这是一条很长很长很长的数据，这是一条很长很长很长的数据', icon: 'file'},
-  //     ],
-  //   },
-  // ]
+  // import type {MenuManagementEnum} from '~~/codegen/index'
+  import {MenuManagementEnum, useDaDelMenuMutation, DaQueryMenuListQuery, useDaSaveOrUpdateMenuMutation} from '~~/codegen/index'
 
   const keyword = ref('')
   const contextMenu = ref([
-    {command: 'check', label: '查看'},
-    {command: 'remove', label: '删除', disabled: true},
+    {command: 'addDir', label: '添加'},
+    {command: 'remove', label: '删除'},
+    {command: 'rename', label: '重命名'},
   ])
-  const defaultExpandedIds = ref([-1])
+  // string类型的-1
+  const defaultExpandedIds = ref(['-1'])
+  // 更新
+  const {mutate: updateFolder} = useDaSaveOrUpdateMenuMutation({})
+  // 删除
+  const {mutate: deleteFolder} = useDaDelMenuMutation({})
+  const props = defineProps({
+    type: {
+      type: String as PropType<MenuManagementEnum>,
+      required: true,
+    },
+  })
+
+  // 添加
+  const addDir = (data: any) => {
+    ElMessageBox.prompt('请输入文件夹/节点名称', '', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      inputPattern: /^[a-zA-Z0-9_-]{1,16}$/,
+      inputErrorMessage: '允许1到16位字母，数字，下划线，减号',
+    }).then(({value}) => {
+      updateFolder({
+        input: {
+          parentId: data.id,
+          menuName: value,
+          menuType: props.type,
+        },
+      }).then((res) => {
+        if (res?.data?.result) {
+          ElMessage.success('添加文件夹/节点成功')
+          data.children.push({
+            id: res,
+            label: value,
+            icon: 'file',
+          })
+        }
+      })
+    })
+  }
+  // 编辑
+  const updateDir = (data: any, node: any) => {
+    ElMessageBox.prompt('请输入文件夹/节点名称', '', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      inputValue: data.label,
+      inputPattern: /^[a-zA-Z0-9_-]{1,16}$/,
+      inputErrorMessage: '允许1到16位字母，数字，下划线，减号',
+    }).then(({value}) => {
+      updateFolder({
+        input: {
+          id: data.id,
+          menuName: value,
+          menuType: props.type,
+        },
+      }).then((res) => {
+        if (res?.data?.result) {
+          ElMessage.success('文件夹/节点重命名成功')
+
+          data.label = value
+          node.data.label = node.data.name = value
+        }
+      })
+    })
+  }
 
   const onNodeClick = ({data, _node}: any) => {
     console.log(`当前点击的节点为${data.label}`)
   }
-
   const onMoreClick = ({data, node}: any) => {
-    console.log(`${data.label}的更多操作列表`, node)
+    console.log(`${data}的更多操作列表`, node)
   }
-  const onCommand = ({commands, data}: any) => {
-    console.log(`${data.label}的当前操作是： ${commands}`)
+  const onCommand = ({commands, data, node}: any) => {
+    console.log(data, node)
+    if (commands?.[0] === 'addDir') {
+      addDir(data)
+    } else if (commands?.[0] === 'rename') {
+      updateDir(data, node)
+    } else if (commands?.[0] === 'remove') {
+      deleteFolder({
+        menuIds: [data.id],
+      }).then((res) => {
+        if (res?.data?.result) {
+          ElMessage.success('删除文件夹/节点成功')
+        }
+      })
+    }
   }
 
   // const findTreeChildren = (tree: any, id: string | number) => {
@@ -115,7 +147,7 @@
     if (node.level === 0) {
       return resolve([
         {
-          id: -1,
+          id: '-1',
           label: '基础资产',
           icon: 'folder',
           children: [],
@@ -150,7 +182,7 @@
     return useApolloClient('da').query({
       query: QUERY_MENU,
       variables: {
-        menuType: 'BASE',
+        menuType: props.type,
       },
     }).then((res: {data: DaQueryMenuListQuery}) => {
       const result = res?.data?.result ?? []

@@ -1,0 +1,3 @@
+mutation daDelMenu ($menuIds: [ID!]!) {
+  result: daDelMenu (menuIds: $menuIds)
+}

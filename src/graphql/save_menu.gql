@@ -1,0 +1,3 @@
+mutation daSaveOrUpdateMenu ($input: MenuManagementInput) {
+  result: daSaveOrUpdateMenu (input: $input)
+}
