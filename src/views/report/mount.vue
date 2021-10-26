@@ -62,24 +62,24 @@
     },
   ]
   const state = ref({
-    cycle: null,
-    type: null,
+    cycle: '',
+    type: '',
   })
   const keyword2 = ref('keyword')
 
   const options = {
     cycle: [
-      {value: 1, label: '每日'},
-      {value: 2, label: '每月'},
-      {value: 3, label: '每季'},
-      {value: 4, label: '每半年'},
-      {value: 5, label: '每年'},
+      {value: '1', label: '每日'},
+      {value: '2', label: '每月'},
+      {value: '3', label: '每季'},
+      {value: '4', label: '每半年'},
+      {value: '5', label: '每年'},
     ],
     type: [
-      {value: 1, label: 'POS'},
-      {value: 2, label: 'ACCOUNT'},
-      {value: 3, label: 'DEVELEP'},
-      {value: 4, label: 'FINANCE'},
+      {value: '1', label: 'POS'},
+      {value: '2', label: 'ACCOUNT'},
+      {value: '3', label: 'DEVELEP'},
+      {value: '4', label: 'FINANCE'},
     ],
   }
 
