@@ -1,4 +1,6 @@
 {
   "EJ_ENV_DA_GRAPHQL_HTTP": "//da-server.dev.jinxin.cloud/graphql",
-  "EJ_ENV_LOGIN2_URL": "//login2.dev.jinxin.cloud"
+  "EJ_ENV_LOGIN2_URL": "//login2.dev.jinxin.cloud",
+  "EJ_ENV_ICO_URL": "//ej-server.dev.jinxin.cloud/favicon.ico",
+  "EJ_ENV_LOGO_URL": "//ej-server.dev.jinxin.cloud/logo.png"
 }
