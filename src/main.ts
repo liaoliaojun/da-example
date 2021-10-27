@@ -6,6 +6,7 @@ import {ApolloClients} from '@vue/apollo-composable'
 import useApolloClient from '~/utils/apollo-client'
 import './styles/index.postcss'
 // import 'element-plus/dist/index.css'
+import './styles/reset-ej-ui.postcss'
 import './styles/element/reset-element-ui.postcss'
 import runtimeArgs, {getRuntimeArgs} from './runtime-args'
 
