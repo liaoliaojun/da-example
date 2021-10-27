@@ -1,0 +1,35 @@
+query daPageQueryBasicAsset ($input: BasicAssetManagementPageInput) {
+  result: daPageQueryBasicAsset (input: $input) {
+    # 数据总数
+    total
+    # 取数偏移
+    offset
+    # 取数范围
+    limit
+    # 数据内容
+    data {
+      # 主键id
+      id
+      # 元数据id
+      mdsObjectId
+      # 所属系统
+      buzsys
+      # 数据库
+      dataBaseName
+      # 英文名
+      englishName
+      # 中文名
+      chineseName
+      # 元数据类型
+      mdsType
+      # 使用状态(停用,启用)
+      useStatus
+      # 挂载节点id
+      menuId
+      # 数据库类型
+      dbSourceType
+      # 主键
+      primaryKey
+    }
+  }
+}

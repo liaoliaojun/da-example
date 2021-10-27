@@ -180,22 +180,22 @@ export type Mutation = {
   __typename?: "Mutation";
   _?: Maybe<Scalars["Int"]>;
   /** 批量删除基础资产信息 */
-  batchDelBasicAssets?: Maybe<Scalars["Boolean"]>;
+  daBatchDelBasicAssets?: Maybe<Scalars["Boolean"]>;
   /** 批量设置启用/停用 */
-  batchSetUseStatus?: Maybe<Scalars["Boolean"]>;
+  daBatchSetUseStatus?: Maybe<Scalars["Boolean"]>;
   /** 删除菜单信息 */
   daDelMenu?: Maybe<Scalars["Boolean"]>;
+  /** 挂载基础资产 */
+  daMountingBasicAsset?: Maybe<Scalars["Boolean"]>;
   /** 保存/更新菜单信息 */
   daSaveOrUpdateMenu: Scalars["ID"];
-  /** 挂载基础资产 */
-  mountingBasicAsset?: Maybe<Scalars["Boolean"]>;
 };
 
-export type MutationBatchDelBasicAssetsArgs = {
+export type MutationDaBatchDelBasicAssetsArgs = {
   basicAssetIds: Array<Scalars["ID"]>;
 };
 
-export type MutationBatchSetUseStatusArgs = {
+export type MutationDaBatchSetUseStatusArgs = {
   basicAssetIds: Array<Scalars["ID"]>;
   useStatus?: Maybe<Scalars["Boolean"]>;
 };
@@ -204,12 +204,12 @@ export type MutationDaDelMenuArgs = {
   menuIds: Array<Scalars["ID"]>;
 };
 
-export type MutationDaSaveOrUpdateMenuArgs = {
-  input?: Maybe<MenuManagementInput>;
+export type MutationDaMountingBasicAssetArgs = {
+  input?: Maybe<Array<Maybe<BasicAssetManagementMountingInput>>>;
 };
 
-export type MutationMountingBasicAssetArgs = {
-  input?: Maybe<Array<Maybe<BasicAssetManagementMountingInput>>>;
+export type MutationDaSaveOrUpdateMenuArgs = {
+  input?: Maybe<MenuManagementInput>;
 };
 
 /**
@@ -219,10 +219,18 @@ export type MutationMountingBasicAssetArgs = {
 export type Query = {
   __typename?: "Query";
   _?: Maybe<Scalars["Int"]>;
+  /** 分页查询基础资产信息 */
+  daPageQueryBasicAsset?: Maybe<BasicAssetManagementPageVo>;
   /** 查询菜单列表 */
   daQueryMenuList: Array<Maybe<MenuManagement>>;
-  /** 分页查询基础资产信息 */
-  pageQueryBasicAsset?: Maybe<BasicAssetManagementPageVo>;
+};
+
+/**
+ * 现行 GraphQL 规范不支持空对象，因此添加一个无用字段 `_` 以保证各 GraphQL 实现可以正常解析此 Schema
+ * 空的Query和Mutation是为了其它文件中的Query和Mutation都可以无差别的使用extend关键字
+ */
+export type QueryDaPageQueryBasicAssetArgs = {
+  input?: Maybe<BasicAssetManagementPageInput>;
 };
 
 /**
@@ -234,12 +242,42 @@ export type QueryDaQueryMenuListArgs = {
   parentId?: Maybe<Scalars["ID"]>;
 };
 
-/**
- * 现行 GraphQL 规范不支持空对象，因此添加一个无用字段 `_` 以保证各 GraphQL 实现可以正常解析此 Schema
- * 空的Query和Mutation是为了其它文件中的Query和Mutation都可以无差别的使用extend关键字
- */
-export type QueryPageQueryBasicAssetArgs = {
+export type DaPageQueryBasicAssetQueryVariables = Exact<{
   input?: Maybe<BasicAssetManagementPageInput>;
+}>;
+
+export type DaPageQueryBasicAssetQuery = {
+  __typename?: "Query";
+  result?:
+    | {
+        __typename?: "BasicAssetManagementPageVo";
+        total: number;
+        offset: number;
+        limit: number;
+        data?:
+          | Array<
+              | {
+                  __typename?: "BasicAssetManagement";
+                  id?: string | null | undefined;
+                  mdsObjectId?: string | null | undefined;
+                  buzsys?: string | null | undefined;
+                  dataBaseName?: string | null | undefined;
+                  englishName?: string | null | undefined;
+                  chineseName?: string | null | undefined;
+                  mdsType?: MdsObjectTypeEnum | null | undefined;
+                  useStatus?: boolean | null | undefined;
+                  menuId?: string | null | undefined;
+                  dbSourceType?: DbSourceTypeEnum | null | undefined;
+                  primaryKey?: string | null | undefined;
+                }
+              | null
+              | undefined
+            >
+          | null
+          | undefined;
+      }
+    | null
+    | undefined;
 };
 
 export type DaDelMenuMutationVariables = Exact<{
@@ -280,6 +318,77 @@ export type DaSaveOrUpdateMenuMutation = {
   result: string;
 };
 
+export const DaPageQueryBasicAssetDocument = gql`
+  query daPageQueryBasicAsset($input: BasicAssetManagementPageInput) {
+    result: daPageQueryBasicAsset(input: $input) {
+      total
+      offset
+      limit
+      data {
+        id
+        mdsObjectId
+        buzsys
+        dataBaseName
+        englishName
+        chineseName
+        mdsType
+        useStatus
+        menuId
+        dbSourceType
+        primaryKey
+      }
+    }
+  }
+`;
+
+/**
+ * __useDaPageQueryBasicAssetQuery__
+ *
+ * To run a query within a Vue component, call `useDaPageQueryBasicAssetQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDaPageQueryBasicAssetQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param variables that will be passed into the query
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useDaPageQueryBasicAssetQuery({
+ *   input: // value for 'input'
+ * });
+ */
+export function useDaPageQueryBasicAssetQuery(
+  variables:
+    | DaPageQueryBasicAssetQueryVariables
+    | VueCompositionApi.Ref<DaPageQueryBasicAssetQueryVariables>
+    | ReactiveFunction<DaPageQueryBasicAssetQueryVariables> = {},
+  options:
+    | VueApolloComposable.UseQueryOptions<
+        DaPageQueryBasicAssetQuery,
+        DaPageQueryBasicAssetQueryVariables
+      >
+    | VueCompositionApi.Ref<
+        VueApolloComposable.UseQueryOptions<
+          DaPageQueryBasicAssetQuery,
+          DaPageQueryBasicAssetQueryVariables
+        >
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseQueryOptions<
+          DaPageQueryBasicAssetQuery,
+          DaPageQueryBasicAssetQueryVariables
+        >
+      > = {}
+) {
+  return VueApolloComposable.useQuery<
+    DaPageQueryBasicAssetQuery,
+    DaPageQueryBasicAssetQueryVariables
+  >(DaPageQueryBasicAssetDocument, variables, options);
+}
+export type DaPageQueryBasicAssetQueryCompositionFunctionResult =
+  VueApolloComposable.UseQueryReturn<
+    DaPageQueryBasicAssetQuery,
+    DaPageQueryBasicAssetQueryVariables
+  >;
 export const DaDelMenuDocument = gql`
   mutation daDelMenu($menuIds: [ID!]!) {
     result: daDelMenu(menuIds: $menuIds)
