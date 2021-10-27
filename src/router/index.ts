@@ -13,7 +13,17 @@ const routes = [
   {
     path: '/base',
     name: 'base',
+    redirect: '/base/list',
     component: () => import('~/views/base/index.vue'),
+    children: [{
+      path: 'list',
+      name: 'BaseList',
+      component: () => import('~/views/base/list.vue'),
+    }, {
+      path: 'mount',
+      name: 'BaseMount',
+      component: () => import('~/views/base/mount.vue'),
+    }],
   },
   {
     path: '/test',
@@ -27,15 +37,15 @@ const routes = [
     component: () => import('~/views/report/index.vue'),
     children: [{
       path: 'list',
-      name: 'list',
+      name: 'Reportlist',
       component: () => import('~/views/report/list.vue'),
-    },{
+    }, {
       path: 'mount',
-      name: 'mount',
+      name: 'ReportMount',
       component: () => import('~/views/report/mount.vue'),
-    }]
+    }],
   },
-];
+]
 
 export default createRouter({
   history: createWebHistory(),

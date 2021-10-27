@@ -53,7 +53,7 @@
   })
 
   // 添加
-  const addDir = (data: any) => {
+  const addDir = (data: any, node: any) => {
     ElMessageBox.prompt('请输入文件夹/节点名称', '', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
@@ -69,11 +69,25 @@
       }).then((res) => {
         if (res?.data?.result) {
           ElMessage.success('添加文件夹/节点成功')
-          data.children.push({
+          data.isLeaf = false
+          data.leaf = false
+          const newChild = {
             id: res,
             label: value,
             icon: 'file',
-          })
+            isLeaf: true,
+            leaf: true,
+          }
+          if (data?.children?.length) {
+            data.children.push(newChild)
+          } else {
+            data.children = [newChild]
+          }
+          // if (node.data?.children?.length) {
+          //   node.data.children.push(newChild)
+          // } else {
+          //   node.data.children = [newChild]
+          // }
         }
       })
     })
@@ -84,7 +98,7 @@
       confirmButtonText: '确定',
       cancelButtonText: '取消',
       inputValue: data.label,
-      inputPattern: /^[a-zA-Z0-9_-]{1,16}$/,
+      inputPattern: /^[\u4e00-\u9fa5_a-zA-Z0-9_-]{1,16}$/,
       inputErrorMessage: '允许1到16位字母，数字，下划线，减号',
     }).then(({value}) => {
       updateFolder({
@@ -111,9 +125,8 @@
     console.log(`${data}的更多操作列表`, node)
   }
   const onCommand = ({commands, data, node}: any) => {
-    console.log(data, node)
     if (commands?.[0] === 'addDir') {
-      addDir(data)
+      addDir(data, node)
     } else if (commands?.[0] === 'rename') {
       updateDir(data, node)
     } else if (commands?.[0] === 'remove') {
@@ -150,11 +163,12 @@
           id: '-1',
           label: '基础资产',
           icon: 'folder',
+          isLeaf: false,
           children: [],
         },
       ])
     } else {
-      const data = await queryRootTree()
+      const data = await queryRootTree(node.data.id).catch(() => resolve([]))
       return resolve(data)
     }
 
@@ -178,11 +192,12 @@
     // }
   }
 
-  const queryRootTree = () => {
+  const queryRootTree = (pid: string) => {
     return useApolloClient('da').query({
       query: QUERY_MENU,
       variables: {
         menuType: props.type,
+        parentId: pid || null,
       },
     }).then((res: {data: DaQueryMenuListQuery}) => {
       const result = res?.data?.result ?? []
@@ -193,6 +208,7 @@
           pid: item?.parentId ?? '',
           label: item?.menuName ?? '',
           icon: 'folder',
+          isLeaf: false,
           children: [],
         }
       }).filter((item) => Boolean(item.id))

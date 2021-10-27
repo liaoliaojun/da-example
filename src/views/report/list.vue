@@ -110,6 +110,6 @@
   const router = useRouter()
   const handlerMount = () => {
     console.log(router)
-    router.push({name: 'mount'})
+    router.push({name: 'ReportMount'})
   }
 </script>

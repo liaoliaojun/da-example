@@ -11,6 +11,7 @@ const EJUI_COMPONENTS = [
   'EjTree',
   'EjLayer',
   'EjTexts',
+  'EjRadio',
   'EjSelect',
   'EjCascader',
   'EjIcon',

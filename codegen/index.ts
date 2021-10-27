@@ -21,6 +21,129 @@ export type Scalars = {
   Float: number;
 };
 
+export type BasicAssetManagement = {
+  __typename?: "BasicAssetManagement";
+  /** 所属系统 */
+  buzsys?: Maybe<Scalars["String"]>;
+  /** 中文名 */
+  chineseName?: Maybe<Scalars["String"]>;
+  /** 数据库 */
+  dataBaseName?: Maybe<Scalars["String"]>;
+  /** 数据库类型 */
+  dbSourceType?: Maybe<DbSourceTypeEnum>;
+  /** 英文名 */
+  englishName?: Maybe<Scalars["String"]>;
+  /** 主键id */
+  id?: Maybe<Scalars["ID"]>;
+  /** 元数据id */
+  mdsObjectId?: Maybe<Scalars["ID"]>;
+  /** 元数据类型 */
+  mdsType?: Maybe<MdsObjectTypeEnum>;
+  /** 挂载节点id */
+  menuId?: Maybe<Scalars["ID"]>;
+  /** 主键 */
+  primaryKey?: Maybe<Scalars["String"]>;
+  /** 使用状态(停用,启用) */
+  useStatus?: Maybe<Scalars["Boolean"]>;
+};
+
+/** 批量挂载基础资产入参 */
+export type BasicAssetManagementMountingInput = {
+  /** 所属系统 */
+  buzsys?: Maybe<Scalars["String"]>;
+  /** 中文名 */
+  chineseName?: Maybe<Scalars["String"]>;
+  /** 数据库 */
+  dataBaseName?: Maybe<Scalars["String"]>;
+  /** 数据库类型 */
+  dbSourceType?: Maybe<DbSourceTypeEnum>;
+  /** 英文名 */
+  englishName?: Maybe<Scalars["String"]>;
+  /** 主键id */
+  id?: Maybe<Scalars["ID"]>;
+  /** 元数据id */
+  mdsObjectId?: Maybe<Scalars["ID"]>;
+  /** 元数据类型 */
+  mdsType?: Maybe<MdsObjectTypeEnum>;
+  /** 挂载节点id */
+  menuId?: Maybe<Scalars["ID"]>;
+  /** 主键 */
+  primaryKey?: Maybe<Scalars["String"]>;
+  /** 使用状态(停用,启用) */
+  useStatus?: Maybe<Scalars["Boolean"]>;
+};
+
+/** 分页查询基础资产入参 */
+export type BasicAssetManagementPageInput = {
+  /** 所属系统 */
+  buzsys?: Maybe<Scalars["String"]>;
+  /** 搜索关键字 */
+  keyWord?: Maybe<Scalars["String"]>;
+  /** 取数范围 */
+  limit: Scalars["Int"];
+  /** 目录id */
+  menuId: Scalars["ID"];
+  /** 取数偏移 */
+  offset: Scalars["Int"];
+  /** 排序规则 */
+  sortBasicAsset?: Maybe<BasicAssetManagementSortEnum>;
+  /** 排序字段, 0为英文名,1为中文名 */
+  sortField?: Maybe<Scalars["Int"]>;
+  /** 使用状态 */
+  useStatus?: Maybe<Scalars["Boolean"]>;
+};
+
+/** 分页查询基础资产返回值 */
+export type BasicAssetManagementPageVo = {
+  __typename?: "BasicAssetManagementPageVo";
+  /** 数据内容 */
+  data?: Maybe<Array<Maybe<BasicAssetManagement>>>;
+  /** 取数范围 */
+  limit: Scalars["Int"];
+  /** 取数偏移 */
+  offset: Scalars["Int"];
+  /** 数据总数 */
+  total: Scalars["Int"];
+};
+
+export enum BasicAssetManagementSortEnum {
+  Asc = "ASC",
+  Desc = "DESC",
+}
+
+/** 元数据数据源类型 */
+export enum DbSourceTypeEnum {
+  Elasticsearch = "ELASTICSEARCH",
+  Gbase_8A = "GBASE_8A",
+  Hbase = "HBASE",
+  Hive2MysqlMetastore = "HIVE2_MYSQL_METASTORE",
+  MicrosoftSqlServer = "MICROSOFT_SQL_SERVER",
+  /** only update by json */
+  Mongodb = "MONGODB",
+  Mpp = "MPP",
+  Mysql = "MYSQL",
+  Mysql51 = "MYSQL51",
+  Mysql55 = "MYSQL55",
+  Mysql56 = "MYSQL56",
+  Mysql80 = "MYSQL80",
+  OraClE = "ORAClE",
+  OraClE11 = "ORAClE11",
+  Postgresql = "POSTGRESQL",
+}
+
+/**
+ * 元数据字段
+ *
+ * Mds类型: 表/文件/接口
+ */
+export enum MdsObjectTypeEnum {
+  File = "FILE",
+  Interface = "INTERFACE",
+  None = "NONE",
+  Table = "TABLE",
+  View = "VIEW",
+}
+
 export type MenuManagement = {
   __typename?: "MenuManagement";
   /** 主键id */
@@ -56,10 +179,25 @@ export type MenuManagementInput = {
 export type Mutation = {
   __typename?: "Mutation";
   _?: Maybe<Scalars["Int"]>;
+  /** 批量删除基础资产信息 */
+  batchDelBasicAssets?: Maybe<Scalars["Boolean"]>;
+  /** 批量设置启用/停用 */
+  batchSetUseStatus?: Maybe<Scalars["Boolean"]>;
   /** 删除菜单信息 */
   daDelMenu?: Maybe<Scalars["Boolean"]>;
   /** 保存/更新菜单信息 */
   daSaveOrUpdateMenu: Scalars["ID"];
+  /** 挂载基础资产 */
+  mountingBasicAsset?: Maybe<Scalars["Boolean"]>;
+};
+
+export type MutationBatchDelBasicAssetsArgs = {
+  basicAssetIds: Array<Scalars["ID"]>;
+};
+
+export type MutationBatchSetUseStatusArgs = {
+  basicAssetIds: Array<Scalars["ID"]>;
+  useStatus?: Maybe<Scalars["Boolean"]>;
 };
 
 export type MutationDaDelMenuArgs = {
@@ -68,6 +206,10 @@ export type MutationDaDelMenuArgs = {
 
 export type MutationDaSaveOrUpdateMenuArgs = {
   input?: Maybe<MenuManagementInput>;
+};
+
+export type MutationMountingBasicAssetArgs = {
+  input?: Maybe<Array<Maybe<BasicAssetManagementMountingInput>>>;
 };
 
 /**
@@ -79,6 +221,8 @@ export type Query = {
   _?: Maybe<Scalars["Int"]>;
   /** 查询菜单列表 */
   daQueryMenuList: Array<Maybe<MenuManagement>>;
+  /** 分页查询基础资产信息 */
+  pageQueryBasicAsset?: Maybe<BasicAssetManagementPageVo>;
 };
 
 /**
@@ -87,6 +231,15 @@ export type Query = {
  */
 export type QueryDaQueryMenuListArgs = {
   menuType: MenuManagementEnum;
+  parentId?: Maybe<Scalars["ID"]>;
+};
+
+/**
+ * 现行 GraphQL 规范不支持空对象，因此添加一个无用字段 `_` 以保证各 GraphQL 实现可以正常解析此 Schema
+ * 空的Query和Mutation是为了其它文件中的Query和Mutation都可以无差别的使用extend关键字
+ */
+export type QueryPageQueryBasicAssetArgs = {
+  input?: Maybe<BasicAssetManagementPageInput>;
 };
 
 export type DaDelMenuMutationVariables = Exact<{
@@ -100,6 +253,7 @@ export type DaDelMenuMutation = {
 
 export type DaQueryMenuListQueryVariables = Exact<{
   menuType: MenuManagementEnum;
+  parentId?: Maybe<Scalars["ID"]>;
 }>;
 
 export type DaQueryMenuListQuery = {
@@ -173,8 +327,8 @@ export type DaDelMenuMutationCompositionFunctionResult =
     DaDelMenuMutationVariables
   >;
 export const DaQueryMenuListDocument = gql`
-  query daQueryMenuList($menuType: MenuManagementEnum!) {
-    result: daQueryMenuList(menuType: $menuType) {
+  query daQueryMenuList($menuType: MenuManagementEnum!, $parentId: ID) {
+    result: daQueryMenuList(menuType: $menuType, parentId: $parentId) {
       id
       menuName
       parentId
@@ -196,6 +350,7 @@ export const DaQueryMenuListDocument = gql`
  * @example
  * const { result, loading, error } = useDaQueryMenuListQuery({
  *   menuType: // value for 'menuType'
+ *   parentId: // value for 'parentId'
  * });
  */
 export function useDaQueryMenuListQuery(
