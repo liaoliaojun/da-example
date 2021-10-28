@@ -41,7 +41,7 @@
     </div>
 
     <div class="text-right">
-      <el-table border stripe checkbox highlight-current-row :data="tableData">
+      <el-table border small stripe checkbox highlight-current-row :data="tableData">
         <el-table-column type="selection" align="center" />
         <el-table-column prop="tableData" label="所属系统" />
         <el-table-column prop="dataBaseName" label="数据库" />
@@ -80,8 +80,8 @@
   const currentPage = ref(1)
   const limit = ref(30)
   const total = ref(0)
-  const changePage = (val: number) => {
-    console.log(val)
+  const changePage = () => {
+    refetch({input: getSearchInput()})
   }
 
   const getSearchInput = () => {

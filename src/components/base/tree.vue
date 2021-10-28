@@ -2,6 +2,7 @@
   <ej-search-input v-model="keyword" width="100%" size="small" clearable suffix-icon-style="icon" />
   <ej-tree
     lazy
+    node-key="id"
     :load="loadNode"
     :contextmenu="contextMenu"
     :default-expanded-ids="defaultExpandedIds"
@@ -74,7 +75,7 @@
           data.isLeaf = false
           data.leaf = false
           const newChild = {
-            id: res,
+            id: res.data.result,
             label: value,
             icon: 'file',
             isLeaf: true,
@@ -85,6 +86,9 @@
           } else {
             data.children = [newChild]
           }
+          // nextTick(() => {
+          //   defaultExpandedIds.value.push(data.id)
+          // })
           // if (node.data?.children?.length) {
           //   node.data.children.push(newChild)
           // } else {
@@ -137,6 +141,7 @@
       }).then((res) => {
         if (res?.data?.result) {
           ElMessage.success('删除文件夹/节点成功')
+          node.remove()
         }
       })
     }
