@@ -1,8 +1,8 @@
 <template>
   <div class="flex-auto ml-5">
-    <ej-search 
+    <!-- <ej-search 
       v-model:models="state"
-      v-model:keyword="keyword2"
+      v-model:keyword="keyword"
       :keyword-props="{placeholder: '请输入内容'}"
       :immediate-search="true"
       :cm-props="{
@@ -13,11 +13,28 @@
       :show-com-pop="true"
       :advanced="advanced"
       @search="handlerSearch"
+    > -->
+    <ej-search 
+      v-model:models="state"
+      :immediate-search="true"
+      :cm-props="{
+        searchId: 'searchDemo',
+      }"
+      :hide-com-list="true"
+      :hide-expand-button="true"
+      :show-com-pop="true"
+      :advanced="advanced"
+      label-suffix="："
+      @search="handlerSearch"
     >
+      <template #input>
+        <ej-search-input v-model="keyword" clearable width="300" placeholder="请输入内容" maxlength="128" class="mr-1" />
+        <el-button size="small" type="primary">重置</el-button>
+      </template>
       <ej-texts v-model="state.useStatus" :options="options.useStatus" prop="useStatus" label="使用状态" />
       <ej-texts v-model="state.checkStatus" :options="options.checkStatus" prop="checkStatus" label="审核状态" />
     </ej-search>
-    <div class="flex flex-row-reverse">
+    <div class="flex flex-row-reverse mb-4">
       <el-button size="small" style="margin-left: 10px;">
         <ej-icon style="width: 14px; height: 14px;" icon="checkin" class="inline-block" />
         <span>停用</span>
@@ -87,7 +104,7 @@
     useStatus: '',
     checkStatus: '',
   })
-  const keyword2 = ref('keyword')
+  const keyword = ref('')
 
   const options = {
     useStatus: [

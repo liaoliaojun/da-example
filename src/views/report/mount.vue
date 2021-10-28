@@ -2,8 +2,6 @@
   <div class="flex-auto ml-5">
     <ej-search 
       v-model:models="state"
-      v-model:keyword="keyword2"
-      :keyword-props="{placeholder: '请输入内容'}"
       :immediate-search="true"
       :cm-props="{
         searchId: 'searchDemo',
@@ -12,8 +10,12 @@
       :hide-expand-button="true"
       :show-com-pop="true"
       :advanced="advanced"
+      label-suffix="："
       @search="handlerSearch"
     >
+      <template #input>
+        <ej-search-input v-model="keyword" clearable width="300" placeholder="请输入内容" maxlength="128" class="mr-1" />
+      </template>
       <ej-texts v-model="state.cycle" :options="options.cycle" prop="cycle" label="周期" />
       <ej-texts v-model="state.type" :options="options.type" prop="type" label="类型" />
     </ej-search>
@@ -28,9 +30,9 @@
       <el-table-column prop="name" label="使用方" />
     </el-table>
 
-    <div>
-      <el-button @click="handlerConfirm">确定</el-button>
-      <el-button @click="handlerCancel">取消</el-button>
+    <div class="mt-4 text-right">
+      <el-button size="small" @click="handlerConfirm">确定</el-button>
+      <el-button size="small" @click="handlerCancel">取消</el-button>
     </div>
   </div>
 </template>
@@ -65,7 +67,7 @@
     cycle: '',
     type: '',
   })
-  const keyword2 = ref('keyword')
+  const keyword = ref('')
 
   const options = {
     cycle: [
