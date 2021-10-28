@@ -65,20 +65,21 @@
 </template>
 
 <script setup lang="ts">
-  import {ref} from 'vue'
-  import {useRouter} from 'vue-router'
+  import {ref, watch} from 'vue'
+  import {useRoute, useRouter} from 'vue-router'
   import {useResult} from '@vue/apollo-composable'
   import {BasicAssetManagementSortEnum, useDaPageQueryBasicAssetQuery} from '~~/codegen/index'
 
+  const route = useRoute()
   const router = useRouter()
   const state = ref({
     useStatus: null,
     buzsys: '',
   })
   const keyword = ref('')
-  const currentPage = ref(3)
+  const currentPage = ref(1)
   const limit = ref(30)
-  const total = ref(100)
+  const total = ref(0)
   const changePage = (val: number) => {
     console.log(val)
   }
@@ -86,17 +87,17 @@
   const getSearchInput = () => {
     return {
       // 取数偏移
-      offset: 0,
+      offset: (currentPage.value - 1) * limit.value,
       // 取数范围
-      limit: 30,
+      limit: limit.value,
       // 搜索关键字
       keyWord: keyword.value,
       // 使用状态
       useStatus: state.value.useStatus,
       // 所属系统
-      buzsys: state.value.buzsys ?? null,
+      buzsys: state.value.buzsys ?? '-1',
       // 目录id
-      menuId: '',
+      menuId: route.query?.id?.toString() ?? '',
       // 排序字段, 0为英文名, 1为中文名
       sortField: 1,
       // 排序规则
@@ -104,8 +105,12 @@
     }
   }
 
-  const {loading, result} = useDaPageQueryBasicAssetQuery({
+  const {loading, result, onResult, refetch} = useDaPageQueryBasicAssetQuery({
     input: getSearchInput(),
+  })
+
+  onResult((res) => {
+    total.value = res.data.result?.total ?? 0
   })
 
   // why any? @TODO: https://github.com/vuejs/vue-apollo/discussions/1261
@@ -135,6 +140,10 @@
   const inputSearch = () => {
     handlerSearch({}, 'btn')
   }
+
+  watch(() => route.query, () => {
+    refetch({input: getSearchInput()})
+  }, {deep: false})
 </script>
 
 <style lang="postcss">

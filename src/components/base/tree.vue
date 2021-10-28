@@ -25,6 +25,7 @@
 
 <script setup lang="ts">
   import {ref, PropType} from 'vue'
+  import {useRouter} from 'vue-router'
   import {ElMessage, ElMessageBox} from 'element-plus'
   import 'element-plus/theme-chalk/src/overlay.scss'
   import 'element-plus/theme-chalk/src/message-box.scss'
@@ -33,6 +34,7 @@
   // import type {MenuManagementEnum} from '~~/codegen/index'
   import {MenuManagementEnum, useDaDelMenuMutation, DaQueryMenuListQuery, useDaSaveOrUpdateMenuMutation} from '~~/codegen/index'
 
+  const router = useRouter()
   const keyword = ref('')
   const contextMenu = ref([
     {command: 'addDir', label: '添加'},
@@ -119,7 +121,7 @@
   }
 
   const onNodeClick = ({data, _node}: any) => {
-    console.log(`当前点击的节点为${data.label}`)
+    router.replace({query: {id: data.id}})
   }
   const onMoreClick = ({data, node}: any) => {
     console.log(`${data}的更多操作列表`, node)
