@@ -21,6 +21,73 @@ export type Scalars = {
   Float: number;
 };
 
+export type AssetsInfoDto = {
+  __typename?: "AssetsInfoDto";
+  /** 目录Id */
+  directoryId?: Maybe<Scalars["ID"]>;
+  /** 总下载次数 */
+  downloadsCount?: Maybe<Scalars["Int"]>;
+  id?: Maybe<Scalars["ID"]>;
+  /** 元数据Id */
+  metadataId?: Maybe<Scalars["ID"]>;
+  /** 资产名称 */
+  name?: Maybe<Scalars["String"]>;
+  /** 责任部门 */
+  responseDept?: Maybe<Scalars["String"]>;
+  /** 审核状态（草稿、审核中、拒绝、已通过） */
+  reviewStatus?: Maybe<Scalars["String"]>;
+  /** 资产类型（报表，接口） */
+  type?: Maybe<Scalars["String"]>;
+  /** 使用状态（停用、启用） */
+  useStatus?: Maybe<Scalars["String"]>;
+  /** 使用方 */
+  userDept?: Maybe<Scalars["String"]>;
+};
+
+/** 挂载元数据对象 */
+export type AssetsInput = {
+  /** 目录Id */
+  directoryId?: Maybe<Scalars["ID"]>;
+  /** 总下载次数 */
+  downloadsCount?: Maybe<Scalars["Int"]>;
+  /** 元数据Id */
+  metadataId?: Maybe<Scalars["ID"]>;
+  /** 资产名称 */
+  name?: Maybe<Scalars["String"]>;
+  /** 责任部门 */
+  responseDept?: Maybe<Scalars["String"]>;
+  /** 资产类型（报表，接口） */
+  type?: Maybe<Scalars["String"]>;
+  /** 使用方 */
+  userDept?: Maybe<Scalars["String"]>;
+};
+
+/** 分页查询资产列表参数 */
+export type AssetsPageInput = {
+  /** 目录Id */
+  directoryId: Scalars["ID"];
+  /** 条件查询关键字  资产名称/使用方/责任部门 */
+  keywords?: Maybe<Scalars["String"]>;
+  limit?: Maybe<Scalars["Int"]>;
+  offset?: Maybe<Scalars["Int"]>;
+  /** 审核状态 */
+  reviewStatus?: Maybe<Scalars["String"]>;
+  /** 使用状态 */
+  useStatus?: Maybe<Scalars["String"]>;
+};
+
+export type AssetsPaginationResult = {
+  __typename?: "AssetsPaginationResult";
+  /** 数据列表 */
+  data?: Maybe<Array<Maybe<AssetsInfoDto>>>;
+  /** 页数量 */
+  limit?: Maybe<Scalars["Int"]>;
+  /** 第几页 */
+  offset?: Maybe<Scalars["Int"]>;
+  /** 总页数 */
+  total?: Maybe<Scalars["Int"]>;
+};
+
 export type BasicAssetManagement = {
   __typename?: "BasicAssetManagement";
   /** 所属系统 */
@@ -131,6 +198,54 @@ export enum DbSourceTypeEnum {
   Postgresql = "POSTGRESQL",
 }
 
+/** 接口元数据列表对象 */
+export type InterfaceMetadataDto = {
+  __typename?: "InterfaceMetadataDto";
+  /** 类名 */
+  apiClassName?: Maybe<Scalars["String"]>;
+  /** 主键 */
+  apiId?: Maybe<Scalars["ID"]>;
+  /** 接口名称 */
+  apiName?: Maybe<Scalars["String"]>;
+  /** 业务负责方 */
+  bizMngr?: Maybe<Scalars["String"]>;
+  /** 输入参数中文 */
+  inputCnParam?: Maybe<Scalars["String"]>;
+  /** 输入参数英文 */
+  inputEnParam?: Maybe<Scalars["String"]>;
+  /** 技术负责方 */
+  itMngr?: Maybe<Scalars["String"]>;
+  /** 输出中文 */
+  outputCnParam?: Maybe<Scalars["String"]>;
+  /** 输出英文 */
+  outputEnParam?: Maybe<Scalars["String"]>;
+};
+
+/** 分页查询接口元数据参数 */
+export type InterfaceMetadataPageinput = {
+  /** 技术负责人 */
+  director?: Maybe<Scalars["String"]>;
+  /** 目录Id */
+  directoryId?: Maybe<Scalars["String"]>;
+  limit?: Maybe<Scalars["Int"]>;
+  /** 报文名称 */
+  name?: Maybe<Scalars["String"]>;
+  offset?: Maybe<Scalars["Int"]>;
+};
+
+/** 接口元数据分页展示对象 */
+export type InterfacePaginationResult = {
+  __typename?: "InterfacePaginationResult";
+  /** 数据列表 */
+  data?: Maybe<Array<Maybe<InterfaceMetadataDto>>>;
+  /** 页数量 */
+  limit?: Maybe<Scalars["Int"]>;
+  /** 第几页 */
+  offset?: Maybe<Scalars["Int"]>;
+  /** 总页数 */
+  total?: Maybe<Scalars["Int"]>;
+};
+
 /**
  * 元数据字段
  *
@@ -179,6 +294,8 @@ export type MenuManagementInput = {
 export type Mutation = {
   __typename?: "Mutation";
   _?: Maybe<Scalars["Int"]>;
+  /** 批量启用/禁用资产 */
+  controlAssets?: Maybe<Scalars["Boolean"]>;
   /** 批量删除基础资产信息 */
   daBatchDelBasicAssets?: Maybe<Scalars["Boolean"]>;
   /** 批量设置启用/停用 */
@@ -189,6 +306,13 @@ export type Mutation = {
   daMountingBasicAsset?: Maybe<Scalars["Boolean"]>;
   /** 保存/更新菜单信息 */
   daSaveOrUpdateMenu: Scalars["ID"];
+  /** 批量删除挂载资产 */
+  deleteAssets?: Maybe<Scalars["Boolean"]>;
+};
+
+export type MutationControlAssetsArgs = {
+  ids?: Maybe<Array<Maybe<Scalars["ID"]>>>;
+  useStatus?: Maybe<Scalars["String"]>;
 };
 
 export type MutationDaBatchDelBasicAssetsArgs = {
@@ -212,6 +336,12 @@ export type MutationDaSaveOrUpdateMenuArgs = {
   input?: Maybe<MenuManagementInput>;
 };
 
+export type MutationDeleteAssetsArgs = {
+  buzType?: Maybe<Scalars["String"]>;
+  directoryId?: Maybe<Scalars["ID"]>;
+  ids?: Maybe<Array<Maybe<Scalars["ID"]>>>;
+};
+
 /**
  * 现行 GraphQL 规范不支持空对象，因此添加一个无用字段 `_` 以保证各 GraphQL 实现可以正常解析此 Schema
  * 空的Query和Mutation是为了其它文件中的Query和Mutation都可以无差别的使用extend关键字
@@ -223,6 +353,14 @@ export type Query = {
   daPageQueryBasicAsset?: Maybe<BasicAssetManagementPageVo>;
   /** 查询菜单列表 */
   daQueryMenuList: Array<Maybe<MenuManagement>>;
+  /** 分页获取资产列表 */
+  listAssets?: Maybe<AssetsPaginationResult>;
+  /** 分页获取接口元数据列表 */
+  listInterfaceMetadatas?: Maybe<InterfacePaginationResult>;
+  /** 分页获取报表元数据列表 */
+  listReportMetadatas?: Maybe<ReportPaginationResult>;
+  /** 批量挂载元数据 */
+  mountMetadata?: Maybe<Array<Maybe<Scalars["ID"]>>>;
 };
 
 /**
@@ -240,6 +378,65 @@ export type QueryDaPageQueryBasicAssetArgs = {
 export type QueryDaQueryMenuListArgs = {
   menuType: MenuManagementEnum;
   parentId?: Maybe<Scalars["ID"]>;
+};
+
+/**
+ * 现行 GraphQL 规范不支持空对象，因此添加一个无用字段 `_` 以保证各 GraphQL 实现可以正常解析此 Schema
+ * 空的Query和Mutation是为了其它文件中的Query和Mutation都可以无差别的使用extend关键字
+ */
+export type QueryListAssetsArgs = {
+  input?: Maybe<AssetsPageInput>;
+};
+
+/**
+ * 现行 GraphQL 规范不支持空对象，因此添加一个无用字段 `_` 以保证各 GraphQL 实现可以正常解析此 Schema
+ * 空的Query和Mutation是为了其它文件中的Query和Mutation都可以无差别的使用extend关键字
+ */
+export type QueryListInterfaceMetadatasArgs = {
+  input?: Maybe<InterfaceMetadataPageinput>;
+};
+
+/**
+ * 现行 GraphQL 规范不支持空对象，因此添加一个无用字段 `_` 以保证各 GraphQL 实现可以正常解析此 Schema
+ * 空的Query和Mutation是为了其它文件中的Query和Mutation都可以无差别的使用extend关键字
+ */
+export type QueryListReportMetadatasArgs = {
+  input?: Maybe<ReportMetadataPageinput>;
+};
+
+/**
+ * 现行 GraphQL 规范不支持空对象，因此添加一个无用字段 `_` 以保证各 GraphQL 实现可以正常解析此 Schema
+ * 空的Query和Mutation是为了其它文件中的Query和Mutation都可以无差别的使用extend关键字
+ */
+export type QueryMountMetadataArgs = {
+  assetsInputs?: Maybe<Array<Maybe<AssetsInput>>>;
+  buzType?: Maybe<Scalars["String"]>;
+  directoryId: Scalars["ID"];
+};
+
+/** 分页获取报表元数据参数 */
+export type ReportMetadataPageinput = {
+  /** 报表周期 */
+  cycle?: Maybe<Scalars["String"]>;
+  /** 目录Id */
+  directoryId?: Maybe<Scalars["String"]>;
+  limit?: Maybe<Scalars["Int"]>;
+  /** 资产报表名称 */
+  name?: Maybe<Scalars["String"]>;
+  offset?: Maybe<Scalars["Int"]>;
+  /** 报表类型 */
+  type?: Maybe<Scalars["String"]>;
+};
+
+/** 报表元数据分页展示对象 */
+export type ReportPaginationResult = {
+  __typename?: "ReportPaginationResult";
+  /** 页数量 */
+  limit?: Maybe<Scalars["Int"]>;
+  /** 第几页 */
+  offset?: Maybe<Scalars["Int"]>;
+  /** 总页数 */
+  total?: Maybe<Scalars["Int"]>;
 };
 
 export type DaPageQueryBasicAssetQueryVariables = Exact<{

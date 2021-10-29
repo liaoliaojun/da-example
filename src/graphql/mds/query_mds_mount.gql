@@ -1,0 +1,31 @@
+query findAllNotMount ($param: MetadataObjectNotMountCondition) {
+  result: findAllNotMount (param: $param) {
+    code
+    message
+    data {
+      total
+      offset
+      size
+      data {
+        id
+        # 租户Id
+        tenantId
+        # 表名
+        name
+        # 描述
+        description
+        # 数据库名
+        dataBaseName
+        # 元数据类型
+        mdsObjectTypeEnum
+        # 数据表对应的数据库的Type类型枚举
+        dbSourceType
+
+        # 记录创建时间，create_tm insert记录时必须添加
+        createTm
+
+        primaryKey
+      }
+    }
+  }
+}

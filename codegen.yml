@@ -5,7 +5,18 @@ generates:
   ./codegen/index.ts:
     schema: http://da-server.dev.jinxin.cloud/graphql
     documents:
-      - 'src/graphql/{*,**/**}.gql'
+      - 'src/graphql/da/{*,**/**}.gql'
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-vue-apollo
+    config:
+      withHooks: true
+      vueCompositionApiImportFrom: vue
+  ./codegen/mds.ts:
+    schema: http://mds2-service.dev.jinxin.cloud/graphql
+    documents:
+      - 'src/graphql/mds/{*,**/**}.gql'
     plugins:
       - typescript
       - typescript-operations

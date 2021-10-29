@@ -31,7 +31,7 @@
   import 'element-plus/theme-chalk/src/overlay.scss'
   import 'element-plus/theme-chalk/src/message-box.scss'
   import useApolloClient from '~/utils/apollo-client'
-  import QUERY_MENU from '~/graphql/query_menu.gql'
+  import QUERY_MENU from '~/graphql/da/query_menu.gql'
   // import type {MenuManagementEnum} from '~~/codegen/index'
   import {MenuManagementEnum, useDaDelMenuMutation, DaQueryMenuListQuery, useDaSaveOrUpdateMenuMutation} from '~~/codegen/index'
 

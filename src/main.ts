@@ -25,6 +25,7 @@ getRuntimeArgs().then(async () => {
 
       provide(ApolloClients, {
         default: useApolloClient('da'),
+        mdsClient: useApolloClient('mds'),
       })
     },
     render: () => h(App),
