@@ -1,5 +1,5 @@
-query findAllNotMount ($param: MetadataObjectNotMountCondition) {
-  result: findAllNotMount (param: $param) {
+query findAllNotMount ($input: MetadataObjectNotMountCondition) {
+  result: findAllNotMount (input: $input) {
     code
     message
     data {

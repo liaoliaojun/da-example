@@ -86,10 +86,7 @@ export enum ClassifyEnum {
   Techonlogy = "TECHONLOGY",
 }
 
-/**
- * type Subscription {_: Int}
- * 元数据需要的几个字段vo
- */
+/** 元数据需要的几个字段vo */
 export type D4aMdsObjectField = {
   __typename?: "D4aMdsObjectField";
   /** 数据安全-已设置安全级别的字段数量 */
@@ -203,7 +200,10 @@ export enum DqsExecutionReturnCode {
   Warning = "WARNING",
 }
 
-/** 数据质量检查计划 */
+/**
+ * type Subscription {_: Int}
+ *  数据质量检查计划
+ */
 export type DqsSchedule = {
   __typename?: "DqsSchedule";
   /** 业务负责人 */
@@ -585,7 +585,6 @@ export type ImportJobCondition = {
   keyword?: Maybe<Scalars["String"]>;
   offset: Scalars["Int"];
   size: Scalars["Int"];
-  tenantId: Scalars["ID"];
 };
 
 /** import job */
@@ -1479,22 +1478,23 @@ export type MdsObject = {
 
 export type MdsObjectApidto = {
   __typename?: "MdsObjectAPIDTO";
-  /** 数据表对应的数据库的Type类型枚举 */
-  createTm?: Maybe<Scalars["LocalDateTime"]>;
-  /** 描述 */
-  dataBaseName?: Maybe<Scalars["String"]>;
-  /** 元数据类型 */
-  dbSourceType?: Maybe<DbSourceTypeEnum>;
-  /** 表名 */
-  description?: Maybe<Scalars["String"]>;
-  id?: Maybe<Scalars["ID"]>;
-  /** 数据库名 */
-  mdsObjectTypeEnum?: Maybe<MdsObjectTypeEnum>;
-  /** 租户Id */
-  name?: Maybe<Scalars["String"]>;
   /** 记录创建时间，create_tm insert记录时必须添加 */
-  primaryKey?: Maybe<Scalars["String"]>;
+  createTm?: Maybe<Scalars["LocalDateTime"]>;
+  /** 数据库名 */
+  dataBaseName?: Maybe<Scalars["String"]>;
+  /** 数据表对应的数据库的Type类型枚举 */
+  dbSourceType?: Maybe<DbSourceTypeEnum>;
+  /** 描述 */
+  description?: Maybe<Scalars["String"]>;
   /** id */
+  id?: Maybe<Scalars["ID"]>;
+  /** 元数据类型 */
+  mdsObjectTypeEnum?: Maybe<MdsObjectTypeEnum>;
+  /** 表名 */
+  name?: Maybe<Scalars["String"]>;
+  /** 主键名 */
+  primaryKey?: Maybe<Scalars["String"]>;
+  /** 租户Id */
   tenantId?: Maybe<Scalars["ID"]>;
 };
 
@@ -1861,23 +1861,22 @@ export type MdsVersionLog = {
 };
 
 export type MetadataObjectNotMountCondition = {
-  /** 节点ID */
-  buzType: Scalars["ID"];
-  /** 业务主题，如果传入多个值，用 英文逗号分割 */
-  buzsys?: Maybe<Scalars["String"]>;
-  /** 数据层侧 ，如果传入多个值，用 英文逗号分割 */
-  buztopic?: Maybe<Scalars["String"]>;
-  /** 查询关键词 */
-  datalevel?: Maybe<Scalars["String"]>;
-  /** 租户Id */
-  keyword?: Maybe<Scalars["String"]>;
-  nodeId: Scalars["ID"];
-  /** 业务系统，如果传入多个值，用 英文逗号分割 */
-  offset?: Maybe<Scalars["Int"]>;
-  /** 偏移量 */
-  size?: Maybe<Scalars["Int"]>;
   /** 基础资产: 0、指标资产:1、报表资产:2、接口资产:3 */
-  tenantId: Scalars["ID"];
+  buzType: Scalars["String"];
+  /** 业务系统，如果传入多个值，用 英文逗号分割 */
+  buzsys?: Maybe<Scalars["String"]>;
+  /** 业务主题，如果传入多个值，用 英文逗号分割 */
+  buztopic?: Maybe<Scalars["String"]>;
+  /** 数据层侧 ，如果传入多个值，用 英文逗号分割 */
+  datalevel?: Maybe<Scalars["String"]>;
+  /** 查询关键词 */
+  keyword?: Maybe<Scalars["String"]>;
+  /** 节点ID */
+  nodeId: Scalars["ID"];
+  /** 偏移量 */
+  offset?: Maybe<Scalars["Int"]>;
+  /** 页大小 */
+  size?: Maybe<Scalars["Int"]>;
 };
 
 export type Mutation = {
@@ -1999,7 +1998,6 @@ export type MutationDelLabelArgs = {
 export type MutationDelNodeArgs = {
   buzType?: Maybe<Scalars["String"]>;
   nodeId?: Maybe<Scalars["ID"]>;
-  tenantId?: Maybe<Scalars["ID"]>;
 };
 
 export type MutationDeleteInputMdsColumnArgs = {
@@ -2169,7 +2167,6 @@ export type MutationMountMetadataArgs = {
   buzType?: Maybe<Scalars["String"]>;
   ids: Array<Maybe<Scalars["ID"]>>;
   nodeId?: Maybe<Scalars["ID"]>;
-  tenantId?: Maybe<Scalars["ID"]>;
 };
 
 export type MutationSaveInputMdsColumnArgs = {
@@ -2195,7 +2192,6 @@ export type MutationUmmountMetadataArgs = {
   buzType?: Maybe<Scalars["String"]>;
   ids: Array<Maybe<Scalars["ID"]>>;
   nodeId?: Maybe<Scalars["ID"]>;
-  tenantId?: Maybe<Scalars["ID"]>;
 };
 
 /** 操作日志 */
@@ -2378,7 +2374,7 @@ export type Query = {
  * 空的Query和Mutation是为了其它文件中的Query和Mutation都可以无差别的使用extend关键字
  */
 export type QueryFindAllNotMountArgs = {
-  param?: Maybe<MetadataObjectNotMountCondition>;
+  input?: Maybe<MetadataObjectNotMountCondition>;
 };
 
 /**
@@ -2394,7 +2390,7 @@ export type QueryFindByIdArgs = {
  * 空的Query和Mutation是为了其它文件中的Query和Mutation都可以无差别的使用extend关键字
  */
 export type QueryFindImportJobsByConditionArgs = {
-  condition?: Maybe<ImportJobCondition>;
+  input?: Maybe<ImportJobCondition>;
 };
 
 /**
@@ -2880,8 +2876,41 @@ export enum PushEnum {
   Notice = "NOTICE",
 }
 
+export type FindLabelByLabelTypesQueryVariables = Exact<{
+  labelTypes: Array<Maybe<Scalars["String"]>> | Maybe<Scalars["String"]>;
+}>;
+
+export type FindLabelByLabelTypesQuery = {
+  __typename?: "Query";
+  result?:
+    | Array<
+        | {
+            __typename?: "LabelDTO";
+            id?: string | null | undefined;
+            tenantId?: string | null | undefined;
+            description?: string | null | undefined;
+            name?: string | null | undefined;
+            code?: string | null | undefined;
+            type?: LabelType | null | undefined;
+            principal?: string | null | undefined;
+            principalName?: string | null | undefined;
+            creator?: string | null | undefined;
+            creatorName?: string | null | undefined;
+            createTm?: any | null | undefined;
+            modifier?: string | null | undefined;
+            modifierName?: string | null | undefined;
+            modifyTm?: any | null | undefined;
+            isDelete?: boolean | null | undefined;
+          }
+        | null
+        | undefined
+      >
+    | null
+    | undefined;
+};
+
 export type FindAllNotMountQueryVariables = Exact<{
-  param?: Maybe<MetadataObjectNotMountCondition>;
+  input?: Maybe<MetadataObjectNotMountCondition>;
 }>;
 
 export type FindAllNotMountQuery = {
@@ -2927,9 +2956,79 @@ export type FindAllNotMountQuery = {
     | undefined;
 };
 
+export const FindLabelByLabelTypesDocument = gql`
+  query findLabelByLabelTypes($labelTypes: [String]!) {
+    result: findLabelByLabelTypes(labelTypes: $labelTypes) {
+      id
+      tenantId
+      description
+      name
+      code
+      type
+      principal
+      principalName
+      creator
+      creatorName
+      createTm
+      modifier
+      modifierName
+      modifyTm
+      isDelete
+    }
+  }
+`;
+
+/**
+ * __useFindLabelByLabelTypesQuery__
+ *
+ * To run a query within a Vue component, call `useFindLabelByLabelTypesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindLabelByLabelTypesQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param variables that will be passed into the query
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useFindLabelByLabelTypesQuery({
+ *   labelTypes: // value for 'labelTypes'
+ * });
+ */
+export function useFindLabelByLabelTypesQuery(
+  variables:
+    | FindLabelByLabelTypesQueryVariables
+    | VueCompositionApi.Ref<FindLabelByLabelTypesQueryVariables>
+    | ReactiveFunction<FindLabelByLabelTypesQueryVariables>,
+  options:
+    | VueApolloComposable.UseQueryOptions<
+        FindLabelByLabelTypesQuery,
+        FindLabelByLabelTypesQueryVariables
+      >
+    | VueCompositionApi.Ref<
+        VueApolloComposable.UseQueryOptions<
+          FindLabelByLabelTypesQuery,
+          FindLabelByLabelTypesQueryVariables
+        >
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseQueryOptions<
+          FindLabelByLabelTypesQuery,
+          FindLabelByLabelTypesQueryVariables
+        >
+      > = {}
+) {
+  return VueApolloComposable.useQuery<
+    FindLabelByLabelTypesQuery,
+    FindLabelByLabelTypesQueryVariables
+  >(FindLabelByLabelTypesDocument, variables, options);
+}
+export type FindLabelByLabelTypesQueryCompositionFunctionResult =
+  VueApolloComposable.UseQueryReturn<
+    FindLabelByLabelTypesQuery,
+    FindLabelByLabelTypesQueryVariables
+  >;
 export const FindAllNotMountDocument = gql`
-  query findAllNotMount($param: MetadataObjectNotMountCondition) {
-    result: findAllNotMount(param: $param) {
+  query findAllNotMount($input: MetadataObjectNotMountCondition) {
+    result: findAllNotMount(input: $input) {
       code
       message
       data {
@@ -2964,7 +3063,7 @@ export const FindAllNotMountDocument = gql`
  *
  * @example
  * const { result, loading, error } = useFindAllNotMountQuery({
- *   param: // value for 'param'
+ *   input: // value for 'input'
  * });
  */
 export function useFindAllNotMountQuery(

@@ -1,0 +1,11 @@
+query findLabelByLabelTypes ($labelTypes: [String]!) {
+  result: findLabelByLabelTypes (labelTypes: $labelTypes) {
+    id
+    # 名称
+    name
+    # 编码
+    code
+    # 标签类型
+    type
+  }
+}

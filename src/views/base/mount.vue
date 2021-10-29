@@ -43,6 +43,14 @@
   import {useResult} from '@vue/apollo-composable'
   import {useRouter} from 'vue-router'
   import {useFindAllNotMountQuery} from '~~/codegen/mds'
+  import useApolloClient from '~/utils/apollo-client'
+  import MDS_QUERY_LABEL from '~/graphql/mds/query_label.gql'
+
+  enum MdsMountLabels {
+    数据层次 = 'DATALEVEL',
+    业务主题 = 'BUZTOPIC',
+    业务系统 = 'BUZSYS',
+  }
 
   const router = useRouter()
 
@@ -57,26 +65,39 @@
   const getSearchInput = () => {
     return {
       nodeId: '',
-      buzType: '',
-      tenantId: '',
+      buzType: '0',
       datalevel: '',
       buztopic: '',
       buzsys: '',
       // 取数偏移
       offset: (currentPage.value - 1) * limit.value,
       // 取数范围
-      limit: limit.value,
+      size: limit.value,
       // 搜索关键字
-      keyWord: keyword.value,
+      keyword: keyword.value,
     }
   }
-  const {result, onResult} = useFindAllNotMountQuery({param: getSearchInput()}, {clientId: 'mdsClient'})
+  const {result, onResult} = useFindAllNotMountQuery({input: getSearchInput()}, {clientId: 'mdsClient'})
 
   const tableData: any = useResult(result, [], (res) => {
     return res.result.data.data
   })
   onResult((res) => {
     total.value = Number(res.data?.result?.data?.total ?? 0)
+  })
+
+  const queryMdsLabel = (labelTypes: MdsMountLabels[]) => {
+    // 数据层次DATALEVEL  业务主题BUZTOPIC  业务系统BUZSYS 
+    return useApolloClient('mds').query({
+      query: MDS_QUERY_LABEL,
+      variables: {
+        labelTypes,
+      },
+    })
+  }
+
+  queryMdsLabel([MdsMountLabels['业务主题'], MdsMountLabels['业务系统'], MdsMountLabels['数据层次']]).then((res: any) => {
+    console.log(res)
   })
 
   const options = {
