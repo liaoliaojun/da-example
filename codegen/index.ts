@@ -451,6 +451,18 @@ export type ReportPaginationResult = {
   total?: Maybe<Scalars["Int"]>;
 };
 
+export type DaMountingBasicAssetMutationVariables = Exact<{
+  input?: Maybe<
+    | Array<Maybe<BasicAssetManagementMountingInput>>
+    | Maybe<BasicAssetManagementMountingInput>
+  >;
+}>;
+
+export type DaMountingBasicAssetMutation = {
+  __typename?: "Mutation";
+  result?: boolean | null | undefined;
+};
+
 export type DaPageQueryBasicAssetQueryVariables = Exact<{
   input?: Maybe<BasicAssetManagementPageInput>;
 }>;
@@ -650,6 +662,52 @@ export type DaSaveOrUpdateMenuMutation = {
   result: string;
 };
 
+export const DaMountingBasicAssetDocument = gql`
+  mutation daMountingBasicAsset($input: [BasicAssetManagementMountingInput]) {
+    result: daMountingBasicAsset(input: $input)
+  }
+`;
+
+/**
+ * __useDaMountingBasicAssetMutation__
+ *
+ * To run a mutation, you first call `useDaMountingBasicAssetMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useDaMountingBasicAssetMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useDaMountingBasicAssetMutation({
+ *   variables: {
+ *     input: // value for 'input'
+ *   },
+ * });
+ */
+export function useDaMountingBasicAssetMutation(
+  options:
+    | VueApolloComposable.UseMutationOptions<
+        DaMountingBasicAssetMutation,
+        DaMountingBasicAssetMutationVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseMutationOptions<
+          DaMountingBasicAssetMutation,
+          DaMountingBasicAssetMutationVariables
+        >
+      > = {}
+) {
+  return VueApolloComposable.useMutation<
+    DaMountingBasicAssetMutation,
+    DaMountingBasicAssetMutationVariables
+  >(DaMountingBasicAssetDocument, options);
+}
+export type DaMountingBasicAssetMutationCompositionFunctionResult =
+  VueApolloComposable.UseMutationReturn<
+    DaMountingBasicAssetMutation,
+    DaMountingBasicAssetMutationVariables
+  >;
 export const DaPageQueryBasicAssetDocument = gql`
   query daPageQueryBasicAsset($input: BasicAssetManagementPageInput) {
     result: daPageQueryBasicAsset(input: $input) {
