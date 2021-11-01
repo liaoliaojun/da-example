@@ -1,0 +1,4 @@
+# 批量启用/禁用资产
+mutation controlAssets($ids:[ID],$useStatus:String) {
+  result: controlAssets(ids: $ids,useStatus: $useStatus)
+}

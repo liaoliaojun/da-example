@@ -263,6 +263,8 @@ export type MenuManagement = {
   __typename?: "MenuManagement";
   /** 主键id */
   id?: Maybe<Scalars["ID"]>;
+  /** 菜单类型 文件/文件夹 默认为文件夹 */
+  menuManagementType?: Maybe<MenuManagementTypeEnum>;
   /** 菜单名字 */
   menuName: Scalars["String"];
   /** 菜单类型 */
@@ -271,6 +273,7 @@ export type MenuManagement = {
   parentId?: Maybe<Scalars["ID"]>;
 };
 
+/** 菜单类型-模块 */
 export enum MenuManagementEnum {
   /** 基础资产 */
   Base = "BASE",
@@ -280,9 +283,12 @@ export enum MenuManagementEnum {
   Unstructured = "UNSTRUCTURED",
 }
 
+/** 菜单入参 */
 export type MenuManagementInput = {
   /** 主键id */
   id?: Maybe<Scalars["ID"]>;
+  /** 菜单类型 文件/文件夹 */
+  menuManagementType?: Maybe<MenuManagementTypeEnum>;
   /** 菜单名字 */
   menuName: Scalars["String"];
   /** 菜单类型 */
@@ -290,6 +296,12 @@ export type MenuManagementInput = {
   /** 菜单上级id */
   parentId?: Maybe<Scalars["ID"]>;
 };
+
+/** 菜单类型-文件/目录 */
+export enum MenuManagementTypeEnum {
+  File = "FILE",
+  Folder = "FOLDER",
+}
 
 export type Mutation = {
   __typename?: "Mutation";
@@ -506,6 +518,128 @@ export type DaQueryMenuListQuery = {
   >;
 };
 
+export type ControlAssetsMutationVariables = Exact<{
+  ids?: Maybe<Array<Maybe<Scalars["ID"]>> | Maybe<Scalars["ID"]>>;
+  useStatus?: Maybe<Scalars["String"]>;
+}>;
+
+export type ControlAssetsMutation = {
+  __typename?: "Mutation";
+  result?: boolean | null | undefined;
+};
+
+export type DeleteAssetsMutationVariables = Exact<{
+  ids?: Maybe<Array<Maybe<Scalars["ID"]>> | Maybe<Scalars["ID"]>>;
+  directoryId?: Maybe<Scalars["ID"]>;
+  buzType?: Maybe<Scalars["String"]>;
+}>;
+
+export type DeleteAssetsMutation = {
+  __typename?: "Mutation";
+  result?: boolean | null | undefined;
+};
+
+export type ListAssetsQueryVariables = Exact<{
+  input?: Maybe<AssetsPageInput>;
+}>;
+
+export type ListAssetsQuery = {
+  __typename?: "Query";
+  result?:
+    | {
+        __typename?: "AssetsPaginationResult";
+        total?: number | null | undefined;
+        offset?: number | null | undefined;
+        limit?: number | null | undefined;
+        data?:
+          | Array<
+              | {
+                  __typename?: "AssetsInfoDto";
+                  id?: string | null | undefined;
+                  directoryId?: string | null | undefined;
+                  metadataId?: string | null | undefined;
+                  name?: string | null | undefined;
+                  type?: string | null | undefined;
+                  downloadsCount?: number | null | undefined;
+                  userDept?: string | null | undefined;
+                  responseDept?: string | null | undefined;
+                  reviewStatus?: string | null | undefined;
+                  useStatus?: string | null | undefined;
+                }
+              | null
+              | undefined
+            >
+          | null
+          | undefined;
+      }
+    | null
+    | undefined;
+};
+
+export type ListInterfaceMetadatasQueryVariables = Exact<{
+  input?: Maybe<InterfaceMetadataPageinput>;
+}>;
+
+export type ListInterfaceMetadatasQuery = {
+  __typename?: "Query";
+  result?:
+    | {
+        __typename?: "InterfacePaginationResult";
+        total?: number | null | undefined;
+        offset?: number | null | undefined;
+        limit?: number | null | undefined;
+        data?:
+          | Array<
+              | {
+                  __typename?: "InterfaceMetadataDto";
+                  apiId?: string | null | undefined;
+                  apiName?: string | null | undefined;
+                  apiClassName?: string | null | undefined;
+                  itMngr?: string | null | undefined;
+                  bizMngr?: string | null | undefined;
+                  inputEnParam?: string | null | undefined;
+                  inputCnParam?: string | null | undefined;
+                  outputEnParam?: string | null | undefined;
+                  outputCnParam?: string | null | undefined;
+                }
+              | null
+              | undefined
+            >
+          | null
+          | undefined;
+      }
+    | null
+    | undefined;
+};
+
+export type ListReportMetadatasQueryVariables = Exact<{
+  input?: Maybe<InterfaceMetadataPageinput>;
+}>;
+
+export type ListReportMetadatasQuery = {
+  __typename?: "Query";
+  result?:
+    | {
+        __typename?: "InterfacePaginationResult";
+        total?: number | null | undefined;
+        offset?: number | null | undefined;
+        limit?: number | null | undefined;
+      }
+    | null
+    | undefined;
+};
+
+export type MountMetadataQueryVariables = Exact<{
+  assetsInputs?: Maybe<Array<Maybe<AssetsInput>> | Maybe<AssetsInput>>;
+  directoryId: Scalars["ID"];
+  buzType?: Maybe<Scalars["String"]>;
+}>;
+
+export type MountMetadataQuery = {
+  __typename?: "Query";
+  result?: Array<string | null | undefined> | null | undefined;
+};
+
 export type DaSaveOrUpdateMenuMutationVariables = Exact<{
   input?: Maybe<MenuManagementInput>;
 }>;
@@ -691,6 +825,363 @@ export type DaQueryMenuListQueryCompositionFunctionResult =
   VueApolloComposable.UseQueryReturn<
     DaQueryMenuListQuery,
     DaQueryMenuListQueryVariables
+  >;
+export const ControlAssetsDocument = gql`
+  mutation controlAssets($ids: [ID], $useStatus: String) {
+    result: controlAssets(ids: $ids, useStatus: $useStatus)
+  }
+`;
+
+/**
+ * __useControlAssetsMutation__
+ *
+ * To run a mutation, you first call `useControlAssetsMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useControlAssetsMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useControlAssetsMutation({
+ *   variables: {
+ *     ids: // value for 'ids'
+ *     useStatus: // value for 'useStatus'
+ *   },
+ * });
+ */
+export function useControlAssetsMutation(
+  options:
+    | VueApolloComposable.UseMutationOptions<
+        ControlAssetsMutation,
+        ControlAssetsMutationVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseMutationOptions<
+          ControlAssetsMutation,
+          ControlAssetsMutationVariables
+        >
+      > = {}
+) {
+  return VueApolloComposable.useMutation<
+    ControlAssetsMutation,
+    ControlAssetsMutationVariables
+  >(ControlAssetsDocument, options);
+}
+export type ControlAssetsMutationCompositionFunctionResult =
+  VueApolloComposable.UseMutationReturn<
+    ControlAssetsMutation,
+    ControlAssetsMutationVariables
+  >;
+export const DeleteAssetsDocument = gql`
+  mutation deleteAssets($ids: [ID], $directoryId: ID, $buzType: String) {
+    result: deleteAssets(
+      ids: $ids
+      directoryId: $directoryId
+      buzType: $buzType
+    )
+  }
+`;
+
+/**
+ * __useDeleteAssetsMutation__
+ *
+ * To run a mutation, you first call `useDeleteAssetsMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteAssetsMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useDeleteAssetsMutation({
+ *   variables: {
+ *     ids: // value for 'ids'
+ *     directoryId: // value for 'directoryId'
+ *     buzType: // value for 'buzType'
+ *   },
+ * });
+ */
+export function useDeleteAssetsMutation(
+  options:
+    | VueApolloComposable.UseMutationOptions<
+        DeleteAssetsMutation,
+        DeleteAssetsMutationVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseMutationOptions<
+          DeleteAssetsMutation,
+          DeleteAssetsMutationVariables
+        >
+      > = {}
+) {
+  return VueApolloComposable.useMutation<
+    DeleteAssetsMutation,
+    DeleteAssetsMutationVariables
+  >(DeleteAssetsDocument, options);
+}
+export type DeleteAssetsMutationCompositionFunctionResult =
+  VueApolloComposable.UseMutationReturn<
+    DeleteAssetsMutation,
+    DeleteAssetsMutationVariables
+  >;
+export const ListAssetsDocument = gql`
+  query listAssets($input: AssetsPageInput) {
+    result: listAssets(input: $input) {
+      total
+      offset
+      limit
+      data {
+        id
+        directoryId
+        metadataId
+        name
+        type
+        downloadsCount
+        userDept
+        responseDept
+        reviewStatus
+        useStatus
+      }
+    }
+  }
+`;
+
+/**
+ * __useListAssetsQuery__
+ *
+ * To run a query within a Vue component, call `useListAssetsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListAssetsQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param variables that will be passed into the query
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useListAssetsQuery({
+ *   input: // value for 'input'
+ * });
+ */
+export function useListAssetsQuery(
+  variables:
+    | ListAssetsQueryVariables
+    | VueCompositionApi.Ref<ListAssetsQueryVariables>
+    | ReactiveFunction<ListAssetsQueryVariables> = {},
+  options:
+    | VueApolloComposable.UseQueryOptions<
+        ListAssetsQuery,
+        ListAssetsQueryVariables
+      >
+    | VueCompositionApi.Ref<
+        VueApolloComposable.UseQueryOptions<
+          ListAssetsQuery,
+          ListAssetsQueryVariables
+        >
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseQueryOptions<
+          ListAssetsQuery,
+          ListAssetsQueryVariables
+        >
+      > = {}
+) {
+  return VueApolloComposable.useQuery<
+    ListAssetsQuery,
+    ListAssetsQueryVariables
+  >(ListAssetsDocument, variables, options);
+}
+export type ListAssetsQueryCompositionFunctionResult =
+  VueApolloComposable.UseQueryReturn<ListAssetsQuery, ListAssetsQueryVariables>;
+export const ListInterfaceMetadatasDocument = gql`
+  query listInterfaceMetadatas($input: InterfaceMetadataPageinput) {
+    result: listInterfaceMetadatas(input: $input) {
+      total
+      offset
+      limit
+      data {
+        apiId
+        apiName
+        apiClassName
+        itMngr
+        bizMngr
+        inputEnParam
+        inputCnParam
+        outputEnParam
+        outputCnParam
+      }
+    }
+  }
+`;
+
+/**
+ * __useListInterfaceMetadatasQuery__
+ *
+ * To run a query within a Vue component, call `useListInterfaceMetadatasQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListInterfaceMetadatasQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param variables that will be passed into the query
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useListInterfaceMetadatasQuery({
+ *   input: // value for 'input'
+ * });
+ */
+export function useListInterfaceMetadatasQuery(
+  variables:
+    | ListInterfaceMetadatasQueryVariables
+    | VueCompositionApi.Ref<ListInterfaceMetadatasQueryVariables>
+    | ReactiveFunction<ListInterfaceMetadatasQueryVariables> = {},
+  options:
+    | VueApolloComposable.UseQueryOptions<
+        ListInterfaceMetadatasQuery,
+        ListInterfaceMetadatasQueryVariables
+      >
+    | VueCompositionApi.Ref<
+        VueApolloComposable.UseQueryOptions<
+          ListInterfaceMetadatasQuery,
+          ListInterfaceMetadatasQueryVariables
+        >
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseQueryOptions<
+          ListInterfaceMetadatasQuery,
+          ListInterfaceMetadatasQueryVariables
+        >
+      > = {}
+) {
+  return VueApolloComposable.useQuery<
+    ListInterfaceMetadatasQuery,
+    ListInterfaceMetadatasQueryVariables
+  >(ListInterfaceMetadatasDocument, variables, options);
+}
+export type ListInterfaceMetadatasQueryCompositionFunctionResult =
+  VueApolloComposable.UseQueryReturn<
+    ListInterfaceMetadatasQuery,
+    ListInterfaceMetadatasQueryVariables
+  >;
+export const ListReportMetadatasDocument = gql`
+  query listReportMetadatas($input: InterfaceMetadataPageinput) {
+    result: listInterfaceMetadatas(input: $input) {
+      total
+      offset
+      limit
+    }
+  }
+`;
+
+/**
+ * __useListReportMetadatasQuery__
+ *
+ * To run a query within a Vue component, call `useListReportMetadatasQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListReportMetadatasQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param variables that will be passed into the query
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useListReportMetadatasQuery({
+ *   input: // value for 'input'
+ * });
+ */
+export function useListReportMetadatasQuery(
+  variables:
+    | ListReportMetadatasQueryVariables
+    | VueCompositionApi.Ref<ListReportMetadatasQueryVariables>
+    | ReactiveFunction<ListReportMetadatasQueryVariables> = {},
+  options:
+    | VueApolloComposable.UseQueryOptions<
+        ListReportMetadatasQuery,
+        ListReportMetadatasQueryVariables
+      >
+    | VueCompositionApi.Ref<
+        VueApolloComposable.UseQueryOptions<
+          ListReportMetadatasQuery,
+          ListReportMetadatasQueryVariables
+        >
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseQueryOptions<
+          ListReportMetadatasQuery,
+          ListReportMetadatasQueryVariables
+        >
+      > = {}
+) {
+  return VueApolloComposable.useQuery<
+    ListReportMetadatasQuery,
+    ListReportMetadatasQueryVariables
+  >(ListReportMetadatasDocument, variables, options);
+}
+export type ListReportMetadatasQueryCompositionFunctionResult =
+  VueApolloComposable.UseQueryReturn<
+    ListReportMetadatasQuery,
+    ListReportMetadatasQueryVariables
+  >;
+export const MountMetadataDocument = gql`
+  query mountMetadata(
+    $assetsInputs: [AssetsInput]
+    $directoryId: ID!
+    $buzType: String
+  ) {
+    result: mountMetadata(
+      assetsInputs: $assetsInputs
+      directoryId: $directoryId
+      buzType: $buzType
+    )
+  }
+`;
+
+/**
+ * __useMountMetadataQuery__
+ *
+ * To run a query within a Vue component, call `useMountMetadataQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMountMetadataQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param variables that will be passed into the query
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useMountMetadataQuery({
+ *   assetsInputs: // value for 'assetsInputs'
+ *   directoryId: // value for 'directoryId'
+ *   buzType: // value for 'buzType'
+ * });
+ */
+export function useMountMetadataQuery(
+  variables:
+    | MountMetadataQueryVariables
+    | VueCompositionApi.Ref<MountMetadataQueryVariables>
+    | ReactiveFunction<MountMetadataQueryVariables>,
+  options:
+    | VueApolloComposable.UseQueryOptions<
+        MountMetadataQuery,
+        MountMetadataQueryVariables
+      >
+    | VueCompositionApi.Ref<
+        VueApolloComposable.UseQueryOptions<
+          MountMetadataQuery,
+          MountMetadataQueryVariables
+        >
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseQueryOptions<
+          MountMetadataQuery,
+          MountMetadataQueryVariables
+        >
+      > = {}
+) {
+  return VueApolloComposable.useQuery<
+    MountMetadataQuery,
+    MountMetadataQueryVariables
+  >(MountMetadataDocument, variables, options);
+}
+export type MountMetadataQueryCompositionFunctionResult =
+  VueApolloComposable.UseQueryReturn<
+    MountMetadataQuery,
+    MountMetadataQueryVariables
   >;
 export const DaSaveOrUpdateMenuDocument = gql`
   mutation daSaveOrUpdateMenu($input: MenuManagementInput) {

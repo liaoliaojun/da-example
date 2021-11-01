@@ -1,0 +1,4 @@
+# 批量挂载元数据
+query mountMetadata($assetsInputs:[AssetsInput],$directoryId:ID!,$buzType:String) {
+  result: mountMetadata(assetsInputs: $assetsInputs,directoryId: $directoryId,buzType: $buzType)
+}
