@@ -1,0 +1,3 @@
+mutation daMountingBasicAsset ($input: [BasicAssetManagementMountingInput]) {
+  result: daMountingBasicAsset (input: $input)
+}

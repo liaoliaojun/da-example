@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-auto ml-5">
+  <div class="flex flex-col ml-5 h-full pb-12 relative">
     <ej-search 
       v-model:models="state"
       v-model:keyword="keyword"
@@ -16,19 +16,21 @@
       <ej-texts v-model="state.buzsys" :options="options.buzsys" prop="buzsys" label="业务系统" />
     </ej-search>
 
-    <el-table border stripe highlight-current-row :data="tableData">
-      <el-table-column show-overflow-tooltip type="selection" width="40" prop="select" />
-      <el-table-column show-overflow-tooltip prop="name" label="所属系统" />
-      <el-table-column show-overflow-tooltip prop="dataBaseName" label="数据库" />
-      <el-table-column show-overflow-tooltip prop="name" label="英文名" />
-      <el-table-column show-overflow-tooltip prop="name" label="中文名" />
-      <el-table-column show-overflow-tooltip prop="mdsObjectTypeEnum" label="类型" width="60" />
-      <el-table-column show-overflow-tooltip prop="primaryKey" label="主键" />
-      <el-table-column show-overflow-tooltip prop="dbSourceType" label="数据库类型" />
-      <el-table-column show-overflow-tooltip prop="createTm" label="创建时间" />
-    </el-table>
+    <div class="flex-1">
+      <el-table border stripe highlight-current-row :data="tableData" height="100%">
+        <el-table-column show-overflow-tooltip type="selection" width="40" prop="select" />
+        <el-table-column show-overflow-tooltip prop="name" label="所属系统" />
+        <el-table-column show-overflow-tooltip prop="dataBaseName" label="数据库" />
+        <el-table-column show-overflow-tooltip prop="name" label="英文名" />
+        <el-table-column show-overflow-tooltip prop="name" label="中文名" />
+        <el-table-column show-overflow-tooltip prop="mdsObjectTypeEnum" label="类型" width="60" />
+        <el-table-column show-overflow-tooltip prop="primaryKey" label="主键" />
+        <el-table-column show-overflow-tooltip prop="dbSourceType" label="数据库类型" />
+        <el-table-column show-overflow-tooltip prop="createTm" label="创建时间" />
+      </el-table>
+    </div>
 
-    <div class="text-center mt-4">
+    <div class="text-center w-full absolute bottom-0">
       <el-button type="primary" @click="handlerConfirm">确定</el-button>
       <el-button type="primary" plain @click="handlerCancel">取消</el-button>
     </div>

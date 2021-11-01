@@ -25,6 +25,6 @@
 
 <style lang="postcss">
   #app {
-    @apply min-h-full flex flex-col;
+    @apply flex flex-col min-h-screen;
   }
 </style>

@@ -1,6 +1,6 @@
 <template>
-  <div class="da-base-view flex flex-1">
-    <ej-split split="220px" :min="160" mode="horizonta" class="w-full">
+  <div class="da-base-view flex flex-col flex-1">
+    <ej-split split="220px" :min="160" mode="horizonta" class="w-full flex-1">
       <template #left>
         <div class="pr-2">
           <base-tree :type="MenuManagementEnum.Base" />

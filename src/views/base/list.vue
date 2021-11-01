@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-auto ml-5">
+  <div class="h-full ml-5">
     loading: {{loading}}
     <ej-search 
       v-model:models="state"
