@@ -1,0 +1,28 @@
+# 分页获取接口元数据列表
+query listInterfaceMetadatas($input:InterfaceMetadataPageinput) {
+  result: listInterfaceMetadatas(input: $input) {
+    total
+    offset
+    limit
+    data {
+      apiId
+      # 主键
+      apiName
+      # 接口名称
+      apiClassName
+      # 类名
+      itMngr
+      #技术负责方
+      bizMngr
+      #业务负责方
+      inputEnParam
+      #输入参数英文
+      inputCnParam
+      #输入参数中文
+      outputEnParam
+      #输出英文
+      outputCnParam
+      #输出中文
+    }
+  }
+}

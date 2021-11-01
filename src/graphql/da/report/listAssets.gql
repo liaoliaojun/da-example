@@ -1,0 +1,20 @@
+# 分页获取资产列表
+query listAssets($input:AssetsPageInput) {
+  result: listAssets(input: $input) {
+    total
+    offset
+    limit
+    data {
+      id
+      directoryId
+      metadataId
+      name
+      type
+      downloadsCount
+      userDept
+      responseDept
+      reviewStatus
+      useStatus
+    }
+  }
+}

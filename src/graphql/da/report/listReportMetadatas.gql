@@ -1,0 +1,8 @@
+# 分页获取报表元数据列表
+query listReportMetadatas($input:InterfaceMetadataPageinput) {
+  result: listInterfaceMetadatas(input: $input) {
+    total
+    offset
+    limit
+  }
+}

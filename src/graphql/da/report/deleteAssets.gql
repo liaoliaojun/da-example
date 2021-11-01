@@ -1,0 +1,4 @@
+# 批量删除挂载资产
+mutation deleteAssets($ids:[ID],$directoryId:ID,$buzType:String) {
+  result: deleteAssets(ids: $ids,directoryId: $directoryId,buzType: $buzType)
+}
