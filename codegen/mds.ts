@@ -46,6 +46,27 @@ export enum CategoryBusiTypeEnum {
   None = "NONE",
 }
 
+export type CategoryDto = {
+  __typename?: "CategoryDTO";
+  /** 菜单业务类型: 文件夹 / 文件 */
+  busiLevelType?: Maybe<CategoryBusiTypeEnum>;
+  id: Scalars["ID"];
+  level: Scalars["Int"];
+  /** 菜单中所有MdsObject的类型: 表 / 接口 / 文件 */
+  mdsType?: Maybe<MdsObjectTypeEnum>;
+  name?: Maybe<Scalars["String"]>;
+  parentId: Scalars["ID"];
+  /** 通配符 */
+  pattern?: Maybe<Scalars["String"]>;
+  /** Schema名字 */
+  schema?: Maybe<Scalars["String"]>;
+  /** 菜单状态 */
+  status: CategoryStatusEnum;
+  /** 菜单技术层级类型: 系统 / 应用/ 库 */
+  techLevelType?: Maybe<CategoryTechLevelTypeEnum>;
+  type: CategoryTypeEnum;
+};
+
 /** Mds菜单状态 */
 export enum CategoryStatusEnum {
   /** 菜单可用 */
@@ -200,10 +221,7 @@ export enum DqsExecutionReturnCode {
   Warning = "WARNING",
 }
 
-/**
- * type Subscription {_: Int}
- *  数据质量检查计划
- */
+/** 数据质量检查计划 */
 export type DqsSchedule = {
   __typename?: "DqsSchedule";
   /** 业务负责人 */
@@ -580,11 +598,15 @@ export type HomeMdsStatisticalVo = {
 };
 
 export type ImportJobCondition = {
+  beginDate?: Maybe<Scalars["LocalDateTime"]>;
   /** 目录类型：TECHONLOGY/BUSINESS */
   categoryType: Scalars["String"];
+  dbSourceId?: Maybe<Scalars["ID"]>;
+  endDate?: Maybe<Scalars["LocalDateTime"]>;
   keyword?: Maybe<Scalars["String"]>;
   offset: Scalars["Int"];
   size: Scalars["Int"];
+  status?: Maybe<ImportJobStatusEnum>;
 };
 
 /** import job */
@@ -594,6 +616,24 @@ export type ImportJobDto = {
   description?: Maybe<Scalars["String"]>;
   id: Scalars["ID"];
   status?: Maybe<ImportJobStatusEnum>;
+};
+
+export type ImportJobMonitorDto = {
+  __typename?: "ImportJobMonitorDTO";
+  categoryName?: Maybe<Scalars["String"]>;
+  createTm?: Maybe<Scalars["LocalDateTime"]>;
+  dbSourceName?: Maybe<Scalars["String"]>;
+  id: Scalars["ID"];
+  modifyTm?: Maybe<Scalars["LocalDateTime"]>;
+  status?: Maybe<ImportJobStatusEnum>;
+};
+
+export type ImportJobMonitorPageOutput = {
+  __typename?: "ImportJobMonitorPageOutput";
+  data?: Maybe<Array<Maybe<ImportJobMonitorDto>>>;
+  offset?: Maybe<Scalars["Int"]>;
+  size?: Maybe<Scalars["Int"]>;
+  total?: Maybe<Scalars["Int"]>;
 };
 
 export type ImportJobPageOutput = {
@@ -617,51 +657,51 @@ export enum ImportJobStatusEnum {
   TransportFinished = "TRANSPORT_FINISHED",
 }
 
-export type JsonResult = {
-  __typename?: "JsonResult";
-  code?: Maybe<Scalars["Int"]>;
-  data?: Maybe<Scalars["Int"]>;
-  /** 处理状态：0: 成功 */
-  message?: Maybe<Scalars["String"]>;
+export type LabelApidto = {
+  __typename?: "LabelAPIDTO";
+  /** 简称 */
+  code?: Maybe<Scalars["String"]>;
+  /** 描述 */
+  description?: Maybe<Scalars["String"]>;
+  id?: Maybe<Scalars["ID"]>;
+  /** 名称 */
+  name?: Maybe<Scalars["String"]>;
+  /** 标签类型 */
+  type?: Maybe<LabelType>;
 };
 
 export type LabelDto = {
   __typename?: "LabelDTO";
-  /** 名称 */
+  /** 简称 */
   code?: Maybe<Scalars["String"]>;
-  /** 记录创建人姓名 */
+  /** 记录创建时间，create_tm insert记录时必须添加 */
   createTm?: Maybe<Scalars["LocalDateTime"]>;
-  /** 负责人姓名 */
-  creator?: Maybe<Scalars["ID"]>;
   /** 记录创建人，insert记录时必须添加 */
-  creatorName?: Maybe<Scalars["String"]>;
+  creator?: Maybe<Scalars["ID"]>;
+  /** 描述 */
   description?: Maybe<Scalars["String"]>;
   id?: Maybe<Scalars["ID"]>;
   isDelete?: Maybe<Scalars["Boolean"]>;
-  /**
-   * 记录创建时间，create_tm insert记录时必须添加
-   * 记录修改人，update记录时必须更新
-   */
+  /** 记录修改人，update记录时必须更新 */
   modifier?: Maybe<Scalars["ID"]>;
-  modifierName?: Maybe<Scalars["String"]>;
   /** ** modify_tm记录修改时间，update记录时必须更新 *\/ */
   modifyTm?: Maybe<Scalars["LocalDateTime"]>;
-  /** 描述 */
+  /** 名称 */
   name?: Maybe<Scalars["String"]>;
-  /** 标签类型 */
-  principal?: Maybe<Scalars["ID"]>;
   /** 负责人Id */
-  principalName?: Maybe<Scalars["String"]>;
+  principal?: Maybe<Scalars["ID"]>;
+  /** 租户id */
   tenantId?: Maybe<Scalars["ID"]>;
-  /** 编码 */
+  /** 标签类型 */
   type?: Maybe<LabelType>;
 };
 
 export enum LabelType {
-  /** 业务主题 */
+  /** 业务系统 */
   Buzsys = "BUZSYS",
-  /** 数据层侧 */
+  /** 业务主题 */
   Buztopic = "BUZTOPIC",
+  /** 数据层次 */
   Datalevel = "DATALEVEL",
 }
 
@@ -1148,6 +1188,29 @@ export enum MdsHistoryVersionStatusEnum {
   Update = "UPDATE",
 }
 
+export type MdsLabelVo = {
+  __typename?: "MdsLabelVo";
+  /** 简称 */
+  code?: Maybe<Scalars["String"]>;
+  /** 记录创建时间，create_tm insert记录时必须添加 */
+  createTm?: Maybe<Scalars["LocalDateTime"]>;
+  /** 记录创建人，insert记录时必须添加 */
+  creator?: Maybe<User>;
+  /** 描述 */
+  description?: Maybe<Scalars["String"]>;
+  /** jobId */
+  id?: Maybe<Scalars["ID"]>;
+  isDelete?: Maybe<Scalars["Boolean"]>;
+  modifier?: Maybe<User>;
+  /** ** modify_tm记录修改时间，update记录时必须更新 *\/ */
+  modifyTm?: Maybe<Scalars["LocalDateTime"]>;
+  /** 名称 */
+  name?: Maybe<Scalars["String"]>;
+  principal?: Maybe<User>;
+  /** 标签类型 */
+  type?: Maybe<LabelType>;
+};
+
 export type MdsLoadCategoriesConditionInput = {
   /** 通过类目名搜索 */
   keyword?: Maybe<Scalars["String"]>;
@@ -1288,6 +1351,135 @@ export type MdsLoadUserCollectionsData = {
   recommend?: Maybe<Array<Maybe<MdsObject>>>;
   /** 用户的订阅 */
   subscribe?: Maybe<Array<Maybe<MdsObject>>>;
+};
+
+export type MdsMetric = {
+  __typename?: "MdsMetric";
+  /** 审核状态(0：待提交，1：审批通过，2：审批驳回，3：审批中，4：已撤回，5：使用中，6：已废止) */
+  approveStatus?: Maybe<Scalars["Int"]>;
+  /** 审核时间 */
+  approveTm?: Maybe<Scalars["String"]>;
+  /** 审核用户 */
+  approver?: Maybe<Scalars["Long"]>;
+  /** 审核用户中文名 */
+  approverCn?: Maybe<Scalars["String"]>;
+  /** 指标业务口径 */
+  busiScopeDesc?: Maybe<Scalars["String"]>;
+  /** 指标图表 */
+  chartConfig?: Maybe<Scalars["String"]>;
+  /** 指标上线日期 */
+  commitDt?: Maybe<Scalars["String"]>;
+  /** 更新用户 */
+  commiter?: Maybe<Scalars["Long"]>;
+  /** 更新用户中文名 */
+  commiterCn?: Maybe<Scalars["String"]>;
+  /** 默认安全级别 */
+  defaultSecLeve?: Maybe<Scalars["String"]>;
+  /** 指标默认值配置 */
+  defaultValSpec?: Maybe<Scalars["String"]>;
+  /** 指标技术口径(使用JSON格式描述的指标取数条件，可以是根据指标业务口径自动生成的条件，也可以是用户自行输入的SQL条件语句) */
+  etlCondition?: Maybe<Scalars["String"]>;
+  /** 指标下线日期 */
+  expireDt?: Maybe<Scalars["String"]>;
+  /** 指标更新周期(0：不自动更新,1：每天更新,2：每周更新,3：每月更新,4：每季度更新,5：每年更新,6：每小时更新,7：每半年更新) */
+  loadCycle?: Maybe<Scalars["Int"]>;
+  /** 指标代码 -- 不得重复 */
+  metricCd?: Maybe<Scalars["String"]>;
+  /** 指标数据长度 */
+  metricDataLen?: Maybe<Scalars["Int"]>;
+  /** 指标数据精度 */
+  metricDataPrecision?: Maybe<Scalars["Int"]>;
+  /** 指标数据类型 */
+  metricDataType?: Maybe<Scalars["String"]>;
+  /** 指标描述 -- 指标业务含义 */
+  metricDesc?: Maybe<Scalars["String"]>;
+  /** 指标定义部门 */
+  metricDfnDept?: Maybe<Scalars["String"]>;
+  /** 指标计算模板 (对于基础指标表示SQL语句模板、文件字段列表等，对于衍生指标表示计算表达式) */
+  metricFormula?: Maybe<Scalars["String"]>;
+  /** 指标名称 */
+  metricNm?: Maybe<Scalars["String"]>;
+  /** 指标英文名 */
+  metricNmEn?: Maybe<Scalars["String"]>;
+  /** 指标记录标识 */
+  metricRowId?: Maybe<Scalars["Long"]>;
+  /** 指标使用场景代码 */
+  metricSceCd?: Maybe<Scalars["String"]>;
+  /** 指标口径标识 */
+  metricScopeId?: Maybe<Scalars["Long"]>;
+  /** 指标规范标识 */
+  metricSpecId?: Maybe<Scalars["Long"]>;
+  /** 指标数据源代码 */
+  metricSrcCd?: Maybe<Scalars["String"]>;
+  /** 指标主表代码 */
+  metricTblCd?: Maybe<Scalars["String"]>;
+  /** 指标度量字段代码 */
+  metricTblColCd?: Maybe<Scalars["String"]>;
+  /** 指标类型 0：基础指标  1：衍生指标（公式计算） 2：派生指标（维度限定） */
+  metricType?: Maybe<Scalars["Int"]>;
+  /** 指标数据单位 */
+  metricUnit?: Maybe<Scalars["String"]>;
+  /** 指标数值属性代码 */
+  metricValTypeCd?: Maybe<Scalars["String"]>;
+  /** 指标版本号 */
+  metricVersion?: Maybe<Scalars["Long"]>;
+  /** oa编码 */
+  oaCode?: Maybe<Scalars["String"]>;
+  /** 源数据定义模式 */
+  srcSpecMode?: Maybe<Scalars["String"]>;
+  /** 工作流程标识 */
+  taskFlowId?: Maybe<Scalars["Long"]>;
+  /** 更新时间 */
+  updateTm?: Maybe<Scalars["String"]>;
+};
+
+export type MdsMetricClass = {
+  __typename?: "MdsMetricClass";
+  /** 更新用户 */
+  commiter?: Maybe<Scalars["Long"]>;
+  /** 更新用户中文名 */
+  commiterCn?: Maybe<Scalars["String"]>;
+  /** 部门代码 */
+  deptCd?: Maybe<Scalars["String"]>;
+  /** 显示顺序 */
+  dispOrder?: Maybe<Scalars["String"]>;
+  /** 指标目录记录标识 */
+  mcRowId?: Maybe<Scalars["Long"]>;
+  /** 指标目录代码 -- 不得重复 */
+  metricClassCd?: Maybe<Scalars["String"]>;
+  /** 指标目录描述 */
+  metricClassDesc?: Maybe<Scalars["String"]>;
+  /** 指标目录名称 */
+  metricClassNm?: Maybe<Scalars["String"]>;
+  /** 父级目录代码 */
+  superClassCd?: Maybe<Scalars["String"]>;
+  /** 更新时间 */
+  updateTm?: Maybe<Scalars["String"]>;
+};
+
+/** input & Response */
+export type MdsMetricFindCondition = {
+  /** 搜索关键字(包括指标中文名，指标英文名，指标代码) */
+  keyword?: Maybe<Scalars["String"]>;
+  /** 指标更新周期 */
+  loadCycle?: Maybe<Scalars["Int"]>;
+  /** 指标目录 */
+  metricClassCd?: Maybe<Scalars["String"]>;
+  /** 指标类型 */
+  metricType?: Maybe<Scalars["Int"]>;
+  /** 偏移量 */
+  offset?: Maybe<Scalars["Int"]>;
+  /** 分页数 */
+  size?: Maybe<Scalars["Int"]>;
+};
+
+export type MdsMetricResult = {
+  __typename?: "MdsMetricResult";
+  data?: Maybe<Array<Maybe<MdsMetric>>>;
+  offset?: Maybe<Scalars["Int"]>;
+  size?: Maybe<Scalars["Int"]>;
+  /** 总数 */
+  total?: Maybe<Scalars["Long"]>;
 };
 
 export type MdsMsgInput = {
@@ -1500,10 +1692,10 @@ export type MdsObjectApidto = {
 
 export type MdsObjectApidtoResult = {
   __typename?: "MdsObjectAPIDTOResult";
-  code?: Maybe<Scalars["Int"]>;
-  data?: Maybe<PageWrap>;
-  /** 处理状态：0: 成功 */
-  message?: Maybe<Scalars["String"]>;
+  data?: Maybe<Array<Maybe<MdsObjectApidto>>>;
+  offset: Scalars["Int"];
+  size: Scalars["Int"];
+  total: Scalars["ID"];
 };
 
 export type MdsObjectInput = {
@@ -1709,6 +1901,7 @@ export type MdsTechCataScheduleCondition = {
 
 export type MdsTechCataScheduleDto = {
   __typename?: "MdsTechCataScheduleDTO";
+  category?: Maybe<CategoryDto>;
   /** 技术类目Id */
   categoryId?: Maybe<Scalars["ID"]>;
   categoryName?: Maybe<Scalars["String"]>;
@@ -1887,7 +2080,8 @@ export type Mutation = {
   /** 删除标签 */
   delLabel?: Maybe<Scalars["Int"]>;
   /** 删除资产节点 */
-  delNode?: Maybe<JsonResult>;
+  delNode?: Maybe<Scalars["Boolean"]>;
+  deleteImportJobs?: Maybe<Scalars["Boolean"]>;
   /** 删除字段 */
   deleteInputMdsColumn?: Maybe<Scalars["Boolean"]>;
   /** 手工录入 删除 */
@@ -1974,7 +2168,7 @@ export type Mutation = {
   /** 揭Tag */
   mdsUserUnPasteTag?: Maybe<Scalars["Boolean"]>;
   /** 资产【元数据挂载】 */
-  mountMetadata?: Maybe<JsonResult>;
+  mountMetadata?: Maybe<Scalars["Boolean"]>;
   /** 手工录入 字段新增修改 */
   saveInputMdsColumn?: Maybe<MdsColumn>;
   /** 手工录入 表新增修改 */
@@ -1982,7 +2176,7 @@ export type Mutation = {
   /** 新建和修改Label */
   saveLabel?: Maybe<LabelDto>;
   /** 资产【删除元数据挂载】 */
-  ummountMetadata?: Maybe<JsonResult>;
+  ummountMetadata?: Maybe<Scalars["Boolean"]>;
 };
 
 export type MutationBatchDelArgs = {
@@ -1998,6 +2192,10 @@ export type MutationDelLabelArgs = {
 export type MutationDelNodeArgs = {
   buzType?: Maybe<Scalars["String"]>;
   nodeId?: Maybe<Scalars["ID"]>;
+};
+
+export type MutationDeleteImportJobsArgs = {
+  ids: Array<Scalars["ID"]>;
 };
 
 export type MutationDeleteInputMdsColumnArgs = {
@@ -2209,14 +2407,6 @@ export type OperationLog = {
   resultType?: Maybe<MdsHistoryVersionStatusEnum>;
 };
 
-export type PageWrap = {
-  __typename?: "PageWrap";
-  data?: Maybe<Array<Maybe<MdsObjectApidto>>>;
-  offset: Scalars["Int"];
-  size: Scalars["Int"];
-  total: Scalars["ID"];
-};
-
 /** 物理位置 */
 export type PhysicalArea = {
   __typename?: "PhysicalArea";
@@ -2235,17 +2425,17 @@ export type Query = {
   _?: Maybe<Scalars["Int"]>;
   /** 未挂载数据 */
   findAllNotMount?: Maybe<MdsObjectApidtoResult>;
-  findById?: Maybe<LabelDto>;
+  findById?: Maybe<MdsLabelVo>;
   /** 任务监控 */
-  findImportJobsByCondition?: Maybe<ImportJobPageOutput>;
-  findLabelByCondition?: Maybe<Array<Maybe<LabelDto>>>;
+  findImportJobsByCondition?: Maybe<ImportJobMonitorPageOutput>;
+  findLabelByCondition?: Maybe<Array<Maybe<MdsLabelVo>>>;
   /**
    * 根据 标签类型查询标签。标签类型：
-   *    DATALEVEL,  数据层侧
+   *    DATALEVEL,  数据层次
    *    BUZTOPIC,   业务主题
    *    BUZSYS      业务系统
    */
-  findLabelByLabelTypes?: Maybe<Array<Maybe<LabelDto>>>;
+  findLabelByLabelTypes?: Maybe<Array<Maybe<LabelApidto>>>;
   /** 技术类目详情::导出调度日志 */
   getImportJobExcelFile?: Maybe<Scalars["String"]>;
   /** 技术类目详情::调度日志查询(查询import_job) */
@@ -2362,6 +2552,12 @@ export type Query = {
   mdsLoadUserCollections?: Maybe<MdsLoadUserCollectionsData>;
   /** 获取版本信息 */
   mdsLoadVersionLog?: Maybe<Array<Maybe<MdsVersionLog>>>;
+  /** 获取指标目录 */
+  mdsMetricClassList?: Maybe<Array<Maybe<MdsMetricClass>>>;
+  /** 指标元数据分页查询参数 */
+  mdsMetricPage?: Maybe<MdsMetricResult>;
+  /** 指标元数据详情 */
+  mdsMetricView?: Maybe<MdsMetric>;
   mdsScheduleQuery?: Maybe<MdsTechCataSchedulePagination>;
   /** Mds搜索接口 */
   mdsSearch?: Maybe<MdsSearchResult>;
@@ -2408,7 +2604,6 @@ export type QueryFindLabelByConditionArgs = {
  */
 export type QueryFindLabelByLabelTypesArgs = {
   labelTypes: Array<Maybe<Scalars["String"]>>;
-  tenantId?: Maybe<Scalars["ID"]>;
 };
 
 /**
@@ -2730,6 +2925,30 @@ export type QueryMdsLoadVersionLogArgs = {
  * 现行 GraphQL 规范不支持空对象，因此添加一个无用字段 `_` 以保证各 GraphQL 实现可以正常解析此 Schema
  * 空的Query和Mutation是为了其它文件中的Query和Mutation都可以无差别的使用extend关键字
  */
+export type QueryMdsMetricClassListArgs = {
+  superClassCd?: Maybe<Scalars["String"]>;
+};
+
+/**
+ * 现行 GraphQL 规范不支持空对象，因此添加一个无用字段 `_` 以保证各 GraphQL 实现可以正常解析此 Schema
+ * 空的Query和Mutation是为了其它文件中的Query和Mutation都可以无差别的使用extend关键字
+ */
+export type QueryMdsMetricPageArgs = {
+  input?: Maybe<MdsMetricFindCondition>;
+};
+
+/**
+ * 现行 GraphQL 规范不支持空对象，因此添加一个无用字段 `_` 以保证各 GraphQL 实现可以正常解析此 Schema
+ * 空的Query和Mutation是为了其它文件中的Query和Mutation都可以无差别的使用extend关键字
+ */
+export type QueryMdsMetricViewArgs = {
+  id?: Maybe<Scalars["ID"]>;
+};
+
+/**
+ * 现行 GraphQL 规范不支持空对象，因此添加一个无用字段 `_` 以保证各 GraphQL 实现可以正常解析此 Schema
+ * 空的Query和Mutation是为了其它文件中的Query和Mutation都可以无差别的使用extend关键字
+ */
 export type QueryMdsScheduleQueryArgs = {
   input?: Maybe<MdsTechCataScheduleCondition>;
 };
@@ -2885,22 +3104,11 @@ export type FindLabelByLabelTypesQuery = {
   result?:
     | Array<
         | {
-            __typename?: "LabelDTO";
+            __typename?: "LabelAPIDTO";
             id?: string | null | undefined;
-            tenantId?: string | null | undefined;
-            description?: string | null | undefined;
             name?: string | null | undefined;
             code?: string | null | undefined;
             type?: LabelType | null | undefined;
-            principal?: string | null | undefined;
-            principalName?: string | null | undefined;
-            creator?: string | null | undefined;
-            creatorName?: string | null | undefined;
-            createTm?: any | null | undefined;
-            modifier?: string | null | undefined;
-            modifierName?: string | null | undefined;
-            modifyTm?: any | null | undefined;
-            isDelete?: boolean | null | undefined;
           }
         | null
         | undefined
@@ -2918,37 +3126,26 @@ export type FindAllNotMountQuery = {
   result?:
     | {
         __typename?: "MdsObjectAPIDTOResult";
-        code?: number | null | undefined;
-        message?: string | null | undefined;
+        total: string;
+        offset: number;
+        size: number;
         data?:
-          | {
-              __typename?: "PageWrap";
-              total: string;
-              offset: number;
-              size: number;
-              data?:
-                | Array<
-                    | {
-                        __typename?: "MdsObjectAPIDTO";
-                        id?: string | null | undefined;
-                        tenantId?: string | null | undefined;
-                        name?: string | null | undefined;
-                        description?: string | null | undefined;
-                        dataBaseName?: string | null | undefined;
-                        mdsObjectTypeEnum?:
-                          | MdsObjectTypeEnum
-                          | null
-                          | undefined;
-                        dbSourceType?: DbSourceTypeEnum | null | undefined;
-                        createTm?: any | null | undefined;
-                        primaryKey?: string | null | undefined;
-                      }
-                    | null
-                    | undefined
-                  >
-                | null
-                | undefined;
-            }
+          | Array<
+              | {
+                  __typename?: "MdsObjectAPIDTO";
+                  id?: string | null | undefined;
+                  tenantId?: string | null | undefined;
+                  name?: string | null | undefined;
+                  description?: string | null | undefined;
+                  dataBaseName?: string | null | undefined;
+                  mdsObjectTypeEnum?: MdsObjectTypeEnum | null | undefined;
+                  dbSourceType?: DbSourceTypeEnum | null | undefined;
+                  createTm?: any | null | undefined;
+                  primaryKey?: string | null | undefined;
+                }
+              | null
+              | undefined
+            >
           | null
           | undefined;
       }
@@ -2960,20 +3157,9 @@ export const FindLabelByLabelTypesDocument = gql`
   query findLabelByLabelTypes($labelTypes: [String]!) {
     result: findLabelByLabelTypes(labelTypes: $labelTypes) {
       id
-      tenantId
-      description
       name
       code
       type
-      principal
-      principalName
-      creator
-      creatorName
-      createTm
-      modifier
-      modifierName
-      modifyTm
-      isDelete
     }
   }
 `;
@@ -3029,23 +3215,19 @@ export type FindLabelByLabelTypesQueryCompositionFunctionResult =
 export const FindAllNotMountDocument = gql`
   query findAllNotMount($input: MetadataObjectNotMountCondition) {
     result: findAllNotMount(input: $input) {
-      code
-      message
+      total
+      offset
+      size
       data {
-        total
-        offset
-        size
-        data {
-          id
-          tenantId
-          name
-          description
-          dataBaseName
-          mdsObjectTypeEnum
-          dbSourceType
-          createTm
-          primaryKey
-        }
+        id
+        tenantId
+        name
+        description
+        dataBaseName
+        mdsObjectTypeEnum
+        dbSourceType
+        createTm
+        primaryKey
       }
     }
   }

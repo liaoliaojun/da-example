@@ -54,9 +54,9 @@ export const errorLink = onError(({graphQLErrors, networkError, operation, forwa
           console.error('用户未登录')
           handle401()
         } else if (code === '500') {
-          ElMessage({type: 'error', duration: 0, showClose: true, message: '后端服务不可用，请联系管理员 '})
+          ElMessage({type: 'error', duration: 3000, showClose: true, message: '后端服务不可用，请联系管理员 '})
         } else if (message) {
-          ElMessage({type: 'error', duration: 0, showClose: true, message})
+          ElMessage({type: 'error', duration: 3000, showClose: true, message})
         }
         console.log(extensions)
       }

@@ -8,15 +8,12 @@
       :cm-props="{
         searchId: 'searchDemo',
       }"
-      :hide-com-list="true"
-      :hide-expand-button="true"
       :show-com-pop="true"
-      :advanced="advanced"
       @search="handlerSearch"
     >
-      <ej-texts v-model="state.cycle" :options="options.cycle" prop="cycle" label="数据层次" />
-      <ej-texts v-model="state.type" :options="options.type" prop="type" label="业务主题" />
-      <ej-texts v-model="state.type" :options="options.type" prop="type" label="业务系统" />
+      <ej-texts v-model="state.datalevel" :options="options.datalevel" prop="datalevel" label="数据层次" />
+      <ej-texts v-model="state.buztopic" :options="options.buztopic" prop="buztopic" label="业务主题" />
+      <ej-texts v-model="state.buzsys" :options="options.buzsys" prop="buzsys" label="业务系统" />
     </ej-search>
 
     <el-table border stripe highlight-current-row :data="tableData">
@@ -31,18 +28,18 @@
       <el-table-column prop="createTm" label="创建时间" />
     </el-table>
 
-    <div>
-      <el-button size="small" @click="handlerConfirm">确定</el-button>
-      <el-button size="small" @click="handlerCancel">取消</el-button>
+    <div class="text-center mt-4">
+      <el-button type="primary" @click="handlerConfirm">确定</el-button>
+      <el-button type="primary" plain @click="handlerCancel">取消</el-button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import {ref} from 'vue'
+  import {ref, reactive, computed} from 'vue'
   import {useResult} from '@vue/apollo-composable'
-  import {useRouter} from 'vue-router'
-  import {useFindAllNotMountQuery} from '~~/codegen/mds'
+  import {useRoute, useRouter} from 'vue-router'
+  import {FindLabelByLabelTypesQuery, useFindAllNotMountQuery} from '~~/codegen/mds'
   import useApolloClient from '~/utils/apollo-client'
   import MDS_QUERY_LABEL from '~/graphql/mds/query_label.gql'
 
@@ -52,6 +49,7 @@
     业务系统 = 'BUZSYS',
   }
 
+  const route = useRoute()
   const router = useRouter()
 
   const keyword = ref('')
@@ -59,16 +57,26 @@
   const limit = ref(30)
   const total = ref(0)
   const state = ref({
-    cycle: '',
-    type: '',
+    // 数据层次
+    datalevel: null,
+    // 业主主题
+    buztopic: null,
+    // 业务系统
+    buzsys: null,
   })
+  const options = reactive<any>({
+    datalevel: [],
+    buztopic: [],
+    buzsys: [],
+  })
+  const menuId = computed(() => route.query?.id?.toString() ?? '-1')
   const getSearchInput = () => {
     return {
-      nodeId: '',
+      nodeId: menuId.value,
       buzType: '0',
-      datalevel: '',
-      buztopic: '',
-      buzsys: '',
+      datalevel: state.value.datalevel,
+      buztopic: state.value.buztopic,
+      buzsys: state.value.buzsys,
       // 取数偏移
       offset: (currentPage.value - 1) * limit.value,
       // 取数范围
@@ -77,13 +85,13 @@
       keyword: keyword.value,
     }
   }
-  const {result, onResult} = useFindAllNotMountQuery({input: getSearchInput()}, {clientId: 'mdsClient'})
+  const {result, refetch, onResult} = useFindAllNotMountQuery({input: getSearchInput()}, {clientId: 'mdsClient'})
 
   const tableData: any = useResult(result, [], (res) => {
-    return res.result.data.data
+    return res.result.data
   })
   onResult((res) => {
-    total.value = Number(res.data?.result?.data?.total ?? 0)
+    total.value = Number(res.data?.result?.total ?? 0)
   })
 
   const queryMdsLabel = (labelTypes: MdsMountLabels[]) => {
@@ -96,30 +104,30 @@
     })
   }
 
-  queryMdsLabel([MdsMountLabels['业务主题'], MdsMountLabels['业务系统'], MdsMountLabels['数据层次']]).then((res: any) => {
-    console.log(res)
+  queryMdsLabel([MdsMountLabels['数据层次'], MdsMountLabels['业务主题'], MdsMountLabels['业务系统']]).then((res: {data: FindLabelByLabelTypesQuery}) => {
+    const result = res.data?.result ?? []
+    options.datalevel = result.filter((item) => {
+      // @ts-ignore
+      return (item.type as MdsMountLabels) === MdsMountLabels['数据层次']
+    }).map(item => {
+      return {label: item?.name ?? '', value: item?.id ?? ''}
+    }) ?? []
+    options.buztopic = result.filter((item) => {
+      // @ts-ignore
+      return (item.type as MdsMountLabels) === MdsMountLabels['业务主题']
+    }).map(item => {
+      return {label: item?.name ?? '', value: item?.id ?? ''}
+    }) ?? []
+    options.buzsys = result.filter((item) => {
+      // @ts-ignore
+      return (item.type as MdsMountLabels) === MdsMountLabels['业务系统']
+    }).map(item => {
+      return {label: item?.name ?? '', value: item?.id ?? ''}
+    }) ?? []
   })
 
-  const options = {
-    cycle: [
-      {value: '1', label: '每日'},
-      {value: '2', label: '每月'},
-      {value: '3', label: '每季'},
-      {value: '4', label: '每半年'},
-      {value: '5', label: '每年'},
-    ],
-    type: [
-      {value: '1', label: 'POS'},
-      {value: '2', label: 'ACCOUNT'},
-      {value: '3', label: 'DEVELEP'},
-      {value: '4', label: 'FINANCE'},
-    ],
-  }
-
-  const advanced = ref(true)
-
-  const handlerSearch = (params: any, type: any) => {
-    console.log(params, type)
+  const handlerSearch = (_params: any, _type: any) => {
+    refetch({input: getSearchInput()})
   }
   const handlerConfirm = () => {
     router.back()

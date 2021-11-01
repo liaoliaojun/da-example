@@ -512,6 +512,7 @@ export type DaQueryMenuListQuery = {
         menuName: string;
         parentId?: string | null | undefined;
         menuType: MenuManagementEnum;
+        menuManagementType?: MenuManagementTypeEnum | null | undefined;
       }
     | null
     | undefined
@@ -773,6 +774,7 @@ export const DaQueryMenuListDocument = gql`
       menuName
       parentId
       menuType
+      menuManagementType
     }
   }
 `;
