@@ -108,13 +108,10 @@
     addState.isEdit = true
     addState.node = node
     addState.nodeData = data
+    form.value.name = data.label
   }
   //删除
   const deleteTree = (data: any, node: any) => {
-    if (node?.parent) {
-      ElMessage.error('不允许删除顶级节点')
-      return
-    }
     if (node?.childNodes?.length) {
       ElMessage.error('请先删除子文件')
       return
@@ -158,21 +155,20 @@
             },
           }).then((res) => {
             if (res?.data?.result) {
-              ElMessage.success('添加目录/文件成功')
-              addState.nodeData.isLeaf = form.value.type === MenuManagementTypeEnum['File']
-              addState.nodeData.leaf = form.value.type === MenuManagementTypeEnum['File']
+              const isFile = form.value.type === MenuManagementTypeEnum['File']
               const newChild = {
                 id: res.data.result,
                 label: value,
-                icon: 'file',
-                isLeaf: form.value.type === MenuManagementTypeEnum['File'],
-                leaf: form.value.type === MenuManagementTypeEnum['File'],
+                icon: isFile ? 'file' : 'folder',
+                isLeaf: isFile,
               }
+              addState.nodeData.isLeaf = isFile
               if (addState.nodeData?.children?.length) {
                 addState.nodeData.children.push(newChild)
               } else {
                 addState.nodeData.children = [newChild]
               }
+              ElMessage.success('添加目录/文件成功')
               onCancel()
             }
           })
@@ -192,7 +188,27 @@
     router.replace({query: {id: data.id}})
   }
   const onMoreClick = ({data, node}: any) => {
-    console.log(`${data}的更多操作列表`, node)
+    if (node.level === 1) {
+      contextMenu.value = [
+        {command: 'addDir', label: '添加'},
+        {command: 'rename', label: '重命名'},
+      ]
+      return
+    }
+
+    if (data.isLeaf) {
+      contextMenu.value = [
+        //{command: 'addDir', label: '添加'},
+        {command: 'remove', label: '删除'},
+        {command: 'rename', label: '重命名'},
+      ]
+    } else {
+      contextMenu.value = [
+        {command: 'addDir', label: '添加'},
+        {command: 'remove', label: '删除'},
+        {command: 'rename', label: '重命名'},
+      ]
+    }
   }
   const onCommand = ({commands, data, node}: any) => {
     if (commands?.[0] === 'addDir') {
@@ -238,7 +254,6 @@
           pid: item?.parentId ?? '',
           label: item?.menuName ?? '',
           icon: isFile ? 'file' : 'folder',
-          leaf: isFile,
           isLeaf: isFile,
           children: isFile ? null: [],
         }
