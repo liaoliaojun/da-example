@@ -223,7 +223,6 @@
   const loadNode = async (node: any, resolve: any) => {
     if (node.level === 0) {
       const data = await queryTree('-1').catch(() => resolve([]))
-      console.log(data)
       nextTick(() => {
         if (!node.childNodes?.[0]) return
         node.childNodes[0].expanded = true
@@ -232,7 +231,6 @@
       return resolve(data)
     } else {
       const data = await queryTree(node.data.id).catch(() => resolve([]))
-      console.log(data)
       return resolve(data)
     }
   }

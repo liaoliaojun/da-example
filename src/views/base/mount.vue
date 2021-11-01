@@ -17,15 +17,15 @@
     </ej-search>
 
     <el-table border stripe highlight-current-row :data="tableData">
-      <el-table-column type="selection" width="40" prop="select" />
-      <el-table-column prop="name" label="所属系统" />
-      <el-table-column prop="dataBaseName" label="数据库" />
-      <el-table-column prop="name" label="英文名" />
-      <el-table-column prop="name" label="中文名" />
-      <el-table-column prop="mdsObjectTypeEnum" label="类型" />
-      <el-table-column prop="primaryKey" label="主键" />
-      <el-table-column prop="dbSourceType" label="数据库类型" />
-      <el-table-column prop="createTm" label="创建时间" />
+      <el-table-column show-overflow-tooltip type="selection" width="40" prop="select" />
+      <el-table-column show-overflow-tooltip prop="name" label="所属系统" />
+      <el-table-column show-overflow-tooltip prop="dataBaseName" label="数据库" />
+      <el-table-column show-overflow-tooltip prop="name" label="英文名" />
+      <el-table-column show-overflow-tooltip prop="name" label="中文名" />
+      <el-table-column show-overflow-tooltip prop="mdsObjectTypeEnum" label="类型" width="60" />
+      <el-table-column show-overflow-tooltip prop="primaryKey" label="主键" />
+      <el-table-column show-overflow-tooltip prop="dbSourceType" label="数据库类型" />
+      <el-table-column show-overflow-tooltip prop="createTm" label="创建时间" />
     </el-table>
 
     <div class="text-center mt-4">
@@ -41,12 +41,22 @@
   import {useRoute, useRouter} from 'vue-router'
   import {FindLabelByLabelTypesQuery, useFindAllNotMountQuery} from '~~/codegen/mds'
   import useApolloClient from '~/utils/apollo-client'
+  // @ts-ignore
+  import {formatDate} from '~/utils/date'
   import MDS_QUERY_LABEL from '~/graphql/mds/query_label.gql'
 
   enum MdsMountLabels {
     数据层次 = 'DATALEVEL',
     业务主题 = 'BUZTOPIC',
     业务系统 = 'BUZSYS',
+  }
+
+  enum MdsObjectTypeCn {
+    TABLE = '表',
+    FILE = '文件',
+    INTERFACE = '接口',
+    NONE = '--',
+    VIEW = '页面',
   }
 
   const route = useRoute()
@@ -88,7 +98,9 @@
   const {result, refetch, onResult} = useFindAllNotMountQuery({input: getSearchInput()}, {clientId: 'mdsClient'})
 
   const tableData: any = useResult(result, [], (res) => {
-    return res.result.data
+    return res.result.data.map(item => {
+      return {...item, mdsObjectTypeEnum: MdsObjectTypeCn[item.mdsObjectTypeEnum], createTm: formatDate(item.createTm)}
+    })
   })
   onResult((res) => {
     total.value = Number(res.data?.result?.total ?? 0)
