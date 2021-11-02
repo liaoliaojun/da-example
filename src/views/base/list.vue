@@ -43,13 +43,13 @@
 
     <div class="text-right">
       <el-table border small stripe checkbox highlight-current-row :data="tableData" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" align="center" />
-        <el-table-column prop="tableData" label="所属系统" />
-        <el-table-column prop="dataBaseName" label="数据库" />
-        <el-table-column prop="englishName" label="英文名" />
-        <el-table-column prop="chineseName" label="中文名" />
-        <el-table-column prop="mdsType" label="数据类型" />
-        <el-table-column prop="useStatusCn" label="使用状态" />
+        <el-table-column show-overflow-tooltip type="selection" align="center" />
+        <el-table-column show-overflow-tooltip prop="tableData" label="所属系统" />
+        <el-table-column show-overflow-tooltip prop="dataBaseName" label="数据库" />
+        <el-table-column show-overflow-tooltip prop="englishName" label="英文名" />
+        <el-table-column show-overflow-tooltip prop="chineseName" label="中文名" />
+        <el-table-column show-overflow-tooltip prop="mdsType" label="数据类型" />
+        <el-table-column show-overflow-tooltip prop="useStatusCn" label="使用状态" />
         <el-table-column label="操作" width="100">
           <template #default="scope">
             <el-button type="text">详情</el-button>

@@ -137,9 +137,12 @@
   }
 
   const onSubmit = () => {
+    // console.log(addState.node)
+    // if (addState.node !== 1) return
     formRef.value?.validate((valid: boolean) => {
       if (valid) {
         const value = form.value.name
+        // 编辑
         if (addState.isEdit) {
           updateFolder({
             input: {
@@ -156,6 +159,7 @@
             }
           })
         } else {
+          // 新增
           updateFolder({
             input: {
               parentId: addState.nodeData.id,

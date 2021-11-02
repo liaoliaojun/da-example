@@ -25,7 +25,7 @@
         <el-table-column show-overflow-tooltip prop="mdsObjectTypeEnumCn" label="类型" width="60" align="center" />
         <el-table-column show-overflow-tooltip prop="primaryKey" label="主键" />
         <el-table-column show-overflow-tooltip prop="dbSourceType" label="数据库类型" />
-        <el-table-column show-overflow-tooltip prop="createTmCn" label="创建时间" />
+        <el-table-column prop="createTmCn" label="创建时间" />
       </el-table>
     </div>
     <div class="flex justify-end mt-2">
