@@ -18,7 +18,7 @@
     <div class="flex-1">
       <el-table border stripe highlight-current-row :data="tableData" height="100%" @selection-change="handleSelectionChange">
         <el-table-column show-overflow-tooltip type="selection" width="40" prop="select" />
-        <el-table-column show-overflow-tooltip prop="buzsys" label="所属系统" />
+        <el-table-column show-overflow-tooltip prop="buzsys" label="所属系统" width="100" />
         <el-table-column show-overflow-tooltip prop="dataBaseName" label="数据库" />
         <el-table-column show-overflow-tooltip prop="name" label="英文名" />
         <el-table-column show-overflow-tooltip prop="description" label="中文名" />
