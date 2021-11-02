@@ -1,0 +1,4 @@
+# 批量删除基础资产
+mutation daBatchDelBasicAssets($basicAssetIds: [ID!]!, $menuId: ID!) {
+  result: daBatchDelBasicAssets(basicAssetIds: $basicAssetIds, menuId: $menuId)
+}

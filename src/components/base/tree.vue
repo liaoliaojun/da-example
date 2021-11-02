@@ -91,7 +91,7 @@
   // 更新
   const {mutate: updateFolder} = useDaSaveOrUpdateMenuMutation({})
   // 删除
-  const {mutate: deleteFolder} = useDaDelMenuMutation({})
+  const {mutate: delFolder} = useDaDelMenuMutation({})
   const props = defineProps({
     type: {
       type: String as PropType<MenuManagementEnum>,
@@ -119,8 +119,9 @@
       ElMessage.error('请先删除子文件')
       return
     }
-    deleteFolder({
+    delFolder({
       menuIds: [data.id],
+      menuType: props.type,
     }).then((res) => {
       if (res?.data?.result) {
         ElMessage.success('删除文件夹/节点成功')

@@ -23,15 +23,15 @@
       </ej-layer>
     </ej-search>
     <div class="flex flex-row-reverse mb-2">
-      <el-button size="small" style="margin-left: 10px;">
+      <el-button :disabled="!multipleSelectionIds.length" size="small" style="margin-left: 10px;" @click="handlerStop">
         <ej-icon style="width: 14px; height: 14px;" icon="checkin" class="inline-block" />
         <span class="ml-1">停用</span>
       </el-button>
-      <el-button size="small">
+      <el-button :disabled="!multipleSelectionIds.length" size="small" @click="handlerStart">
         <ej-icon style="width: 14px; height: 14px;" icon="checkin" class="inline-block" />
         <span class="ml-1">启用</span>
       </el-button>
-      <el-button size="small">
+      <el-button :disabled="!multipleSelectionIds.length" size="small" @click="handlerDelete">
         <ej-icon style="width: 14px; height: 14px;" icon="checkin" class="inline-block" />
         <span class="ml-1">删除</span>
       </el-button>
@@ -42,14 +42,14 @@
     </div>
 
     <div class="text-right">
-      <el-table border small stripe checkbox highlight-current-row :data="tableData">
+      <el-table border small stripe checkbox highlight-current-row :data="tableData" @selection-change="handleSelectionChange">
         <el-table-column type="selection" align="center" />
         <el-table-column prop="tableData" label="所属系统" />
         <el-table-column prop="dataBaseName" label="数据库" />
         <el-table-column prop="englishName" label="英文名" />
         <el-table-column prop="chineseName" label="中文名" />
         <el-table-column prop="mdsType" label="数据类型" />
-        <el-table-column prop="useStatus" label="使用状态" />
+        <el-table-column prop="useStatusCn" label="使用状态" />
         <el-table-column prop="name" label="操作" />
       </el-table>
       <div class="flex justify-end mt-2">
@@ -71,7 +71,7 @@
   import {useRoute, useRouter} from 'vue-router'
   import {useResult} from '@vue/apollo-composable'
   import useBreadcrumb from '~/hooks/breadcrumb'
-  import {BasicAssetManagementSortEnum, MenuManagementTypeEnum, useDaPageQueryBasicAssetQuery} from '~~/codegen/index'
+  import {BasicAssetManagement, BasicAssetManagementSortEnum, MenuManagementTypeEnum, useDaPageQueryBasicAssetQuery, useDaBatchDelBasicAssetsMutation, useDaBatchSetUseStatusMutation} from '~~/codegen/index'
 
   const route = useRoute()
   const router = useRouter()
@@ -83,6 +83,10 @@
   const currentPage = ref(1)
   const limit = ref(30)
   const total = ref(0)
+  const multipleSelection = ref<BasicAssetManagement[]>([])
+  const multipleSelectionIds = computed(() => {
+    return multipleSelection.value?.map(i => i.id ?? '') ?? []
+  })
   const changePage = () => {
     refetch({input: getSearchInput()})
   }
@@ -93,6 +97,9 @@
     {path: '/', label: '首页'},
     {label: '基础资产管理'},
   ])
+  const handleSelectionChange = (val: BasicAssetManagement[]) => {
+    multipleSelection.value = val
+  }
 
   const getSearchInput = () => {
     return {
@@ -118,15 +125,73 @@
   const {loading, result, onResult, refetch} = useDaPageQueryBasicAssetQuery({
     input: getSearchInput(),
   })
+  const {mutate: delMutate} = useDaBatchDelBasicAssetsMutation({})
+  const {mutate: setMutate} = useDaBatchSetUseStatusMutation({})
 
   onResult((res) => {
     total.value = res.data.result?.total ?? 0
   })
 
+  const handlerStop = () => {
+    if (!multipleSelectionIds.value.length) {
+      ElMessage.error('请选择要停用的列表')
+      return
+    }
+    // 是否
+    if (multipleSelection.value.some(item => item.useStatus === false)) {
+      ElMessage.error('选中列表中，有已经停用的资产')
+      return
+    }
+    setMutate({
+      basicAssetIds: multipleSelectionIds.value,
+      useStatus: false,
+    }).then((res: any) => {
+      if (res.data.result) {
+        ElMessage.success('停用成功')
+        refetch({input: getSearchInput()})
+      }
+    })
+  }
+  const handlerStart = () => {
+    if (!multipleSelectionIds.value.length) {
+      ElMessage.error('请选择要启用的列表')
+      return
+    }
+    // 是否
+    if (multipleSelection.value.some(item => item.useStatus === true)) {
+      ElMessage.error('选中列表中，有已经启用的资产')
+      return
+    }
+    setMutate({
+      basicAssetIds: multipleSelectionIds.value,
+      useStatus: true,
+    }).then((res: any) => {
+      if (res.data.result) {
+        ElMessage.success('启用成功')
+        refetch({input: getSearchInput()})
+      }
+    })
+  }
+  const handlerDelete = () => {
+    if (!multipleSelectionIds.value.length) {
+      ElMessage.error('请选择要删除的列表')
+      return
+    }
+    delMutate({
+      basicAssetIds: multipleSelectionIds.value,
+      menuId: route.query?.treeId?.toString() ?? '',
+    }).then((res: any) => {
+      if (res.data.result) {
+        ElMessage.success('删除成功')
+        refetch({input: getSearchInput()})
+      }
+    })
+  }
+
   // why any? @TODO: https://github.com/vuejs/vue-apollo/discussions/1261
   const tableData: any = useResult(result, [], (res) => {
     return res.result.data.map(item => {
-      return {...item, useStatus: item.useStatus ? '启用' : '停用'}
+      return {...item, useStatusCn: item.useStatus ? '启用' : '停用'}
     })
   })
 

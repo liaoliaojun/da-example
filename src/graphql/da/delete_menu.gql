@@ -1,0 +1,4 @@
+mutation daDelMenu ($menuIds: [ID!]!, $menuType: MenuManagementEnum!) {
+  result: daDelMenu (menuIds: $menuIds, menuType: $menuType)
+}
+

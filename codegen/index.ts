@@ -320,6 +320,7 @@ export type MutationControlAssetsArgs = {
 
 export type MutationDaBatchDelBasicAssetsArgs = {
   basicAssetIds: Array<Scalars["ID"]>;
+  menuId: Scalars["ID"];
 };
 
 export type MutationDaBatchSetUseStatusArgs = {
@@ -329,6 +330,7 @@ export type MutationDaBatchSetUseStatusArgs = {
 
 export type MutationDaDelMenuArgs = {
   menuIds: Array<Scalars["ID"]>;
+  menuType: MenuManagementEnum;
 };
 
 export type MutationDaMountingBasicAssetArgs = {
@@ -442,6 +444,16 @@ export type ReportPaginationResult = {
   total?: Maybe<Scalars["Int"]>;
 };
 
+export type DaBatchDelBasicAssetsMutationVariables = Exact<{
+  basicAssetIds: Array<Scalars["ID"]> | Scalars["ID"];
+  menuId: Scalars["ID"];
+}>;
+
+export type DaBatchDelBasicAssetsMutation = {
+  __typename?: "Mutation";
+  result?: boolean | null | undefined;
+};
+
 export type DaMountingBasicAssetMutationVariables = Exact<{
   input?: Maybe<BasicAssetManagementMountingInput>;
 }>;
@@ -489,8 +501,19 @@ export type DaPageQueryBasicAssetQuery = {
     | undefined;
 };
 
+export type DaBatchSetUseStatusMutationVariables = Exact<{
+  basicAssetIds: Array<Scalars["ID"]> | Scalars["ID"];
+  useStatus?: Maybe<Scalars["Boolean"]>;
+}>;
+
+export type DaBatchSetUseStatusMutation = {
+  __typename?: "Mutation";
+  result?: boolean | null | undefined;
+};
+
 export type DaDelMenuMutationVariables = Exact<{
   menuIds: Array<Scalars["ID"]> | Scalars["ID"];
+  menuType: MenuManagementEnum;
 }>;
 
 export type DaDelMenuMutation = {
@@ -650,6 +673,56 @@ export type DaSaveOrUpdateMenuMutation = {
   result: string;
 };
 
+export const DaBatchDelBasicAssetsDocument = gql`
+  mutation daBatchDelBasicAssets($basicAssetIds: [ID!]!, $menuId: ID!) {
+    result: daBatchDelBasicAssets(
+      basicAssetIds: $basicAssetIds
+      menuId: $menuId
+    )
+  }
+`;
+
+/**
+ * __useDaBatchDelBasicAssetsMutation__
+ *
+ * To run a mutation, you first call `useDaBatchDelBasicAssetsMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useDaBatchDelBasicAssetsMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useDaBatchDelBasicAssetsMutation({
+ *   variables: {
+ *     basicAssetIds: // value for 'basicAssetIds'
+ *     menuId: // value for 'menuId'
+ *   },
+ * });
+ */
+export function useDaBatchDelBasicAssetsMutation(
+  options:
+    | VueApolloComposable.UseMutationOptions<
+        DaBatchDelBasicAssetsMutation,
+        DaBatchDelBasicAssetsMutationVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseMutationOptions<
+          DaBatchDelBasicAssetsMutation,
+          DaBatchDelBasicAssetsMutationVariables
+        >
+      >
+) {
+  return VueApolloComposable.useMutation<
+    DaBatchDelBasicAssetsMutation,
+    DaBatchDelBasicAssetsMutationVariables
+  >(DaBatchDelBasicAssetsDocument, options);
+}
+export type DaBatchDelBasicAssetsMutationCompositionFunctionResult =
+  VueApolloComposable.UseMutationReturn<
+    DaBatchDelBasicAssetsMutation,
+    DaBatchDelBasicAssetsMutationVariables
+  >;
 export const DaMountingBasicAssetDocument = gql`
   mutation daMountingBasicAsset($input: BasicAssetManagementMountingInput) {
     result: daMountingBasicAsset(input: $input)
@@ -767,9 +840,59 @@ export type DaPageQueryBasicAssetQueryCompositionFunctionResult =
     DaPageQueryBasicAssetQuery,
     DaPageQueryBasicAssetQueryVariables
   >;
+export const DaBatchSetUseStatusDocument = gql`
+  mutation daBatchSetUseStatus($basicAssetIds: [ID!]!, $useStatus: Boolean) {
+    result: daBatchSetUseStatus(
+      basicAssetIds: $basicAssetIds
+      useStatus: $useStatus
+    )
+  }
+`;
+
+/**
+ * __useDaBatchSetUseStatusMutation__
+ *
+ * To run a mutation, you first call `useDaBatchSetUseStatusMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useDaBatchSetUseStatusMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useDaBatchSetUseStatusMutation({
+ *   variables: {
+ *     basicAssetIds: // value for 'basicAssetIds'
+ *     useStatus: // value for 'useStatus'
+ *   },
+ * });
+ */
+export function useDaBatchSetUseStatusMutation(
+  options:
+    | VueApolloComposable.UseMutationOptions<
+        DaBatchSetUseStatusMutation,
+        DaBatchSetUseStatusMutationVariables
+      >
+    | ReactiveFunction<
+        VueApolloComposable.UseMutationOptions<
+          DaBatchSetUseStatusMutation,
+          DaBatchSetUseStatusMutationVariables
+        >
+      >
+) {
+  return VueApolloComposable.useMutation<
+    DaBatchSetUseStatusMutation,
+    DaBatchSetUseStatusMutationVariables
+  >(DaBatchSetUseStatusDocument, options);
+}
+export type DaBatchSetUseStatusMutationCompositionFunctionResult =
+  VueApolloComposable.UseMutationReturn<
+    DaBatchSetUseStatusMutation,
+    DaBatchSetUseStatusMutationVariables
+  >;
 export const DaDelMenuDocument = gql`
-  mutation daDelMenu($menuIds: [ID!]!) {
-    result: daDelMenu(menuIds: $menuIds)
+  mutation daDelMenu($menuIds: [ID!]!, $menuType: MenuManagementEnum!) {
+    result: daDelMenu(menuIds: $menuIds, menuType: $menuType)
   }
 `;
 
@@ -787,6 +910,7 @@ export const DaDelMenuDocument = gql`
  * const { mutate, loading, error, onDone } = useDaDelMenuMutation({
  *   variables: {
  *     menuIds: // value for 'menuIds'
+ *     menuType: // value for 'menuType'
  *   },
  * });
  */

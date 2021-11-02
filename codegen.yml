@@ -5,6 +5,7 @@ generates:
   ./codegen/index.ts:
     schema: http://da-server.dev.jinxin.cloud/graphql
     documents:
+      - 'src/graphql/da/*.gql'
       - 'src/graphql/da/{*,**/**}.gql'
     plugins:
       - typescript

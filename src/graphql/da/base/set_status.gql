@@ -1,0 +1,4 @@
+# 批量启用/停用基础资产
+mutation daBatchSetUseStatus($basicAssetIds: [ID!]!, $useStatus: Boolean) {
+  result: daBatchSetUseStatus(basicAssetIds: $basicAssetIds, useStatus: $useStatus)
+}
