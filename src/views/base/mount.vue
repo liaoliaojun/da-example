@@ -5,11 +5,8 @@
       v-model:keyword="keyword"
       :keyword-props="{placeholder: '请输入内容'}"
       :immediate-search="true"
-      :cm-props="{
-        searchId: 'searchDemo',
-      }"
+      :hide-com-list="true"
       :default-expand-list="false"
-      :show-com-pop="true"
       label-suffix="："
       @search="handlerSearch"
     >

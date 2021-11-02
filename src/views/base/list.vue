@@ -3,24 +3,26 @@
     <ej-search 
       v-model:models="state"
       :immediate-search="true"
-      :cm-props="{
-        searchId: 'searchDemo',
-      }"
       :hide-com-list="true"
-      :hide-expand-button="true"
-      :show-com-pop="true"
-      :advanced="advanced"
+      :hide-expand-button="false"
       label-suffix="："
+      label-position="right"
       @search="handlerSearch"
     >
       <template #input>
-        <ej-search-input v-model="keyword" clearable width="300" placeholder="请输入内容2" maxlength="128" class="mr-1" @search="inputSearch()" />
+        <ej-search-input v-model="keyword" clearable width="300" placeholder="请输入关键词" maxlength="128" class="mr-1" @search="inputSearch()" />
         <el-button size="small" type="primary">重置</el-button>
       </template>
-      <ej-radio v-model="state.useStatus" :options="[{label: '启用', value: true}, {label: '停用', value: false}]" prop="useStatus" label="使用状态" label-suffix="：" />
-      <ej-texts v-model="state.buzsys" :options="options.buzsys" prop="buzsys" label="所属系统" label-suffix="：" />
+      <ej-radio v-model="state.useStatus" :options="[{label: '启用', value: true}, {label: '停用', value: false}]" prop="useStatus" label="使用状态" />
+      <ej-texts v-model="state.buzsys" :options="options.buzsys" prop="buzsys" label="数据类型" />
+      <ej-layer label="数据库：" >
+        <ej-input v-model="state.buzsys" size="mini" height="24" width="100" clearable />
+      </ej-layer>
+      <ej-layer label="所属系统：" >
+        <ej-input v-model="state.buzsys" size="mini" height="24" width="100" clearable />
+      </ej-layer>
     </ej-search>
-    <div class="flex flex-row-reverse mb-4">
+    <div class="flex flex-row-reverse mb-2">
       <el-button size="small" style="margin-left: 10px;">
         <ej-icon style="width: 14px; height: 14px;" icon="checkin" class="inline-block" />
         <span class="ml-1">停用</span>
@@ -136,8 +138,6 @@
       {value: 'seamodel', label: '模型'},
     ],
   }
-
-  const advanced = ref(true)
 
   const handlerSearch = (params: any, type: any) => {
     console.log(params, type)

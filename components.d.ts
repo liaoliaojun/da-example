@@ -5,6 +5,8 @@
 declare module 'vue' {
   export interface GlobalComponents {
     EjIcon: typeof import('@ej/ui')['EjIcon']
+    EjInput: typeof import('@ej/ui')['EjInput']
+    EjLayer: typeof import('@ej/ui')['EjLayer']
     EjRadio: typeof import('@ej/ui')['EjRadio']
     EjSearch: typeof import('@ej/ui')['EjSearch']
     EjSearchInput: typeof import('@ej/ui')['EjSearchInput']
