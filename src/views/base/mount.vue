@@ -8,7 +8,9 @@
       :cm-props="{
         searchId: 'searchDemo',
       }"
+      :default-expand-list="false"
       :show-com-pop="true"
+      label-suffix="："
       @search="handlerSearch"
     >
       <ej-texts v-model="state.datalevel" :options="options.datalevel" prop="datalevel" label="数据层次" />
@@ -28,6 +30,15 @@
         <el-table-column show-overflow-tooltip prop="dbSourceType" label="数据库类型" />
         <el-table-column show-overflow-tooltip prop="createTmCn" label="创建时间" />
       </el-table>
+    </div>
+    <div class="flex justify-end mt-2">
+      <el-pagination
+        layout="total, prev, pager, next, jumper"
+        :total="total"
+        :page-size="limit"
+        v-model:current-page="currentPage"
+        @current-change="changePage"
+      />
     </div>
 
     <div class="text-center w-full absolute bottom-0">
@@ -83,7 +94,7 @@
   const {setBreadcrumbList} = useBreadcrumb()
   setBreadcrumbList([
     {path: '/', label: '首页'},
-    {path: '/base/list', label: '基础资产管理'},
+    {path: `/base/list?${route.fullPath?.split('?')?.[1] || ''}`, label: '基础资产管理'},
     {label: '挂载基础资产'},
   ])
   const handleSelectionChange = (val: MdsObjectApidto[]) => {
@@ -109,6 +120,9 @@
       // 搜索关键字
       keyword: keyword.value,
     }
+  }
+  const changePage = () => {
+    refetch({input: getSearchInput()})
   }
   const {result, refetch, onResult, loading} = useFindAllNotMountQuery({input: getSearchInput()}, {clientId: 'mdsClient'})
   // 向资产挂载元数据
