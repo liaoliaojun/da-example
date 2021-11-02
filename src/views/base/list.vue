@@ -31,7 +31,7 @@
         <ej-icon style="width: 14px; height: 14px;" icon="checkin" class="inline-block" />
         <span class="ml-1">启用</span>
       </el-button>
-      <el-button :disabled="!multipleSelectionIds.length" size="small" @click="handlerDelete">
+      <el-button :disabled="!multipleSelectionIds.length" size="small" @click="handlerDelete()">
         <ej-icon style="width: 14px; height: 14px;" icon="checkin" class="inline-block" />
         <span class="ml-1">删除</span>
       </el-button>
@@ -50,7 +50,12 @@
         <el-table-column prop="chineseName" label="中文名" />
         <el-table-column prop="mdsType" label="数据类型" />
         <el-table-column prop="useStatusCn" label="使用状态" />
-        <el-table-column prop="name" label="操作" />
+        <el-table-column label="操作" width="100">
+          <template #default="scope">
+            <el-button type="text">详情</el-button>
+            <el-button type="text" @click="handlerDelete(scope.row.id)">删除</el-button>
+          </template>
+        </el-table-column>
       </el-table>
       <div class="flex justify-end mt-2">
         <el-pagination
@@ -172,13 +177,15 @@
       }
     })
   }
-  const handlerDelete = () => {
-    if (!multipleSelectionIds.value.length) {
-      ElMessage.error('请选择要删除的列表')
-      return
+  const handlerDelete = (id?: string) => {
+    if (!id) {
+      if (!multipleSelectionIds.value.length) {
+        ElMessage.error('请选择要删除的列表')
+        return
+      }
     }
     delMutate({
-      basicAssetIds: multipleSelectionIds.value,
+      basicAssetIds: id ? [id] : multipleSelectionIds.value,
       menuId: route.query?.treeId?.toString() ?? '',
     }).then((res: any) => {
       if (res.data.result) {
