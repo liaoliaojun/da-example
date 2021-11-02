@@ -97,7 +97,7 @@ export type BasicAssetManagement = {
   /** 数据库 */
   dataBaseName?: Maybe<Scalars["String"]>;
   /** 数据库类型 */
-  dbSourceType?: Maybe<DbSourceTypeEnum>;
+  dbSourceType?: Maybe<DbTypeEnum>;
   /** 英文名 */
   englishName?: Maybe<Scalars["String"]>;
   /** 主键id */
@@ -160,24 +160,14 @@ export enum BasicAssetManagementSortEnum {
   Desc = "DESC",
 }
 
-/** 元数据数据源类型 */
-export enum DbSourceTypeEnum {
-  Elasticsearch = "ELASTICSEARCH",
-  Gbase_8A = "GBASE_8A",
-  Hbase = "HBASE",
-  Hive2MysqlMetastore = "HIVE2_MYSQL_METASTORE",
-  MicrosoftSqlServer = "MICROSOFT_SQL_SERVER",
-  /** only update by json */
-  Mongodb = "MONGODB",
-  Mpp = "MPP",
+/** 元数据数据类型 */
+export enum DbTypeEnum {
+  Hive = "HIVE",
   Mysql = "MYSQL",
-  Mysql51 = "MYSQL51",
-  Mysql55 = "MYSQL55",
-  Mysql56 = "MYSQL56",
-  Mysql80 = "MYSQL80",
-  OraClE = "ORAClE",
-  OraClE11 = "ORAClE11",
+  None = "NONE",
+  Oracle = "ORACLE",
   Postgresql = "POSTGRESQL",
+  SqlServer = "SQLServer",
 }
 
 /** 接口元数据列表对象 */
@@ -232,11 +222,11 @@ export type MdsBasicAssetManagementData = {
   /** 所属系统 */
   buzsys?: Maybe<Scalars["String"]>;
   /** 中文名 */
-  chineseName: Scalars["String"];
+  chineseName?: Maybe<Scalars["String"]>;
   /** 数据库 */
   dataBaseName: Scalars["String"];
   /** 数据库类型 */
-  dbSourceType: DbSourceTypeEnum;
+  dbSourceType: DbTypeEnum;
   /** 英文名 */
   englishName: Scalars["String"];
   /** 元数据id */
@@ -486,7 +476,7 @@ export type DaPageQueryBasicAssetQuery = {
                   mdsType?: MdsObjectTypeEnum | null | undefined;
                   useStatus?: boolean | null | undefined;
                   menuId?: string | null | undefined;
-                  dbSourceType?: DbSourceTypeEnum | null | undefined;
+                  dbSourceType?: DbTypeEnum | null | undefined;
                   primaryKey?: string | null | undefined;
                 }
               | null

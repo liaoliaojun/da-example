@@ -6,7 +6,9 @@ query findAllNotMount ($input: MetadataObjectNotMountCondition) {
     data {
       id
       # 租户Id
-      tenantId
+      # tenantId
+      # 业务系统
+      buzsys
       # 表名
       name
       # 描述
@@ -16,8 +18,7 @@ query findAllNotMount ($input: MetadataObjectNotMountCondition) {
       # 元数据类型
       mdsObjectTypeEnum
       # 数据表对应的数据库的Type类型枚举
-      dbSourceType
-
+      dbType
       # 记录创建时间，create_tm insert记录时必须添加
       createTm
 

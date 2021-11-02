@@ -118,6 +118,15 @@ export type D4aMdsObjectField = {
   d4aUserCount?: Maybe<Scalars["Int"]>;
 };
 
+export enum DbTypeEnum {
+  Hive = "HIVE",
+  Mysql = "MYSQL",
+  None = "NONE",
+  Oracle = "ORACLE",
+  Postgresql = "POSTGRESQL",
+  SqlServer = "SQLServer",
+}
+
 /** DDL 版本对象 */
 export type DdlVersion = {
   __typename?: "DDLVersion";
@@ -1670,13 +1679,16 @@ export type MdsObject = {
 
 export type MdsObjectApidto = {
   __typename?: "MdsObjectAPIDTO";
+  /** 业务系统(业务系统) */
+  buzsys?: Maybe<Scalars["String"]>;
   /** 记录创建时间，create_tm insert记录时必须添加 */
   createTm?: Maybe<Scalars["LocalDateTime"]>;
   /** 数据库名 */
   dataBaseName?: Maybe<Scalars["String"]>;
   /** 数据表对应的数据库的Type类型枚举 */
   dbSourceType?: Maybe<DbSourceTypeEnum>;
-  /** 描述 */
+  dbType?: Maybe<DbTypeEnum>;
+  /** 中文名 */
   description?: Maybe<Scalars["String"]>;
   /** id */
   id?: Maybe<Scalars["ID"]>;
@@ -3134,12 +3146,12 @@ export type FindAllNotMountQuery = {
               | {
                   __typename?: "MdsObjectAPIDTO";
                   id?: string | null | undefined;
-                  tenantId?: string | null | undefined;
+                  buzsys?: string | null | undefined;
                   name?: string | null | undefined;
                   description?: string | null | undefined;
                   dataBaseName?: string | null | undefined;
                   mdsObjectTypeEnum?: MdsObjectTypeEnum | null | undefined;
-                  dbSourceType?: DbSourceTypeEnum | null | undefined;
+                  dbType?: DbTypeEnum | null | undefined;
                   createTm?: any | null | undefined;
                   primaryKey?: string | null | undefined;
                 }
@@ -3220,12 +3232,12 @@ export const FindAllNotMountDocument = gql`
       size
       data {
         id
-        tenantId
+        buzsys
         name
         description
         dataBaseName
         mdsObjectTypeEnum
-        dbSourceType
+        dbType
         createTm
         primaryKey
       }

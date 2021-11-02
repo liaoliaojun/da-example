@@ -19,7 +19,7 @@
     <div class="flex-1">
       <el-table border stripe highlight-current-row :data="tableData" height="100%" @selection-change="handleSelectionChange">
         <el-table-column show-overflow-tooltip type="selection" width="40" prop="select" />
-        <!-- <el-table-column show-overflow-tooltip prop="buzsys" label="所属系统" /> -->
+        <el-table-column show-overflow-tooltip prop="buzsys" label="所属系统" />
         <el-table-column show-overflow-tooltip prop="dataBaseName" label="数据库" />
         <el-table-column show-overflow-tooltip prop="name" label="英文名" />
         <el-table-column show-overflow-tooltip prop="description" label="中文名" />
@@ -45,6 +45,7 @@
   import {FindLabelByLabelTypesQuery, useFindAllNotMountQuery, MdsObjectApidto} from '~~/codegen/mds'
   import {useDaMountingBasicAssetMutation} from '~~/codegen/index'
   import useApolloClient from '~/utils/apollo-client'
+  import useBreadcrumb from '~/hooks/breadcrumb'
   // @ts-ignore
   import {formatDate} from '~/utils/date'
   import MDS_QUERY_LABEL from '~/graphql/mds/query_label.gql'
@@ -79,6 +80,12 @@
     // 业务系统
     buzsys: null,
   })
+  const {setBreadcrumbList} = useBreadcrumb()
+  setBreadcrumbList([
+    {path: '/', label: '首页'},
+    {path: '/base/list', label: '基础资产管理'},
+    {label: '挂载基础资产'},
+  ])
   const handleSelectionChange = (val: MdsObjectApidto[]) => {
     multipleSelection.value = val
   }
@@ -168,9 +175,9 @@
           return {
             mdsObjectId: item.id,
             mdsType: item.mdsObjectTypeEnum,
-            dbSourceType: item.dbSourceType || 'POSTGRESQL',
+            dbSourceType: item.dbType,
             // mdsObjectId: item.mdsObjectId,
-            // buzsys: item.buzsys,
+            buzsys: item.buzsys,
             dataBaseName: item.dataBaseName,
             englishName: item.name,
             chineseName: item.description,

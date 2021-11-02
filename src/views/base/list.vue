@@ -65,10 +65,11 @@
 
 <script setup lang="ts">
   import {ref, watch, computed} from 'vue'
+  import {ElMessage} from 'element-plus'
   import {useRoute, useRouter} from 'vue-router'
   import {useResult} from '@vue/apollo-composable'
+  import useBreadcrumb from '~/hooks/breadcrumb'
   import {BasicAssetManagementSortEnum, MenuManagementTypeEnum, useDaPageQueryBasicAssetQuery} from '~~/codegen/index'
-  import {ElMessage} from 'element-plus'
 
   const route = useRoute()
   const router = useRouter()
@@ -83,8 +84,13 @@
   const changePage = () => {
     refetch({input: getSearchInput()})
   }
-
   const menuType = computed(() => route.query.treeType)
+
+  const {setBreadcrumbList} = useBreadcrumb()
+  setBreadcrumbList([
+    {path: '/', label: '首页'},
+    {label: '基础资产管理'},
+  ])
 
   const getSearchInput = () => {
     return {

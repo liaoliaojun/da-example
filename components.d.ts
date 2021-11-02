@@ -11,6 +11,8 @@ declare module 'vue' {
     EjSplit: typeof import('@ej/ui')['EjSplit']
     EjTexts: typeof import('@ej/ui')['EjTexts']
     EjTree: typeof import('@ej/ui')['EjTree']
+    ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
+    ElBreadcrumbItem: typeof import('element-plus/es')['ElBreadcrumbItem']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCascader: typeof import('element-plus/es')['ElCascader']
     ElCollapseTransition: typeof import('element-plus/es')['ElCollapseTransition']
