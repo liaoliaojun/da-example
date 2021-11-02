@@ -1,6 +1,7 @@
 <template>
   <ej-search-input v-model="keyword" width="100%" size="small" clearable suffix-icon-style="icon" />
   <ej-tree
+    ref="treeRef"
     lazy
     node-key="id"
     :load="loadNode"
@@ -51,7 +52,7 @@
 
 <script setup lang="ts">
   import {ref, PropType, reactive, nextTick} from 'vue'
-  import {useRouter} from 'vue-router'
+  import {useRouter, useRoute} from 'vue-router'
   import {ElMessage} from 'element-plus'
   import 'element-plus/theme-chalk/src/overlay.scss'
   import 'element-plus/theme-chalk/src/message-box.scss'
@@ -61,7 +62,9 @@
   import {MenuManagementEnum, useDaDelMenuMutation, DaQueryMenuListQuery, useDaSaveOrUpdateMenuMutation, MenuManagementTypeEnum} from '~~/codegen/index'
   import type {ElForm} from 'element-plus'
 
+  const route = useRoute()
   const router = useRouter()
+  const treeRef = ref()
   const keyword = ref('')
   const addState = reactive<any>({
     // 添加弹出隐藏/显示
@@ -227,10 +230,22 @@
         if (!node.childNodes?.[0]) return
         node.childNodes[0].expanded = true
         node.childNodes[0].loadData()
+
+        // 选中url参数
+        if (route.query.treeId && data.map((item: any) => item.id).includes(route.query.treeId)) {
+          treeRef.value.setCurrentKey(route.query.treeId)
+        }
       })
       return resolve(data)
     } else {
       const data = await queryTree(node.data.id).catch(() => resolve([]))
+
+      // 选中url参数
+      nextTick(() => {
+        if (route.query.treeId && data.map((item: any) => item.id).includes(route.query.treeId)) {
+          treeRef.value.setCurrentKey(route.query.treeId)
+        }
+      })
       return resolve(data)
     }
   }
