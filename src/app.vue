@@ -1,6 +1,6 @@
 <template>
   <el-config-provider :locale="locale">
-    <ul class="flex ml-5 theme-text text-xl whitespace-nowrap">
+    <ul class="flex ml-2 mt-2 theme-text text-xl whitespace-nowrap">
       <router-link to="/" tag="li" class="mr-4">首页</router-link>
       <router-link to="/base" tag="li" class="mr-4">基础资产管理</router-link>
       <router-link to="/report" tag="li" class="mr-4">报表资产管理</router-link>
@@ -16,7 +16,7 @@
         v-if="breadcrumbList.length"
         separator-class="el-icon-arrow-right"
         class="text-base"
-        style="height: 36px; padding-top: 11px; min-height: 36px"
+        style="height: 22px; min-height: 22px"
       >
         <el-breadcrumb-item
           v-for="(item, index) in breadcrumbList"
