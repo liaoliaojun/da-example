@@ -117,17 +117,23 @@
   const deleteTree = (data: any, node: any) => {
     if (node?.childNodes?.length) {
       ElMessage.error('请先删除子文件')
-      return
+    } else if (!node.data?.loaded && node.data.type === MenuManagementTypeEnum['Folder']) {
+      // @TODU: 如果没有子节点，且未加载过子节点列表(data.loaded = false)则加载子节点
+      node.expanded = true
+      node.loadData()
+      ElMessage.warning('请展开文件夹后重试')
+    } else {
+      // 如果已经加载过子节点(data.loaded = true)，则直接删除
+      delFolder({
+        menuIds: [data.id],
+        menuType: props.type,
+      }).then((res) => {
+        if (res?.data?.result) {
+          ElMessage.success('删除文件夹/节点成功')
+          node.remove()
+        }
+      })
     }
-    delFolder({
-      menuIds: [data.id],
-      menuType: props.type,
-    }).then((res) => {
-      if (res?.data?.result) {
-        ElMessage.success('删除文件夹/节点成功')
-        node.remove()
-      }
-    })
   }
 
   const onSubmit = () => {
@@ -239,6 +245,8 @@
           treeRef.value.setCurrentKey(route.query.treeId)
         }
       })
+      // 已经加载过子节点
+      node.data.loaded = true
       return resolve(data)
     } else {
       const data = await queryTree(node.data.id).catch(() => resolve([]))
@@ -249,6 +257,8 @@
           treeRef.value.setCurrentKey(route.query.treeId)
         }
       })
+      // 已经加载过子节点
+      node.data.loaded = true
       return resolve(data)
     }
   }
