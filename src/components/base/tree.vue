@@ -162,9 +162,11 @@
               const isFile = form.value.type === MenuManagementTypeEnum['File']
               const newChild = {
                 id: res.data.result,
+                pid: addState.nodeData.id,
                 label: value,
                 icon: isFile ? 'file' : 'folder',
                 isLeaf: isFile,
+                type: form.value.type,
               }
               addState.nodeData.isLeaf = isFile
               if (addState.nodeData?.children?.length) {
