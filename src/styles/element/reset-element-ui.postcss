@@ -21,7 +21,7 @@ $pagination-disabled-border-color:#C1C7CD;
 $light-dark: #d9d9d9;
 $steps-process: #FAAD14;
 
-#app {
+body {
   .el {
     /*  面包屑 */
     &-breadcrumb {
@@ -104,128 +104,6 @@ $steps-process: #FAAD14;
       @apply red:text-red-500 green:text-green-500 orange:text-orange-500 darkblue:text-darkblue-500 purple:text-purple-500 red:border-red-500 green:border-green-500 orange:border-orange-500 darkblue:border-darkblue-500 purple:border-purple-500;
       /* background-color: $primary; */
       /* border-color: $primary; */
-    }
-
-    /*  表格 */
-    &-table {
-      font-size: 14px;
-
-      &__fixed-right::before,
-      &__fixed::before {
-        background-color: $table-border-color;
-      }
-
-      /*  表头,固定表头 */
-      &__header-wrapper,
-      &__fixed-header-wrapper {
-
-        /*  header高度 */
-        th {
-          background-color: $table-header-bg !important;
-          color: $text-second-color;
-          padding: 0 0;
-          font-weight: 500;
-          line-height: 0;
-          font-size: 14px;
-
-          .cell {
-            line-height: 20px;
-
-            /*  排序 */
-            .caret-wrapper {
-              height: 14px;
-
-              .sort-caret.ascending {
-                top: -5px;
-              }
-
-              .sort-caret.descending {
-                bottom: -4px;
-              }
-            }
-          }
-        }
-      }
-
-      /*  body高度 */
-      td {
-        color: $text-third-color;
-        padding: 6px 0;
-        font-size: 14px;
-
-        .cell {
-          line-height: 24px;
-        }
-      }
-
-      /* 边框 */
-      &--border {
-        border-color: $table-border-color;
-
-        &::before,
-        &::after {
-          background-color: $table-border-color;
-        }
-
-        th,
-        td {
-          border-color: $table-border-color;
-
-          &.is-leaf {
-            border-color: $table-border-color;
-          }
-        }
-      }
-
-      /*  hover */
-      &__body tr:hover>td {
-        background-color: $table-hover-color !important;
-      }
-
-      /*  选中行 */
-      &__body tr.current-row>td {
-        background-color: $table-current-color !important;
-      }
-
-
-      /*  斑马格 */
-      &--striped .el-table__body tr.el-table__row--striped td {
-        background-color: $table-stripe-bg;
-      }
-
-      /*  small样式 */
-      &--small {
-        font-size: 14px;
-
-        .el-table__header-wrapper,
-        .el-table__fixed-header-wrapper {
-
-          th {
-            padding: 8px 0;
-            font-weight: 500;
-          }
-
-          /*  header高度 */
-          .has-gutter {
-            th {
-              padding: 8px 0;
-              font-weight: 500;
-            }
-          }
-        }
-
-        /*  body高度 */
-        td {
-          color: $text-third-color;
-          padding: 3px 0;
-        }
-      }
-
-      /*  按钮样式 */
-      .el-button.el-button--text {
-        padding: 0;
-      }
-
     }
 
     /*  分页 */
@@ -344,6 +222,129 @@ $steps-process: #FAAD14;
         &__label{
           padding:0 8px 0 0;
         }
+      }
+    }
+  }
+
+  #app {
+    /*  表格 */
+    .el-table {
+      font-size: 14px;
+
+      &__fixed-right::before,
+      &__fixed::before {
+        background-color: $table-border-color;
+      }
+
+      /*  表头,固定表头 */
+      &__header-wrapper,
+      &__fixed-header-wrapper {
+
+        /*  header高度 */
+        th {
+          background-color: $table-header-bg !important;
+          color: $text-second-color;
+          padding: 0 0;
+          font-weight: 500;
+          line-height: 0;
+          font-size: 14px;
+
+          .cell {
+            line-height: 20px;
+
+            /*  排序 */
+            .caret-wrapper {
+              height: 14px;
+
+              .sort-caret.ascending {
+                top: -5px;
+              }
+
+              .sort-caret.descending {
+                bottom: -4px;
+              }
+            }
+          }
+        }
+      }
+
+      /*  body高度 */
+      td {
+        color: $text-third-color;
+        padding: 6px 0;
+        font-size: 14px;
+
+        .cell {
+          line-height: 24px;
+        }
+      }
+
+      /* 边框 */
+      &--border {
+        border-color: $table-border-color;
+
+        &::before,
+        &::after {
+          background-color: $table-border-color;
+        }
+
+        th,
+        td {
+          border-color: $table-border-color;
+
+          &.is-leaf {
+            border-color: $table-border-color;
+          }
+        }
+      }
+
+      /*  hover */
+      &__body tr:hover>td {
+        background-color: $table-hover-color !important;
+      }
+
+      /*  选中行 */
+      &__body tr.current-row>td {
+        background-color: $table-current-color !important;
+      }
+
+
+      /*  斑马格 */
+      &--striped .el-table__body tr.el-table__row--striped td {
+        background-color: $table-stripe-bg;
+      }
+
+      /*  small样式 */
+      &--small {
+        font-size: 14px;
+
+        .el-table__header-wrapper,
+        .el-table__fixed-header-wrapper {
+
+          th {
+            padding: 8px 0;
+            font-weight: 500;
+          }
+
+          /*  header高度 */
+          .has-gutter {
+            th {
+              padding: 8px 0;
+              font-weight: 500;
+            }
+          }
+        }
+
+        /*  body高度 */
+        td {
+          color: $text-third-color;
+          padding: 3px 0;
+        }
+      }
+
+      /*  按钮样式 */
+      .el-button.el-button--text {
+        padding: 0;
       }
     }
   }

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col ml-5 h-full pb-12 relative">
+  <div v-loading="loading" class="flex flex-col ml-5 h-full pb-12 relative">
     <ej-search 
       v-model:models="state"
       v-model:keyword="keyword"
@@ -19,10 +19,10 @@
     <div class="flex-1">
       <el-table border stripe highlight-current-row :data="tableData" height="100%" @selection-change="handleSelectionChange">
         <el-table-column show-overflow-tooltip type="selection" width="40" prop="select" />
-        <el-table-column show-overflow-tooltip prop="name" label="所属系统" />
+        <!-- <el-table-column show-overflow-tooltip prop="buzsys" label="所属系统" /> -->
         <el-table-column show-overflow-tooltip prop="dataBaseName" label="数据库" />
         <el-table-column show-overflow-tooltip prop="name" label="英文名" />
-        <el-table-column show-overflow-tooltip prop="name" label="中文名" />
+        <el-table-column show-overflow-tooltip prop="description" label="中文名" />
         <el-table-column show-overflow-tooltip prop="mdsObjectTypeEnumCn" label="类型" width="60" align="center" />
         <el-table-column show-overflow-tooltip prop="primaryKey" label="主键" />
         <el-table-column show-overflow-tooltip prop="dbSourceType" label="数据库类型" />
@@ -87,7 +87,7 @@
     buztopic: [],
     buzsys: [],
   })
-  const menuId = computed(() => route.query?.id?.toString())
+  const menuId = computed(() => route.query?.treeId?.toString())
   const getSearchInput = () => {
     return {
       nodeId: menuId.value ?? '-1',
@@ -103,7 +103,7 @@
       keyword: keyword.value,
     }
   }
-  const {result, refetch, onResult} = useFindAllNotMountQuery({input: getSearchInput()}, {clientId: 'mdsClient'})
+  const {result, refetch, onResult, loading} = useFindAllNotMountQuery({input: getSearchInput()}, {clientId: 'mdsClient'})
   // 向资产挂载元数据
   const {mutate} = useDaMountingBasicAssetMutation({})
 
@@ -152,7 +152,6 @@
     refetch({input: getSearchInput()})
   }
   const handlerConfirm = () => {
-    console.log(menuId.value)
     if (!multipleSelection.value.length) {
       ElMessage.warning('请选择要挂载的元数据!')
       return
@@ -162,21 +161,23 @@
       return
     }
     mutate({
-      input: multipleSelection.value.map(item => {
-        return {
-          id: item.id,
-          // mdsObjectId: item.mdsObjectId,
-          // buzsys: item.buzsys,
-          dataBaseName: item.dataBaseName,
-          englishName: item.name,
-          chineseName: item.description,
-          mdsType: item.mdsObjectTypeEnum,
-          // useStatus: item.useStatus,
-          menuId: menuId.value,
-          // dbSourceType: item.dbSourceType,
-          primaryKey: item.primaryKey,
-        }
-      }),
+      input: {
+        menuId: menuId.value,
+        // @ts-ignore
+        mdsData: multipleSelection.value.map(item => {
+          return {
+            mdsObjectId: item.id,
+            mdsType: item.mdsObjectTypeEnum,
+            dbSourceType: item.dbSourceType || 'POSTGRESQL',
+            // mdsObjectId: item.mdsObjectId,
+            // buzsys: item.buzsys,
+            dataBaseName: item.dataBaseName,
+            englishName: item.name,
+            chineseName: item.description,
+            primaryKey: item.primaryKey,
+          }
+        }) || [],
+      },
     }).then(res => {
       if (res?.data?.result) {
         ElMessage.success('挂载成功')

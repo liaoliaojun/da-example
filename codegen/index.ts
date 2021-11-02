@@ -116,28 +116,10 @@ export type BasicAssetManagement = {
 
 /** 批量挂载基础资产入参 */
 export type BasicAssetManagementMountingInput = {
-  /** 所属系统 */
-  buzsys?: Maybe<Scalars["String"]>;
-  /** 中文名 */
-  chineseName?: Maybe<Scalars["String"]>;
-  /** 数据库 */
-  dataBaseName?: Maybe<Scalars["String"]>;
-  /** 数据库类型 */
-  dbSourceType?: Maybe<DbSourceTypeEnum>;
-  /** 英文名 */
-  englishName?: Maybe<Scalars["String"]>;
-  /** 主键id */
-  id?: Maybe<Scalars["ID"]>;
-  /** 元数据id */
-  mdsObjectId?: Maybe<Scalars["ID"]>;
-  /** 元数据类型 */
-  mdsType?: Maybe<MdsObjectTypeEnum>;
+  /** 元数据信息 */
+  mdsData?: Maybe<Array<Maybe<MdsBasicAssetManagementData>>>;
   /** 挂载节点id */
   menuId?: Maybe<Scalars["ID"]>;
-  /** 主键 */
-  primaryKey?: Maybe<Scalars["String"]>;
-  /** 使用状态(停用,启用) */
-  useStatus?: Maybe<Scalars["Boolean"]>;
 };
 
 /** 分页查询基础资产入参 */
@@ -246,6 +228,25 @@ export type InterfacePaginationResult = {
   total?: Maybe<Scalars["Int"]>;
 };
 
+export type MdsBasicAssetManagementData = {
+  /** 所属系统 */
+  buzsys?: Maybe<Scalars["String"]>;
+  /** 中文名 */
+  chineseName: Scalars["String"];
+  /** 数据库 */
+  dataBaseName: Scalars["String"];
+  /** 数据库类型 */
+  dbSourceType: DbSourceTypeEnum;
+  /** 英文名 */
+  englishName: Scalars["String"];
+  /** 元数据id */
+  mdsObjectId: Scalars["ID"];
+  /** 元数据类型 */
+  mdsType: MdsObjectTypeEnum;
+  /** 主键 */
+  primaryKey?: Maybe<Scalars["String"]>;
+};
+
 /**
  * 元数据字段
  *
@@ -341,7 +342,7 @@ export type MutationDaDelMenuArgs = {
 };
 
 export type MutationDaMountingBasicAssetArgs = {
-  input?: Maybe<Array<Maybe<BasicAssetManagementMountingInput>>>;
+  input?: Maybe<BasicAssetManagementMountingInput>;
 };
 
 export type MutationDaSaveOrUpdateMenuArgs = {
@@ -452,10 +453,7 @@ export type ReportPaginationResult = {
 };
 
 export type DaMountingBasicAssetMutationVariables = Exact<{
-  input?: Maybe<
-    | Array<Maybe<BasicAssetManagementMountingInput>>
-    | Maybe<BasicAssetManagementMountingInput>
-  >;
+  input?: Maybe<BasicAssetManagementMountingInput>;
 }>;
 
 export type DaMountingBasicAssetMutation = {
@@ -663,7 +661,7 @@ export type DaSaveOrUpdateMenuMutation = {
 };
 
 export const DaMountingBasicAssetDocument = gql`
-  mutation daMountingBasicAsset($input: [BasicAssetManagementMountingInput]) {
+  mutation daMountingBasicAsset($input: BasicAssetManagementMountingInput) {
     result: daMountingBasicAsset(input: $input)
   }
 `;

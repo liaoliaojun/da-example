@@ -185,7 +185,7 @@
   }
 
   const onNodeClick = ({data, _node}: any) => {
-    router.replace({query: {id: data.id}})
+    router.replace({query: {treeId: data.id, treeType: data.type}})
   }
   const onMoreClick = ({data, node}: any) => {
     if (node.level === 1) {
@@ -253,6 +253,7 @@
           label: item?.menuName ?? '',
           icon: isFile ? 'file' : 'folder',
           isLeaf: isFile,
+          type: item?.menuManagementType,
           children: isFile ? null: [],
         }
       }).filter((item) => Boolean(item.id))

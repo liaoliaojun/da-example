@@ -1,6 +1,5 @@
 <template>
-  <div class="h-full ml-5">
-    loading: {{loading}}
+  <div v-loading="loading" class="h-full ml-5">
     <ej-search 
       v-model:models="state"
       :immediate-search="true"
@@ -34,7 +33,7 @@
         <ej-icon style="width: 14px; height: 14px;" icon="checkin" class="inline-block" />
         <span class="ml-1">删除</span>
       </el-button>
-      <el-button size="small" @click="handlerMount">
+      <el-button :disabled="menuType !== MenuManagementTypeEnum['File']" size="small" @click="handlerMount">
         <ej-icon style="width: 14px; height: 14px;" icon="checkin" class="inline-block" />
         <span class="ml-1">挂载</span>
       </el-button>
@@ -65,10 +64,11 @@
 </template>
 
 <script setup lang="ts">
-  import {ref, watch} from 'vue'
+  import {ref, watch, computed} from 'vue'
   import {useRoute, useRouter} from 'vue-router'
   import {useResult} from '@vue/apollo-composable'
-  import {BasicAssetManagementSortEnum, useDaPageQueryBasicAssetQuery} from '~~/codegen/index'
+  import {BasicAssetManagementSortEnum, MenuManagementTypeEnum, useDaPageQueryBasicAssetQuery} from '~~/codegen/index'
+  import {ElMessage} from 'element-plus'
 
   const route = useRoute()
   const router = useRouter()
@@ -84,6 +84,8 @@
     refetch({input: getSearchInput()})
   }
 
+  const menuType = computed(() => route.query.treeType)
+
   const getSearchInput = () => {
     return {
       // 取数偏移
@@ -97,7 +99,7 @@
       // 所属系统
       buzsys: state.value.buzsys ?? '-1',
       // 目录id
-      menuId: route.query?.id?.toString() ?? '',
+      menuId: route.query?.treeId?.toString() ?? '',
       // 排序字段, 0为英文名, 1为中文名
       sortField: 1,
       // 排序规则
@@ -114,7 +116,7 @@
   })
 
   // why any? @TODO: https://github.com/vuejs/vue-apollo/discussions/1261
-  const tableData: any = useResult(result, [], (res) =>{
+  const tableData: any = useResult(result, [], (res) => {
     return res.result.data.map(item => {
       return {...item, useStatus: item.useStatus ? '启用' : '停用'}
     })
@@ -135,7 +137,11 @@
     console.log(params, type)
   }
   const handlerMount = () => {
-    router.push({name: 'BaseMount'})
+    if (menuType.value !== MenuManagementTypeEnum['File']) {
+      ElMessage.error('仅能挂载在文件类型的节点上')
+      return
+    }
+    router.push({name: 'BaseMount', query: {...route.query}})
   }
   const inputSearch = () => {
     handlerSearch({}, 'btn')

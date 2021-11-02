@@ -33,6 +33,7 @@ declare module 'vue' {
     ElTag: typeof import('element-plus/es')['ElTag']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     ElTree: typeof import('element-plus/es')['ElTree']
+    Loading: typeof import('element-plus/es')['ElLoadingDirective']
     Tree: typeof import('./src/components/base/tree.vue')['default']
   }
 }
