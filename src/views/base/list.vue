@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loading" class="h-full ml-5">
+  <div v-loading="loading" class="da-base-list h-full ml-5">
     <ej-search 
       v-model:models="state"
       :immediate-search="true"
@@ -15,11 +15,12 @@
       </template>
       <ej-radio v-model="state.useStatus" :options="[{label: '启用', value: true}, {label: '停用', value: false}]" prop="useStatus" label="使用状态" />
       <ej-texts v-model="state.buzsys" :options="options.buzsys" prop="buzsys" label="数据类型" />
-      <ej-layer label="数据库：" >
-        <ej-input v-model="state.buzsys" size="mini" height="24" width="100" clearable />
-      </ej-layer>
       <ej-layer label="所属系统：" >
         <ej-input v-model="state.buzsys" size="mini" height="24" width="100" clearable />
+        <div class="flex ml-5">
+          <span class="title">数据库：</span>
+          <ej-input v-model="state.buzsys" size="mini" height="24" width="100" clearable />
+        </div>
       </ej-layer>
     </ej-search>
     <div class="flex flex-row-reverse mb-2">
@@ -231,8 +232,14 @@
 </script>
 
 <style lang="postcss">
-  /* .da-base-view {
-    .ej-split-right {
+  /* .da-base-list {
+    .custom-layer {
+      .ej-search-layer__content {
+        padding-right: 25px;
+      }
+      .ej-search-expand {
+        @apply hidden;
+      }
     }
   } */
 </style>
