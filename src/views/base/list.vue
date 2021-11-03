@@ -1,6 +1,6 @@
 <template>
-  <div v-loading="loading" class="da-base-list h-full ml-5">
-    <ej-search 
+  <div class="da-base-list h-full ml-5">
+    <ej-search
       v-model:models="state"
       :immediate-search="true"
       :hide-com-list="true"
@@ -42,7 +42,7 @@
       </el-button>
     </div>
 
-    <el-skeleton :loading="loading" :rows="5">
+    <el-skeleton animated :loading="loading" :rows="5">
       <div class="text-right">
         <el-table border small stripe checkbox highlight-current-row :data="tableData" @selection-change="handleSelectionChange">
           <el-table-column show-overflow-tooltip type="selection" align="center" />
@@ -207,10 +207,8 @@
 
   const options = {
     buzsys: [
-      {value: 'mds', label: '元数据'},
-      {value: 'dqs', label: '数据质量'},
-      {value: 'ds', label: '数据标准'},
-      {value: 'seamodel', label: '模型'},
+      {value: 'TABLE', label: '表'},
+      {value: 'VIEW', label: '视图'},
     ],
   }
 
