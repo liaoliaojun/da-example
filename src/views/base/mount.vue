@@ -16,6 +16,8 @@
     </ej-search>
 
     <div class="flex-1">
+      <!-- <el-skeleton :loading="loading" :rows="8"> -->
+      <!-- 高度控制 -->
       <el-table border stripe highlight-current-row :data="tableData" height="100%" @selection-change="handleSelectionChange">
         <el-table-column show-overflow-tooltip type="selection" width="40" prop="select" />
         <el-table-column show-overflow-tooltip prop="buzsys" label="所属系统" width="100" />
@@ -27,6 +29,7 @@
         <el-table-column show-overflow-tooltip prop="dbSourceType" label="数据库类型" />
         <el-table-column prop="createTmCn" label="创建时间" />
       </el-table>
+      <!-- </el-skeleton> -->
     </div>
     <div class="flex justify-end mt-2">
       <el-pagination

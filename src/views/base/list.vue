@@ -42,32 +42,34 @@
       </el-button>
     </div>
 
-    <div class="text-right">
-      <el-table border small stripe checkbox highlight-current-row :data="tableData" @selection-change="handleSelectionChange">
-        <el-table-column show-overflow-tooltip type="selection" align="center" />
-        <el-table-column show-overflow-tooltip prop="tableData" label="所属系统" />
-        <el-table-column show-overflow-tooltip prop="dataBaseName" label="数据库" />
-        <el-table-column show-overflow-tooltip prop="englishName" label="英文名" />
-        <el-table-column show-overflow-tooltip prop="chineseName" label="中文名" />
-        <el-table-column show-overflow-tooltip prop="mdsType" label="数据类型" />
-        <el-table-column show-overflow-tooltip prop="useStatusCn" label="使用状态" />
-        <el-table-column label="操作" width="100">
-          <template #default="scope">
-            <el-button type="text">详情</el-button>
-            <el-button type="text" @click="handlerDelete(scope.row.id)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <div class="flex justify-end mt-2">
-        <el-pagination
-          layout="total, prev, pager, next, jumper"
-          :total="total"
-          :page-size="limit"
-          v-model:current-page="currentPage"
-          @current-change="changePage"
-        />
+    <el-skeleton :loading="loading" :rows="5">
+      <div class="text-right">
+        <el-table border small stripe checkbox highlight-current-row :data="tableData" @selection-change="handleSelectionChange">
+          <el-table-column show-overflow-tooltip type="selection" align="center" />
+          <el-table-column show-overflow-tooltip prop="tableData" label="所属系统" />
+          <el-table-column show-overflow-tooltip prop="dataBaseName" label="数据库" />
+          <el-table-column show-overflow-tooltip prop="englishName" label="英文名" />
+          <el-table-column show-overflow-tooltip prop="chineseName" label="中文名" />
+          <el-table-column show-overflow-tooltip prop="mdsType" label="数据类型" />
+          <el-table-column show-overflow-tooltip prop="useStatusCn" label="使用状态" />
+          <el-table-column label="操作" width="100">
+            <template #default="scope">
+              <el-button type="text">详情</el-button>
+              <el-button type="text" @click="handlerDelete(scope.row.id)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <div class="flex justify-end mt-2">
+          <el-pagination
+            layout="total, prev, pager, next, jumper"
+            :total="total"
+            :page-size="limit"
+            v-model:current-page="currentPage"
+            @current-change="changePage"
+          />
+        </div>
       </div>
-    </div>
+    </el-skeleton>
   </div>
 </template>
 
