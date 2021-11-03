@@ -4,7 +4,7 @@
       <router-link to="/" tag="li" class="mr-4">首页</router-link>
       <router-link to="/base" tag="li" class="mr-4">基础资产管理</router-link>
       <router-link to="/report" tag="li" class="mr-4">报表资产管理</router-link>
-      <router-link to="/test" tag="li" class="mr-4">接口资产管理</router-link>
+      <router-link to="/interface" tag="li" class="mr-4">接口资产管理</router-link>
 
       <router-link to="/test" tag="li" class="mr-4">基础资产查询</router-link>
       <router-link to="/test" tag="li" class="mr-4">指标资产查询</router-link>

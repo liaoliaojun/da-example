@@ -26,9 +26,19 @@ const routes = [
     }],
   },
   {
-    path: '/test',
-    name: 'test',
-    component: () => import('~/views/test.vue'),
+    path: '/interface',
+    name: 'interface',
+    redirect: '/interface/list',
+    component: () => import('~/views/interface/index.vue'),
+    children: [{
+      path: 'list',
+      name: 'InterfaceList',
+      component: () => import('~/views/interface/list.vue'),
+    }, {
+      path: 'mount',
+      name: 'InterfaceMount',
+      component: () => import('~/views/interface/mount.vue'),
+    }],
   },
   {
     path: '/report',
