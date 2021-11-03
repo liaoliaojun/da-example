@@ -1,9 +1,10 @@
 <template>
-  <ej-search-input v-model="keyword" width="100%" size="small" clearable suffix-icon-style="icon" />
+  <ej-search-input v-model="keyword" width="100%" height="28" maxlength="128" size="small" clearable suffix-icon-style="icon" @search="search(keyword)" />
   <ej-tree
     ref="treeRef"
     lazy
     node-key="id"
+    :filter="filter"
     :load="loadNode"
     :contextmenu="contextMenu"
     @node-click="onNodeClick"
@@ -290,5 +291,13 @@
         }
       }).filter((item) => Boolean(item.id))
     })
+  }
+
+  const search = (value: string) => {
+    treeRef.value.tiggerFilter(value)
+  }
+  const filter = (value: string, data: any) => {
+    if (!value) return true
+    return data.label.indexOf(value) !== -1
   }
 </script>
