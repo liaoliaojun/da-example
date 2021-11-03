@@ -1,0 +1,63 @@
+{
+  "emmet.triggerExpansionOnTab": true,
+  "emmet.syntaxProfiles": {
+      "vue-html": "html",
+      "vue": "html"
+  },
+  "eslint.validate": [
+      "javascript",
+      "html",
+      "vue",
+      "javascriptreact",
+      "typescript",
+      "jsx",
+      "tsx",
+  ],
+  "css.lint.unknownProperties": "ignore",
+  "editor.tabSize": 2,
+  "vetur.validation.style": false,
+  "explorer.confirmDelete": false,
+  "terminal.integrated.rendererType": "dom",
+  "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": false
+  },
+  "javascript.suggest.enabled": false,
+  // "[vue]": {
+  //     "editor.defaultFormatter": "octref.vetur"
+  // },
+  "editor.minimap.enabled": false,
+  "vetur.useWorkspaceDependencies": true,
+  "workbench.activityBar.visible": true,
+  "workbench.colorTheme": "Material Theme Ocean High Contrast",
+  "editor.suggestSelection": "first",
+  "git.alwaysShowStagedChangesResourceGroup": true,
+  "liveServer.settings.donotShowInfoMsg": true,
+  "remote.SSH.configFile": "C:\\Users\\liaoliaojun\\.ssh\\config",
+  "security.workspace.trust.untrustedFiles": "open",
+  "css.validate": false,
+  "scss.lint.unknownAtRules": "ignore",
+  "css.lint.unknownAtRules": "ignore",
+  "scss.lint.unknownProperties": "ignore",
+  "less.lint.unknownAtRules": "ignore",
+  "volar.style.defaultLanguage": "postcss",
+  // "stylelint.config": {
+  //     "rules": {
+  //         "at-rule-no-unknown": [
+  //             true,
+  //             {
+  //                 "ignoreAtRules": [
+  //                     "tailwind", "apply", "variants", "responsive", "screen"
+  //                 ]
+  //             }
+  //         ],
+  //         "declaration-block-trailing-semicolon": null,
+  //         "no-descending-specificity": null
+  //     }
+  // },
+  "scss.validate": false,
+  "autoimport.spaceBetweenBraces": false,
+  "volar.codeLens.scriptSetupTools": true,
+  "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
+  "typescript.preferences.importModuleSpecifierEnding": "index"
+}
