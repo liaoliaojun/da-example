@@ -120,7 +120,7 @@
       // 使用状态
       useStatus: state.value.useStatus,
       // 所属系统
-      buzsys: state.value.buzsys ?? '-1',
+      buzsys: state.value.buzsys,
       // 目录id
       menuId: route.query?.treeId?.toString() ?? '',
       // 排序字段, 0为英文名, 1为中文名
@@ -212,8 +212,8 @@
     ],
   }
 
-  const handlerSearch = (params: any, type: any) => {
-    console.log(params, type)
+  const handlerSearch = (_params: any, _type: any) => {
+    refetch({input: getSearchInput()})
   }
   const handlerMount = () => {
     if (menuType.value !== MenuManagementTypeEnum['File']) {
