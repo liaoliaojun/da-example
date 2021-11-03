@@ -1,30 +1,12 @@
 <template>
-  <div class="flex-auto ml-5">
-    <!-- <ej-search 
-      v-model:models="state"
-      v-model:keyword="keyword"
-      :keyword-props="{placeholder: '请输入内容'}"
-      :immediate-search="true"
-      :cm-props="{
-        searchId: 'searchDemo',
-      }"
-      :hide-com-list="true"
-      :hide-expand-button="true"
-      :show-com-pop="true"
-      :advanced="advanced"
-      @search="handlerSearch"
-    > -->
+  <div v-loading='loading' class="flex-auto ml-5">
     <ej-search 
       v-model:models="state"
       :immediate-search="true"
-      :cm-props="{
-        searchId: 'searchDemo',
-      }"
       :hide-com-list="true"
-      :hide-expand-button="true"
-      :show-com-pop="true"
-      :advanced="advanced"
+      :hide-expand-button="false"
       label-suffix="："
+      label-position="right"
       @search="handlerSearch"
     >
       <template #input>
@@ -35,26 +17,26 @@
       <ej-texts v-model="state.reviewStatus" :options="options.reviewStatus" prop="reviewStatus" label="审核状态" />
     </ej-search>
     <div class="flex flex-row-reverse mb-4">
-      <el-button size="small" style="margin-left: 10px;" @click="handlerDisable">
+      <el-button :disabled="!selection.length" size="small" style="margin-left: 10px;" @click="handlerDisable">
         <ej-icon style="width: 14px; height: 14px;" icon="checkin" class="inline-block" />
         <span>停用</span>
       </el-button>
-      <el-button size="small" @click="handlerEnable">
+      <el-button :disabled="!selection.length" size="small" @click="handlerEnable">
         <ej-icon style="width: 14px; height: 14px;" icon="checkin" class="inline-block" />
         <span>启用</span>
       </el-button>
-      <el-button size="small" @click="handlerDelete">
+      <el-button :disabled="!selection.length" size="small" @click="handlerDelete">
         <ej-icon style="width: 14px; height: 14px;" icon="checkin" class="inline-block" />
         <span>删除</span>
       </el-button>
-      <el-button size="small" @click="handlerMount">
+      <el-button :disabled="menuType !== MenuManagementTypeEnum['File']" size="small" @click="handlerMount">
         <ej-icon style="width: 14px; height: 14px;" icon="checkin" class="inline-block" />
         <span>挂载</span>
       </el-button>
     </div>
 
-    <el-table border stripe highlight-current-row :data="tableData" @selection-change="handlerSelectionChange">
-      <el-table-column type="selection" width="40" prop="select" />
+    <el-table border small stripe highlight-current-row :data="tableData" @selection-change="handlerSelectionChange">
+      <el-table-column type="selection" align="center" />
       <el-table-column prop="name" label="资产名称" />
       <el-table-column prop="date" label="资产类型" />
       <el-table-column prop="name" label="使用方/责任部门" />
@@ -62,7 +44,7 @@
       <el-table-column prop="name" label="审核状态" />
       <el-table-column prop="name" label="使用状态" />
       <el-table-column prop="name" label="最后下载时间" />
-      <el-table-column prop="manager" label="操作">
+      <el-table-column label="操作" width="100">
         <template #default="{}">
           <div class="flex flex-nowrap">
             <el-button type="text" size="small">详情</el-button>
@@ -84,11 +66,12 @@
 </template>
 
 <script setup lang="ts">
-  import {ref} from 'vue'
+  import {ref, computed} from 'vue'
   import {useRoute, useRouter} from 'vue-router'
   import {useResult} from '@vue/apollo-composable'
   import {ElMessage, ElMessageBox} from 'element-plus'
-  import {useListAssetsQuery, useDeleteAssetsMutation, useControlAssetsMutation} from '~~/codegen/index'
+  import useBreadcrumb from '~/hooks/breadcrumb'
+  import {MenuManagementTypeEnum, useListAssetsQuery, useDeleteAssetsMutation, useControlAssetsMutation} from '~~/codegen/index'
 
   const route = useRoute()
   const router = useRouter()
@@ -100,6 +83,12 @@
   const currentPage = ref(1)
   const limit = ref(30)
   const total = ref(0)
+  const menuType = computed(() => route.query.treeType)
+  const {setBreadcrumbList} = useBreadcrumb()
+  setBreadcrumbList([
+    {path: '/', label: '首页'},
+    {label: '报表资产管理'},
+  ])
   const changePage = () => {
     refetch({input: getSearchInput()})
   }
@@ -121,7 +110,7 @@
     }
   }
 
-  const {result, onResult, refetch} = useListAssetsQuery({
+  const {loading, result, onResult, refetch} = useListAssetsQuery({
     input: getSearchInput(),
   })
 
@@ -147,8 +136,6 @@
     ],
   }
 
-  const advanced = ref(true)
-
   const handlerSearch = () => {
     refetch({input: getSearchInput()})
   }
@@ -158,8 +145,8 @@
   }
   
   const handlerMount = () => {
-    console.log(router)
-    router.push({name: 'ReportMount'})
+    const id = route.query?.id?.toString() ?? ''
+    router.push({name: 'ReportMount', query: {id}})
   }
   const selection = ref([])
   const handlerSelectionChange = (val: any) => {
